@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/rogue.dir/main.cpp.o  -o rogue 
