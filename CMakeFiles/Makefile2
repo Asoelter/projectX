@@ -44,29 +44,26 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/adam/workspace/x11/handmade
+CMAKE_SOURCE_DIR = /home/adam/workspace/handmade
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/adam/workspace/x11/handmade
+CMAKE_BINARY_DIR = /home/adam/workspace/handmade
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
 all: src/all
-all: vendor/all
 
 .PHONY : all
 
 # The main recursive "clean" target.
 clean: src/clean
-clean: vendor/clean
 
 .PHONY : clean
 
 # The main recursive "preinstall" target.
 preinstall: src/preinstall
-preinstall: vendor/preinstall
 
 .PHONY : preinstall
 
@@ -95,14 +92,14 @@ src/preinstall:
 src/CMakeFiles/handmade.dir/all:
 	$(MAKE) -f src/CMakeFiles/handmade.dir/build.make src/CMakeFiles/handmade.dir/depend
 	$(MAKE) -f src/CMakeFiles/handmade.dir/build.make src/CMakeFiles/handmade.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adam/workspace/x11/handmade/CMakeFiles --progress-num=1,2 "Built target handmade"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adam/workspace/handmade/CMakeFiles --progress-num=1,2 "Built target handmade"
 .PHONY : src/CMakeFiles/handmade.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/handmade.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/handmade.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles 0
 .PHONY : src/CMakeFiles/handmade.dir/rule
 
 # Convenience name for target.
@@ -114,98 +111,6 @@ handmade: src/CMakeFiles/handmade.dir/rule
 src/CMakeFiles/handmade.dir/clean:
 	$(MAKE) -f src/CMakeFiles/handmade.dir/build.make src/CMakeFiles/handmade.dir/clean
 .PHONY : src/CMakeFiles/handmade.dir/clean
-
-#=============================================================================
-# Directory level rules for directory vendor
-
-# Recursive "all" directory target.
-vendor/all: vendor/portaudio/all
-
-.PHONY : vendor/all
-
-# Recursive "clean" directory target.
-vendor/clean: vendor/portaudio/clean
-
-.PHONY : vendor/clean
-
-# Recursive "preinstall" directory target.
-vendor/preinstall: vendor/portaudio/preinstall
-
-.PHONY : vendor/preinstall
-
-#=============================================================================
-# Directory level rules for directory vendor/portaudio
-
-# Recursive "all" directory target.
-vendor/portaudio/all: vendor/portaudio/CMakeFiles/portaudio.dir/all
-vendor/portaudio/all: vendor/portaudio/CMakeFiles/portaudio_static.dir/all
-
-.PHONY : vendor/portaudio/all
-
-# Recursive "clean" directory target.
-vendor/portaudio/clean: vendor/portaudio/CMakeFiles/portaudio.dir/clean
-vendor/portaudio/clean: vendor/portaudio/CMakeFiles/portaudio_static.dir/clean
-
-.PHONY : vendor/portaudio/clean
-
-# Recursive "preinstall" directory target.
-vendor/portaudio/preinstall:
-
-.PHONY : vendor/portaudio/preinstall
-
-#=============================================================================
-# Target rules for target vendor/portaudio/CMakeFiles/portaudio.dir
-
-# All Build rule for target.
-vendor/portaudio/CMakeFiles/portaudio.dir/all:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio.dir/build.make vendor/portaudio/CMakeFiles/portaudio.dir/depend
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio.dir/build.make vendor/portaudio/CMakeFiles/portaudio.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adam/workspace/x11/handmade/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target portaudio"
-.PHONY : vendor/portaudio/CMakeFiles/portaudio.dir/all
-
-# Build rule for subdir invocation for target.
-vendor/portaudio/CMakeFiles/portaudio.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 14
-	$(MAKE) -f CMakeFiles/Makefile2 vendor/portaudio/CMakeFiles/portaudio.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 0
-.PHONY : vendor/portaudio/CMakeFiles/portaudio.dir/rule
-
-# Convenience name for target.
-portaudio: vendor/portaudio/CMakeFiles/portaudio.dir/rule
-
-.PHONY : portaudio
-
-# clean rule for target.
-vendor/portaudio/CMakeFiles/portaudio.dir/clean:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio.dir/build.make vendor/portaudio/CMakeFiles/portaudio.dir/clean
-.PHONY : vendor/portaudio/CMakeFiles/portaudio.dir/clean
-
-#=============================================================================
-# Target rules for target vendor/portaudio/CMakeFiles/portaudio_static.dir
-
-# All Build rule for target.
-vendor/portaudio/CMakeFiles/portaudio_static.dir/all:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio_static.dir/build.make vendor/portaudio/CMakeFiles/portaudio_static.dir/depend
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio_static.dir/build.make vendor/portaudio/CMakeFiles/portaudio_static.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adam/workspace/x11/handmade/CMakeFiles --progress-num=17,18,19,20,21,22,23,24,25,26,27,28,29,30 "Built target portaudio_static"
-.PHONY : vendor/portaudio/CMakeFiles/portaudio_static.dir/all
-
-# Build rule for subdir invocation for target.
-vendor/portaudio/CMakeFiles/portaudio_static.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 14
-	$(MAKE) -f CMakeFiles/Makefile2 vendor/portaudio/CMakeFiles/portaudio_static.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 0
-.PHONY : vendor/portaudio/CMakeFiles/portaudio_static.dir/rule
-
-# Convenience name for target.
-portaudio_static: vendor/portaudio/CMakeFiles/portaudio_static.dir/rule
-
-.PHONY : portaudio_static
-
-# clean rule for target.
-vendor/portaudio/CMakeFiles/portaudio_static.dir/clean:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio_static.dir/build.make vendor/portaudio/CMakeFiles/portaudio_static.dir/clean
-.PHONY : vendor/portaudio/CMakeFiles/portaudio_static.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

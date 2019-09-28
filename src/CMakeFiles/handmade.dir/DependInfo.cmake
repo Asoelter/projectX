@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/adam/workspace/x11/handmade/src/main.cpp" "/home/adam/workspace/x11/handmade/src/CMakeFiles/handmade.dir/main.cpp.o"
+  "/home/adam/workspace/handmade/src/main.cpp" "/home/adam/workspace/handmade/src/CMakeFiles/handmade.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

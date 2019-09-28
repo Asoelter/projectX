@@ -1,4 +1,4 @@
-# Install script for directory: /home/adam/workspace/x11/handmade/src
+# Install script for directory: /home/adam/workspace/handmade/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

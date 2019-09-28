@@ -4,44 +4,39 @@
 #include <X11/extensions/dbe.h>
 #include <X11/extensions/Xdbe.h>
 
-#include <portaudio.h>
+#define ALSA_PCM_NEW_HW_PARAMS_API
+
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <alsa/asoundlib.h>
 
 #include <iostream>
-
-#define HANDMADE_UNUSED(arg) (void)arg
+#include <cmath>
 
 #define HANDMADE_INTERNAL
+#include "util/handmade_util.h"
+#include "util/handmade_defs.h"
 
-#ifdef HANDMADE_INTERNAL
-#   define handmade_assert(arg)                     \
-        if(!(arg))                                  \
-            {                                       \
-                std::cout << "Failed assertion: \"" \
-                          << #arg << "\" on line "  \
-                          << __LINE__ << " in file "\
-                          << __FILE__ << '\n';      \
-                abort();                            \
-            }                                       \
-        else{}
-#else
-#   define assert(arg) 
-#endif 
+//visual globals
+global Display* display             = nullptr;
+global Visual* visual               = nullptr;
+global XdbeBackBuffer backBuffer    = {0};
+global int screen                   = 0;
+global Window window                = {0};
+global GC gc                        = {0};
 
-#define LinMain main
+//window globals
+global int width                    = 720;
+global int height                   = 480;
+global bool running                 = true;
 
-#define persistant  static
-#define global      static
-
-global Display* display = nullptr;
-global Visual* visual   = nullptr;
-global XdbeBackBuffer backBuffer;
-global int screen = 0;
-global Window window;
-global GC gc;
-
-global int width    = 720;
-global int height   = 480;
-global bool running = true;
+//audio globals
+global snd_pcm_hw_params_t *params  = nullptr;
+global snd_pcm_uframes_t frames     = 32;
+global snd_pcm_t *audioHandle            = nullptr;
+global int rc                       = 0;
+global int dir                      = 0;
+global unsigned int rate             = 0;
 
 static constexpr auto BLACKNESS = 0x000000;
 static constexpr auto WHITENESS = 0xFFFFFF;
@@ -52,14 +47,16 @@ enum key
 };
 
 void init_graphics();
+void init_audio();
 void renderWeirdGradient(int offset);
 
-int LinMain(int argc, char** argv)
+int main(int argc, char** argv)
 {
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
     init_graphics();
+    init_audio();
 
     XEvent event;
     int yOffset = 0;
@@ -73,9 +70,30 @@ int LinMain(int argc, char** argv)
 
     int offset = 0;
 
+    handmade_assert(frames);
+    const auto size = frames * 4;
+    short buffer[size];
+    short secondaryBuffer[size];
+
+    auto sign = 1;
+    for(int i = 0; i < size; i++)
+    {
+        for(int j = 0; j < frames * 2; j += frames * 2)
+        {
+            buffer[i + j] = 126 * 10000 * sin(i);
+            buffer[i + j + 1] = 126 * 10000 * sin(i);
+        }
+
+        if(i % 2 == 0)
+        {
+            sign *= -1;
+        }
+    }
+
     while(running)
     {
-        XNextEvent(display, &event);
+        event = {0};
+        XCheckMaskEvent(display, ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask, &event);
 
         XdbeBeginIdiom(display);
 
@@ -123,7 +141,21 @@ int LinMain(int argc, char** argv)
 
         handmade_assert(XdbeSwapBuffers(display, &swapInfo, 1));
         XdbeEndIdiom(display);
+
+        snd_pcm_prepare(audioHandle);
+        static short value = 5;
+        value += 10;
+        if(snd_pcm_writei(audioHandle, &value, frames) < 0)
+        {
+            snd_pcm_prepare(audioHandle);
+            std::cout << "Buffer underrun" << std::endl;
+        }
+
+
     } //while(running)
+
+    snd_pcm_drain(audioHandle);
+    snd_pcm_close(audioHandle);
 
     return 0;
 } //main
@@ -139,7 +171,7 @@ void init_graphics()
 
     if(!XdbeQueryExtension(display, &major, &minor)) //init double buffering
     {
-          printf("Xdbe (%d.%d) supported, using double buffering\n", major, minor);
+        printf("Xdbe (%d.%d) supported, using double buffering\n", major, minor);
         int numScreens = 1;
         Drawable screens[] = { DefaultRootWindow(display) };
         XdbeScreenVisualInfo *info = XdbeGetVisualInfo(display, screens, &numScreens);
@@ -181,11 +213,46 @@ void init_graphics()
     XMapRaised(display, window);
 }
 
-void swap(int& a, int& b)
+void init_audio()
 {
-    int temp = a;
-    a = b;
-    b = temp;
+    rc = snd_pcm_open(&audioHandle, "default", SND_PCM_STREAM_PLAYBACK, 0);
+    handmade_assert(rc >= 0)
+
+    //Allocate a hardware parameters object. 
+    snd_pcm_hw_params_alloca(&params);
+
+    //Fill it in with default values. 
+    snd_pcm_hw_params_any(audioHandle, params);
+
+    //Interleaved mode 
+    snd_pcm_hw_params_set_access(audioHandle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+
+    //Signed 16-bit little-endian format 
+    snd_pcm_hw_params_set_format(audioHandle, params, SND_PCM_FORMAT_S16_LE);
+
+    //Two channels (stereo) 
+    snd_pcm_hw_params_set_channels(audioHandle, params, 2);
+
+    //44100 bits/second sampling rate (CD quality) 
+    rate = 48000;
+    snd_pcm_hw_params_set_rate_near(audioHandle, params, &rate, &dir);
+
+    //Set period size to 32 frames. 
+    frames = 32;
+    snd_pcm_hw_params_set_period_size_near(audioHandle, params, &frames, &dir);
+
+    const int periods = 2;
+    const int periodsize = 8192;
+    snd_pcm_hw_params_set_buffer_size(audioHandle, params, (periodsize * periods)>>2);
+
+    //Write the parameters to the driver 
+    rc = snd_pcm_hw_params(audioHandle, params);
+    handmade_assert(rc >= 0);
+
+    //Use a buffer large enough to hold one period 
+    snd_pcm_hw_params_get_period_size(params, &frames, &dir);
+
+    snd_pcm_prepare(audioHandle);
 }
 
 void renderWeirdGradient(int offset)

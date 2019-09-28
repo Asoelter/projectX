@@ -48,70 +48,13 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/adam/workspace/x11/handmade
+CMAKE_SOURCE_DIR = /home/adam/workspace/handmade
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/adam/workspace/x11/handmade
+CMAKE_BINARY_DIR = /home/adam/workspace/handmade
 
 #=============================================================================
 # Targets provided globally by CMake.
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/local/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/local/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/local/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/local/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -124,11 +67,22 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles /home/adam/workspace/x11/handmade/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles /home/adam/workspace/handmade/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/x11/handmade/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -169,47 +123,15 @@ handmade/fast:
 	$(MAKE) -f src/CMakeFiles/handmade.dir/build.make src/CMakeFiles/handmade.dir/build
 .PHONY : handmade/fast
 
-#=============================================================================
-# Target rules for targets named portaudio
-
-# Build rule for target.
-portaudio: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 portaudio
-.PHONY : portaudio
-
-# fast build rule for target.
-portaudio/fast:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio.dir/build.make vendor/portaudio/CMakeFiles/portaudio.dir/build
-.PHONY : portaudio/fast
-
-#=============================================================================
-# Target rules for targets named portaudio_static
-
-# Build rule for target.
-portaudio_static: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 portaudio_static
-.PHONY : portaudio_static
-
-# fast build rule for target.
-portaudio_static/fast:
-	$(MAKE) -f vendor/portaudio/CMakeFiles/portaudio_static.dir/build.make vendor/portaudio/CMakeFiles/portaudio_static.dir/build
-.PHONY : portaudio_static/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/strip"
-	@echo "... install"
-	@echo "... install/local"
-	@echo "... list_install_components"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... handmade"
-	@echo "... portaudio"
-	@echo "... portaudio_static"
 .PHONY : help
 
 
