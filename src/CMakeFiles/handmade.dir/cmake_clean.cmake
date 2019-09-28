@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../handmade"
-  "../handmade.pdb"
+  "../======handmade"
+  "../======handmade.pdb"
   "CMakeFiles/handmade.dir/main.cpp.o"
 )
 

@@ -31,4 +31,11 @@ util/handmade_util.h
 /home/adam/workspace/handmade/src/util/handmade_util.h
 util/handmade_defs.h
 /home/adam/workspace/handmade/src/util/handmade_defs.h
+<<<<<<< HEAD
+=======
+
+/home/adam/workspace/handmade/src/util/handmade_defs.h
+
+/home/adam/workspace/handmade/src/util/handmade_util.h
+>>>>>>> openAL_integration
 

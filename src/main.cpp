@@ -55,6 +55,7 @@ int main(int argc, char** argv)
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
+    std::cout << "Audio integration branch only" << std::endl;
     init_graphics();
     init_audio();
 

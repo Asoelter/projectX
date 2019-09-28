@@ -14,6 +14,8 @@
 # EXTERNAL cache entries
 ########################
 
+:UNINITIALIZED=======
+
 //The ALSA (asound) include directory
 ALSA_INCLUDE_DIR:PATH=/usr/include
 
@@ -229,6 +231,12 @@ JACK_INCLUDE_DIR:PATH=JACK_INCLUDE_DIR-NOTFOUND
 
 //Path to a library.
 JACK_LIBRARY:FILEPATH=JACK_LIBRARY-NOTFOUND
+
+//Path to a file.
+OPENAL_INCLUDE_DIR:PATH=/usr/include/AL
+
+//Path to a library.
+OPENAL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libopenal.so
 
 //Include example projects
 PA_BUILD_EXAMPLES:BOOL=OFF
@@ -446,7 +454,11 @@ portaudio_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libasound.so;gene
 //Dependencies for the target
 portaudio_static_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libasound.so;general;m;general;pthread;
 
+util_BINARY_DIR:STATIC=/home/adam/workspace/handmade/src/util
+
 //Value Computed by CMake
+util_SOURCE_DIR:STATIC=/home/adam/workspace/handmade/src/util
+
 vendor_BINARY_DIR:STATIC=/home/adam/workspace/handmade/vendor
 
 //Value Computed by CMake
@@ -612,8 +624,10 @@ CMAKE_UNAME:INTERNAL=/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding ALSA
 FIND_PACKAGE_MESSAGE_DETAILS_ALSA:INTERNAL=[/usr/lib/x86_64-linux-gnu/libasound.so][/usr/include][v1.1.3()]
+//Details about finding OpenAL
+FIND_PACKAGE_MESSAGE_DETAILS_OpenAL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libopenal.so][/usr/include/AL][v======()]
 //Details about finding X11
-FIND_PACKAGE_MESSAGE_DETAILS_X11:INTERNAL=[/usr/include][/usr/lib/x86_64-linux-gnu/libX11.so][c ][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_X11:INTERNAL=[/usr/include][/usr/lib/x86_64-linux-gnu/libX11.so][c ][v======()]
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
 FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build
@@ -666,6 +680,10 @@ JACK_jack_INCLUDEDIR:INTERNAL=
 JACK_jack_LIBDIR:INTERNAL=
 JACK_jack_PREFIX:INTERNAL=
 JACK_jack_VERSION:INTERNAL=
+//ADVANCED property for variable: OPENAL_INCLUDE_DIR
+OPENAL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENAL_LIBRARY
+OPENAL_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
 PKG_FONTCONFIG_CFLAGS:INTERNAL=-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/freetype2;-I/usr/include/libpng12
