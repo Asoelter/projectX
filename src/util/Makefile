@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles /home/adam/workspace/handmade/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/adam/workspace/handmade && $(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles /home/adam/workspace/handmade/src/util/CMakeFiles/progress.marks
+	cd /home/adam/workspace/handmade && $(MAKE) -f CMakeFiles/Makefile2 src/util/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adam/workspace/handmade/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/adam/workspace/handmade && $(MAKE) -f CMakeFiles/Makefile2 src/util/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,31 +97,33 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/adam/workspace/handmade && $(MAKE) -f CMakeFiles/Makefile2 src/util/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/adam/workspace/handmade && $(MAKE) -f CMakeFiles/Makefile2 src/util/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/adam/workspace/handmade && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named handmade
+# Convenience name for target.
+src/util/CMakeFiles/util.dir/rule:
+	cd /home/adam/workspace/handmade && $(MAKE) -f CMakeFiles/Makefile2 src/util/CMakeFiles/util.dir/rule
+.PHONY : src/util/CMakeFiles/util.dir/rule
 
-# Build rule for target.
-handmade: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 handmade
-.PHONY : handmade
+# Convenience name for target.
+util: src/util/CMakeFiles/util.dir/rule
+
+.PHONY : util
 
 # fast build rule for target.
-handmade/fast:
-	$(MAKE) -f src/CMakeFiles/handmade.dir/build.make src/CMakeFiles/handmade.dir/build
-.PHONY : handmade/fast
+util/fast:
+	cd /home/adam/workspace/handmade && $(MAKE) -f src/util/CMakeFiles/util.dir/build.make src/util/CMakeFiles/util.dir/build
+.PHONY : util/fast
 
 # Help Target
 help:
@@ -130,8 +132,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... util"
 	@echo "... edit_cache"
-	@echo "... handmade"
 .PHONY : help
 
 
@@ -143,6 +145,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/adam/workspace/handmade && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

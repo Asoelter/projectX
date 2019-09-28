@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/adam/workspace/x11/handmade/src/main.cpp
+/home/adam/workspace/handmade/src/main.cpp
 X11/Xlib.h
 -
 X11/Xutil.h
@@ -17,8 +17,22 @@ X11/extensions/dbe.h
 -
 X11/extensions/Xdbe.h
 -
-portaudio.h
+AL/al.h
+-
+AL/alc.h
+-
+alsa/asoundlib.h
 -
 iostream
 -
+cmath
+-
+util/handmade_util.h
+/home/adam/workspace/handmade/src/util/handmade_util.h
+util/handmade_defs.h
+/home/adam/workspace/handmade/src/util/handmade_defs.h
+
+/home/adam/workspace/handmade/src/util/handmade_defs.h
+
+/home/adam/workspace/handmade/src/util/handmade_util.h
 

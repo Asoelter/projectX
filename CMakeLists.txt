@@ -7,7 +7,7 @@ project ("handmade")
 
 # Include sub-projects.
 add_subdirectory ("src")
-add_subdirectory("vendor")
+
 set_property(TARGET "handmade" PROPERTY CXX_STANDARD 17)
 add_compile_options("-Wall; -Wextra; -pedantic")
 

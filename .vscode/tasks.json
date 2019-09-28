@@ -3,8 +3,9 @@
         {
             "type": "shell",
             "label": "clang++ build active file",
-            "command": "/usr/bin/clang++",
-            "args": [
+            "command": "/usr/bin/make",
+            //"command": "/usr/bin/clang++",
+            /*"args": [
                 "-g",
                 "${file}",
                 "-o",
@@ -12,7 +13,7 @@
             ],
             "options": {
                 "cwd": "/usr/bin"
-            }
+            }*/
         }
     ],
     "version": "2.0.0"

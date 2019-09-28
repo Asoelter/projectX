@@ -1,4 +1,4 @@
-# Install script for directory: /home/adam/workspace/x11/handmade
+# Install script for directory: /home/adam/workspace/handmade
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,8 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/adam/workspace/x11/handmade/src/cmake_install.cmake")
-  include("/home/adam/workspace/x11/handmade/vendor/cmake_install.cmake")
+  include("/home/adam/workspace/handmade/src/cmake_install.cmake")
 
 endif()
 
@@ -52,5 +51,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/adam/workspace/x11/handmade/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/adam/workspace/handmade/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

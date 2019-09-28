@@ -12,10 +12,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.15.0-rc3/CMakeSystem.cmake"
   "CMakeLists.txt"
   "src/CMakeLists.txt"
-  "vendor/CMakeLists.txt"
-  "vendor/portaudio/CMakeLists.txt"
-  "vendor/portaudio/cmake_support/FindJack.cmake"
-  "vendor/portaudio/cmake_support/portaudio-2.0.pc.in"
   "/usr/local/share/cmake-3.15/Modules/CMakeCInformation.cmake"
   "/usr/local/share/cmake-3.15/Modules/CMakeCXXInformation.cmake"
   "/usr/local/share/cmake-3.15/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
@@ -26,10 +22,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/cmake-3.15/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/local/share/cmake-3.15/Modules/CMakeSystemSpecificInitialize.cmake"
   "/usr/local/share/cmake-3.15/Modules/CheckFunctionExists.cmake"
-  "/usr/local/share/cmake-3.15/Modules/CheckIncludeFile.cmake"
-  "/usr/local/share/cmake-3.15/Modules/CheckIncludeFileCXX.cmake"
   "/usr/local/share/cmake-3.15/Modules/CheckLibraryExists.cmake"
-  "/usr/local/share/cmake-3.15/Modules/CheckTypeSize.cmake"
   "/usr/local/share/cmake-3.15/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/usr/local/share/cmake-3.15/Modules/Compiler/GNU-C.cmake"
   "/usr/local/share/cmake-3.15/Modules/Compiler/GNU-CXX.cmake"
@@ -37,6 +30,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/cmake-3.15/Modules/FindALSA.cmake"
   "/usr/local/share/cmake-3.15/Modules/FindFontconfig.cmake"
   "/usr/local/share/cmake-3.15/Modules/FindFreetype.cmake"
+  "/usr/local/share/cmake-3.15/Modules/FindOpenAL.cmake"
   "/usr/local/share/cmake-3.15/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/local/share/cmake-3.15/Modules/FindPackageMessage.cmake"
   "/usr/local/share/cmake-3.15/Modules/FindPkgConfig.cmake"
@@ -48,7 +42,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/cmake-3.15/Modules/Platform/Linux.cmake"
   "/usr/local/share/cmake-3.15/Modules/Platform/UnixPaths.cmake"
   "/usr/local/share/cmake-3.15/Modules/SelectLibraryConfigurations.cmake"
-  "/usr/local/share/cmake-3.15/Modules/TestBigEndian.cmake"
   )
 
 # The corresponding makefile is:
@@ -61,13 +54,9 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "vendor/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "vendor/portaudio/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/handmade.dir/DependInfo.cmake"
-  "vendor/portaudio/CMakeFiles/portaudio.dir/DependInfo.cmake"
-  "vendor/portaudio/CMakeFiles/portaudio_static.dir/DependInfo.cmake"
   )
