@@ -80,6 +80,7 @@ handmade_EXTERNAL_OBJECTS =
 handmade: src/CMakeFiles/handmade.dir/main.cpp.o
 handmade: src/CMakeFiles/handmade.dir/build.make
 handmade: /usr/lib/x86_64-linux-gnu/libasound.so
+handmade: /usr/lib/x86_64-linux-gnu/libopenal.so
 handmade: /usr/lib/x86_64-linux-gnu/libSM.so
 handmade: /usr/lib/x86_64-linux-gnu/libICE.so
 handmade: /usr/lib/x86_64-linux-gnu/libX11.so

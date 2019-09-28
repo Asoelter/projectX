@@ -4,11 +4,8 @@
 #include <X11/extensions/dbe.h>
 #include <X11/extensions/Xdbe.h>
 
-#define ALSA_PCM_NEW_HW_PARAMS_API
-
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <alsa/asoundlib.h>
 
 #include <iostream>
 #include <cmath>
@@ -31,12 +28,9 @@ global int height                   = 480;
 global bool running                 = true;
 
 //audio globals
-global snd_pcm_hw_params_t *params  = nullptr;
-global snd_pcm_uframes_t frames     = 32;
-global snd_pcm_t *audioHandle            = nullptr;
-global int rc                       = 0;
-global int dir                      = 0;
-global unsigned int rate             = 0;
+ALCdevice* device;
+ALCcontext* context;
+stat statBuf;
 
 static constexpr auto BLACKNESS = 0x000000;
 static constexpr auto WHITENESS = 0xFFFFFF;
@@ -70,26 +64,6 @@ int main(int argc, char** argv)
     handmade_assert(display);
 
     int offset = 0;
-
-    handmade_assert(frames);
-    const auto size = frames * 4;
-    short buffer[size];
-    short secondaryBuffer[size];
-
-    auto sign = 1;
-    for(int i = 0; i < size; i++)
-    {
-        for(int j = 0; j < frames * 2; j += frames * 2)
-        {
-            buffer[i + j] = 126 * 10000 * sin(i);
-            buffer[i + j + 1] = 126 * 10000 * sin(i);
-        }
-
-        if(i % 2 == 0)
-        {
-            sign *= -1;
-        }
-    }
 
     while(running)
     {
@@ -143,20 +117,7 @@ int main(int argc, char** argv)
         handmade_assert(XdbeSwapBuffers(display, &swapInfo, 1));
         XdbeEndIdiom(display);
 
-        snd_pcm_prepare(audioHandle);
-        static short value = 5;
-        value += 10;
-        if(snd_pcm_writei(audioHandle, &value, frames) < 0)
-        {
-            snd_pcm_prepare(audioHandle);
-            std::cout << "Buffer underrun" << std::endl;
-        }
-
-
     } //while(running)
-
-    snd_pcm_drain(audioHandle);
-    snd_pcm_close(audioHandle);
 
     return 0;
 } //main
@@ -216,44 +177,15 @@ void init_graphics()
 
 void init_audio()
 {
-    rc = snd_pcm_open(&audioHandle, "default", SND_PCM_STREAM_PLAYBACK, 0);
-    handmade_assert(rc >= 0)
+    device = alcOpenDevice(NULL);
 
-    //Allocate a hardware parameters object. 
-    snd_pcm_hw_params_alloca(&params);
+    handmade_assert(device)
 
-    //Fill it in with default values. 
-    snd_pcm_hw_params_any(audioHandle, params);
+    context = alcCreateContext(device, NULL);
 
-    //Interleaved mode 
-    snd_pcm_hw_params_set_access(audioHandle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+    alcMakeContextCurrent(context);
 
-    //Signed 16-bit little-endian format 
-    snd_pcm_hw_params_set_format(audioHandle, params, SND_PCM_FORMAT_S16_LE);
-
-    //Two channels (stereo) 
-    snd_pcm_hw_params_set_channels(audioHandle, params, 2);
-
-    //44100 bits/second sampling rate (CD quality) 
-    rate = 48000;
-    snd_pcm_hw_params_set_rate_near(audioHandle, params, &rate, &dir);
-
-    //Set period size to 32 frames. 
-    frames = 32;
-    snd_pcm_hw_params_set_period_size_near(audioHandle, params, &frames, &dir);
-
-    const int periods = 2;
-    const int periodsize = 8192;
-    snd_pcm_hw_params_set_buffer_size(audioHandle, params, (periodsize * periods)>>2);
-
-    //Write the parameters to the driver 
-    rc = snd_pcm_hw_params(audioHandle, params);
-    handmade_assert(rc >= 0);
-
-    //Use a buffer large enough to hold one period 
-    snd_pcm_hw_params_get_period_size(params, &frames, &dir);
-
-    snd_pcm_prepare(audioHandle);
+    handmade_assert(context)
 }
 
 void renderWeirdGradient(int offset)

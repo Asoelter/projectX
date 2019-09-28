@@ -230,6 +230,9 @@ JACK_INCLUDE_DIR:PATH=JACK_INCLUDE_DIR-NOTFOUND
 //Path to a library.
 JACK_LIBRARY:FILEPATH=JACK_LIBRARY-NOTFOUND
 
+//The directory containing a CMake configuration file for OPENAL.
+OPENAL_DIR:PATH=OPENAL_DIR-NOTFOUND
+
 //Path to a file.
 OPENAL_INCLUDE_DIR:PATH=/usr/include/AL
 
