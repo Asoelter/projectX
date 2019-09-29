@@ -3,8 +3,5 @@
 
 src/CMakeFiles/handmade.dir/main.cpp.o
  /home/adam/workspace/handmade/src/main.cpp
-<<<<<<< HEAD
-=======
  /home/adam/workspace/handmade/src/util/handmade_defs.h
  /home/adam/workspace/handmade/src/util/handmade_util.h
->>>>>>> openAL_integration

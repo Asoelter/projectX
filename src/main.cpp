@@ -4,11 +4,8 @@
 #include <X11/extensions/dbe.h>
 #include <X11/extensions/Xdbe.h>
 
-#define ALSA_PCM_NEW_HW_PARAMS_API
-
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <alsa/asoundlib.h>
 
 #include <iostream>
 #include <cmath>
@@ -17,6 +14,11 @@
 #include "util/handmade_util.h"
 #include "util/handmade_defs.h"
 
+//window globals
+global constexpr int width                    = 720;
+global constexpr int height                   = 480;
+global bool running                 = true;
+
 //visual globals
 global Display* display             = nullptr;
 global Visual* visual               = nullptr;
@@ -24,22 +26,21 @@ global XdbeBackBuffer backBuffer    = {0};
 global int screen                   = 0;
 global Window window                = {0};
 global GC gc                        = {0};
-
-//window globals
-global int width                    = 720;
-global int height                   = 480;
-global bool running                 = true;
+global XImage* image;
+global char* pixmap;
 
 //audio globals
-global snd_pcm_hw_params_t *params  = nullptr;
-global snd_pcm_uframes_t frames     = 32;
-global snd_pcm_t *audioHandle            = nullptr;
-global int rc                       = 0;
-global int dir                      = 0;
-global unsigned int rate             = 0;
+ALCdevice* audioDevice;
+ALCcontext* audioContext;
+stat statBuf;
+global constexpr int numAudioBuffers = 2;
+global constexpr int audioBufferSize = 24000;
+global short audioBuffer[audioBufferSize]; //actual audio buffer
+ALuint audioBuffers[numAudioBuffers]; //think openGL vbo 
+ALuint audioSource;
 
-static constexpr auto BLACKNESS = 0x000000;
-static constexpr auto WHITENESS = 0xFFFFFF;
+global constexpr auto BLACKNESS = 0x000000;
+global constexpr auto WHITENESS = 0xFFFFFF;
 
 enum key
 {
@@ -55,7 +56,7 @@ int main(int argc, char** argv)
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
-    std::cout << "Audio integration branch only" << std::endl;
+    pixmap = new char[width * height];
     init_graphics();
     init_audio();
 
@@ -70,26 +71,6 @@ int main(int argc, char** argv)
     handmade_assert(display);
 
     int offset = 0;
-
-    handmade_assert(frames);
-    const auto size = frames * 4;
-    short buffer[size];
-    short secondaryBuffer[size];
-
-    auto sign = 1;
-    for(int i = 0; i < size; i++)
-    {
-        for(int j = 0; j < frames * 2; j += frames * 2)
-        {
-            buffer[i + j] = 126 * 10000 * sin(i);
-            buffer[i + j + 1] = 126 * 10000 * sin(i);
-        }
-
-        if(i % 2 == 0)
-        {
-            sign *= -1;
-        }
-    }
 
     while(running)
     {
@@ -134,6 +115,7 @@ int main(int argc, char** argv)
             }break;
         } //switch
 
+        //graphics stuff
         renderWeirdGradient(offset);
 
         XdbeSwapInfo swapInfo;
@@ -143,27 +125,63 @@ int main(int argc, char** argv)
         handmade_assert(XdbeSwapBuffers(display, &swapInfo, 1));
         XdbeEndIdiom(display);
 
-        snd_pcm_prepare(audioHandle);
-        static short value = 5;
-        value += 10;
-        if(snd_pcm_writei(audioHandle, &value, frames) < 0)
+        //audio stuff
+        //NOTE(adam): openAL does not need data inputted in a two channel format
+        constexpr int numChannels = 1;
+        constexpr int samplesPerSecond = 48000;
+        constexpr auto audioBufferSize = numChannels * samplesPerSecond;
+        short audioBuffer[audioBufferSize];
+
+        constexpr int toneHz = 256;
+        constexpr short toneVolume = 6000;
+        int sampleIndex = 0;
+        constexpr int wavePeriod = samplesPerSecond / toneHz;
+        constexpr int halfWavePeriod = wavePeriod / 2;
+        constexpr int bytesPerSample = sizeof(short) * 2;
+
+        static auto count = 0;
+
+        if(count++ == 0)
         {
-            snd_pcm_prepare(audioHandle);
-            std::cout << "Buffer underrun" << std::endl;
+            for(int i = 0; i < audioBufferSize; ++i)
+            {
+                const short sampleValue = ((sampleIndex++ / halfWavePeriod) % 2) ? toneVolume : -toneVolume;
+                audioBuffer[i] = sampleValue;
+            }
+
+            int discards = 0;
+            int lastValue = audioBuffer[audioBufferSize - 1];
+
+            for(int i = audioBufferSize - 1; audioBuffer[i] == lastValue; --i)
+            {
+                ++discards;
+            }
+
+            std::cout << "First value: " << audioBuffer[0] << std::endl;
+            std::cout << "Last value: " << audioBuffer[audioBufferSize - discards - 1] << std::endl;
+            alBufferData(audioBuffers[0], AL_FORMAT_MONO16, audioBuffer, audioBufferSize - discards, 44000);
+            alSourcei(audioSource, AL_BUFFER, audioBuffers[0]);
         }
 
+        ALint sourceState;
+        alGetSourcei(audioSource, AL_SOURCE_STATE, &sourceState);
+
+        if (sourceState != AL_PLAYING)
+        {
+            alSourcePlay(audioSource);
+        }
 
     } //while(running)
 
-    snd_pcm_drain(audioHandle);
-    snd_pcm_close(audioHandle);
+    alcCloseDevice(audioDevice);
 
     return 0;
 } //main
 
 void init_graphics() 
 {
-
+    //XCreateImage(display, visual, depth, format, offset, data, width, height, bitmap_pad,
+                        //bytes_per_line)
     display = XOpenDisplay((char *)0);
     screen  = DefaultScreen(display);
 
@@ -212,48 +230,24 @@ void init_graphics()
     gc = XCreateGC(display, window, 0,0);
 
     XMapRaised(display, window);
+
+    image = XCreateImage(display, DefaultVisual(display, screen), DefaultDepth(display, screen), ZPixmap, 0, pixmap, width, height, 8, 0);
 }
 
 void init_audio()
 {
-    rc = snd_pcm_open(&audioHandle, "default", SND_PCM_STREAM_PLAYBACK, 0);
-    handmade_assert(rc >= 0)
+    audioDevice = alcOpenDevice(NULL);
 
-    //Allocate a hardware parameters object. 
-    snd_pcm_hw_params_alloca(&params);
+    handmade_assert(audioDevice)
 
-    //Fill it in with default values. 
-    snd_pcm_hw_params_any(audioHandle, params);
+    audioContext = alcCreateContext(audioDevice, NULL);
 
-    //Interleaved mode 
-    snd_pcm_hw_params_set_access(audioHandle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+    alcMakeContextCurrent(audioContext);
 
-    //Signed 16-bit little-endian format 
-    snd_pcm_hw_params_set_format(audioHandle, params, SND_PCM_FORMAT_S16_LE);
+    handmade_assert(audioContext);
 
-    //Two channels (stereo) 
-    snd_pcm_hw_params_set_channels(audioHandle, params, 2);
-
-    //44100 bits/second sampling rate (CD quality) 
-    rate = 48000;
-    snd_pcm_hw_params_set_rate_near(audioHandle, params, &rate, &dir);
-
-    //Set period size to 32 frames. 
-    frames = 32;
-    snd_pcm_hw_params_set_period_size_near(audioHandle, params, &frames, &dir);
-
-    const int periods = 2;
-    const int periodsize = 8192;
-    snd_pcm_hw_params_set_buffer_size(audioHandle, params, (periodsize * periods)>>2);
-
-    //Write the parameters to the driver 
-    rc = snd_pcm_hw_params(audioHandle, params);
-    handmade_assert(rc >= 0);
-
-    //Use a buffer large enough to hold one period 
-    snd_pcm_hw_params_get_period_size(params, &frames, &dir);
-
-    snd_pcm_prepare(audioHandle);
+    alGenBuffers(numAudioBuffers, audioBuffers);
+    alGenSources(1, &audioSource);
 }
 
 void renderWeirdGradient(int offset)
@@ -262,6 +256,8 @@ void renderWeirdGradient(int offset)
 
     const auto xLimit = width + stride + offset;
     const auto yLimit = height + stride;
+
+
 
     for(int startPointY = 0; startPointY < yLimit; startPointY += stride)
     {
@@ -309,5 +305,9 @@ void renderWeirdGradient(int offset)
             }
         }
     }
+
+    std::cout << "Before" << std::endl;
+    XPutImage(display, backBuffer, gc, image, 0, 0, 0, 0, width, height);
+    std::cout << "After" << std::endl;
 }
 
