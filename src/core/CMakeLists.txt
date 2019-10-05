@@ -1,7 +1,8 @@
 set(CMAKE_EXPORT_COMPILE_COMMANDS on) #To generate compilation database for ycm
 
 
-add_library (core shader.h shader.cpp)
+add_library (core shader.h shader.cpp
+                  window.h window.cpp)
 
 include_directories(../)
 include_directories(../vendor/glad)

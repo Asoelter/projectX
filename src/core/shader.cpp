@@ -39,7 +39,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     glDeleteShader(fragmentID); 
     if(isError())
     {
-        assert(false);
+        //handmade_assert(false);
     }
 }
 
@@ -65,7 +65,7 @@ bool Shader::isError()
     glGetShaderiv(programID_, GL_COMPILE_STATUS, &success);
 
     //Hack to pop the error that this causes out of the stack
-    glGetError();
+    while(glGetError() != 0);
 
     return success == GL_FALSE;
 }
@@ -95,7 +95,7 @@ unsigned Shader::compileShader(GLenum type, std::string source)
 
     if(isError())
     {
-        assert(false);
+        //handmade_assert(false);
     }
 
     return id;

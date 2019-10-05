@@ -1,3 +1,5 @@
+#include <iostream>
+
 //----------------------handmade_unused-------------------
 #define HANDMADE_UNUSED(arg) (void)arg
 
@@ -22,7 +24,7 @@
         }                                           \
         else{}
 #else
-#   define assert(arg) 
+#   define handmade_assert(arg) 
 #endif //HANDMADE_INTERNAL
 
 //----------------------handmade_print-------------------

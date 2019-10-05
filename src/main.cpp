@@ -4,12 +4,12 @@
 #include <iostream>
 #include <cmath>
 
-#define HANDMADE_INTERNAL
 #include "util/handmade_util.h"
 #include "util/handmade_defs.h"
 #include "util/handmade_gl.h"
 
 #include "core/shader.h"
+#include "core/window.h"
 
 //opengl globals
 GLFWwindow* glWindow;
@@ -17,9 +17,9 @@ GLuint vao[2];
 GLuint vbo[2];
 
 //window globals
-global constexpr int width                    = 720;
-global constexpr int height                   = 480;
-global bool running                 = true;
+global constexpr int width  = 720;
+global constexpr int height = 480;
+global bool running         = true;
 
 //audio globals
 ALCdevice* audioDevice;
@@ -30,24 +30,19 @@ global short audioBuffer[audioBufferSize]; //actual audio buffer
 ALuint audioBuffers[numAudioBuffers]; //think openGL vbo 
 ALuint audioSource;
 
-global constexpr auto BLACKNESS = 0x000000;
-global constexpr auto WHITENESS = 0xFFFFFF;
-
 enum key
 {
     ESCAPE = 9
 };
 
-void init_graphics();
 void init_audio();
-void renderWeirdGradient(int offset);
 
 int main(int argc, char** argv)
 {
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
-    init_graphics();
+    core::graphics::Window customWindow(width, height, "Custom window");
     init_audio();
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
 
@@ -80,18 +75,16 @@ int main(int argc, char** argv)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 
-    while(running && !glfwWindowShouldClose(glWindow))
+    while(running && customWindow.open())
     {
         //graphics stuff
-
-        if(glfwGetKey(glWindow, GLFW_KEY_ESCAPE))
+        if(customWindow.isPressed(core::graphics::Key::Escape))
         {
             running = false;
         }
 
-        glfwPollEvents();
-        glClearColor(0.0f, 0.6f, 0.8f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        customWindow.setBackgroundColor(0.0f, 0.6f, 0.8f);
+        customWindow.update();
 
         glBindVertexArray(vao[0]);
         shader.bind();
@@ -101,7 +94,8 @@ int main(int argc, char** argv)
         glBindVertexArray(vao[1]);
         glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glfwSwapBuffers(glWindow);
+
+        customWindow.swap();
 
         //audio stuff
         //NOTE(adam): openAL does not need data inputted in a two channel format
@@ -153,27 +147,6 @@ int main(int argc, char** argv)
 
     return 0;
 } //main
-
-void init_graphics() 
-{
-
-    if(!glfwInit())
-    {
-        handmade_assert("could not initialize glfw" && false);
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    glWindow = glfwCreateWindow(width, height, "Handmade Hero", nullptr, nullptr);
-    glfwMakeContextCurrent(glWindow);
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        handmade_assert("could not initialize glad" && false);
-    }
-
-}
 
 void init_audio()
 {
