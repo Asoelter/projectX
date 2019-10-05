@@ -82,8 +82,13 @@ int main(int argc, char** argv)
 
     while(running && !glfwWindowShouldClose(glWindow))
     {
-
         //graphics stuff
+
+        if(glfwGetKey(glWindow, GLFW_KEY_ESCAPE))
+        {
+            running = false;
+        }
+
         glfwPollEvents();
         glClearColor(0.0f, 0.6f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
