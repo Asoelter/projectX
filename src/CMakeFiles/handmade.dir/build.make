@@ -84,6 +84,14 @@ handmade: /usr/lib/x86_64-linux-gnu/libSM.so
 handmade: /usr/lib/x86_64-linux-gnu/libICE.so
 handmade: /usr/lib/x86_64-linux-gnu/libX11.so
 handmade: /usr/lib/x86_64-linux-gnu/libXext.so
+handmade: src/vendor/glad/libglad.a
+handmade: src/vendor/glfw/src/libglfw3.a
+handmade: src/core/libcore.a
+handmade: src/vendor/glad/libglad.a
+handmade: src/vendor/glfw/src/libglfw3.a
+handmade: /usr/lib/x86_64-linux-gnu/librt.so
+handmade: /usr/lib/x86_64-linux-gnu/libm.so
+handmade: /usr/lib/x86_64-linux-gnu/libX11.so
 handmade: src/CMakeFiles/handmade.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/adam/workspace/handmade/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../handmade"
 	cd /home/adam/workspace/handmade/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/handmade.dir/link.txt --verbose=$(VERBOSE)

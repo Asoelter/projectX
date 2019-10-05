@@ -1,9 +1,3 @@
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <X11/extensions/dbe.h>
-#include <X11/extensions/Xdbe.h>
-
 #include <AL/al.h>
 #include <AL/alc.h>
 
@@ -13,26 +7,23 @@
 #define HANDMADE_INTERNAL
 #include "util/handmade_util.h"
 #include "util/handmade_defs.h"
+#include "util/handmade_gl.h"
+
+#include "core/shader.h"
+
+//opengl globals
+GLFWwindow* glWindow;
+GLuint vao[2];
+GLuint vbo[2];
 
 //window globals
 global constexpr int width                    = 720;
 global constexpr int height                   = 480;
 global bool running                 = true;
 
-//visual globals
-global Display* display             = nullptr;
-global Visual* visual               = nullptr;
-global XdbeBackBuffer backBuffer    = {0};
-global int screen                   = 0;
-global Window window                = {0};
-global GC gc                        = {0};
-global XImage* image;
-global char* pixmap;
-
 //audio globals
 ALCdevice* audioDevice;
 ALCcontext* audioContext;
-stat statBuf;
 global constexpr int numAudioBuffers = 2;
 global constexpr int audioBufferSize = 24000;
 global short audioBuffer[audioBufferSize]; //actual audio buffer
@@ -56,74 +47,56 @@ int main(int argc, char** argv)
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
-    pixmap = new char[width * height];
     init_graphics();
     init_audio();
+    core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
 
-    XEvent event;
-    int yOffset = 0;
+    float topLeft[] = {
+         1.0f,  1.0f,
+        -1.0f,  1.0f,
+        -1.0f, -1.0f
+    };
 
-    auto wmDeleteMessage = XInternAtom(display, "WM_DELETE_WINDOW", false);
+    float bottomRight[] = {
+        -1.0f, -1.0f,
+         1.0f,  -1.0f,
+         1.0f, 1.0f,
+    };
 
-    XSetWMProtocols(display, window, &wmDeleteMessage, 1);
-    bool running = true;
+    glGenVertexArrays(2, vao);
+    glBindVertexArray(vao[0]);
 
-    handmade_assert(display);
+    glGenBuffers(2, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
-    int offset = 0;
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), topLeft, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
 
-    while(running)
+    glBindVertexArray(vao[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), bottomRight, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    while(running && !glfwWindowShouldClose(glWindow))
     {
-        event = {0};
-        XCheckMaskEvent(display, ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask, &event);
-
-        XdbeBeginIdiom(display);
-
-        switch(event.type)
-        {
-            case KeyPress: 
-            {
-                offset += 10;
-
-                if(event.xkey.keycode == key::ESCAPE)
-                {
-                    running = false;
-                }
-            }break;
-
-            case ClientMessage:
-            {
-                if(event.xclient.data.l[0] == static_cast<long>(wmDeleteMessage))
-                {
-                    running = false; 
-                }
-            }break;
-
-            case ConfigureNotify:
-            {
-                if(width == event.xconfigure.width && height == event.xconfigure.height)
-                {
-                    break; //Only use this to handle window resizes
-                }
-
-                //handle resize events here
-            }break;
-
-            default:
-            {
-
-            }break;
-        } //switch
 
         //graphics stuff
-        renderWeirdGradient(offset);
+        glfwPollEvents();
+        glClearColor(0.0f, 0.6f, 0.8f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        XdbeSwapInfo swapInfo;
-        swapInfo.swap_window = window;
-        swapInfo.swap_action = XdbeUndefined;
+        glBindVertexArray(vao[0]);
+        shader.bind();
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        handmade_assert(XdbeSwapBuffers(display, &swapInfo, 1));
-        XdbeEndIdiom(display);
+        glBindVertexArray(vao[1]);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glfwSwapBuffers(glWindow);
 
         //audio stuff
         //NOTE(adam): openAL does not need data inputted in a two channel format
@@ -157,8 +130,6 @@ int main(int argc, char** argv)
                 ++discards;
             }
 
-            std::cout << "First value: " << audioBuffer[0] << std::endl;
-            std::cout << "Last value: " << audioBuffer[audioBufferSize - discards - 1] << std::endl;
             alBufferData(audioBuffers[0], AL_FORMAT_MONO16, audioBuffer, audioBufferSize - discards, 44000);
             alSourcei(audioSource, AL_BUFFER, audioBuffers[0]);
         }
@@ -180,58 +151,23 @@ int main(int argc, char** argv)
 
 void init_graphics() 
 {
-    //XCreateImage(display, visual, depth, format, offset, data, width, height, bitmap_pad,
-                        //bytes_per_line)
-    display = XOpenDisplay((char *)0);
-    screen  = DefaultScreen(display);
 
-    int major = 0;
-    int minor = 0;
-
-    if(!XdbeQueryExtension(display, &major, &minor)) //init double buffering
+    if(!glfwInit())
     {
-        printf("Xdbe (%d.%d) supported, using double buffering\n", major, minor);
-        int numScreens = 1;
-        Drawable screens[] = { DefaultRootWindow(display) };
-        XdbeScreenVisualInfo *info = XdbeGetVisualInfo(display, screens, &numScreens);
-        if (!info || numScreens < 1 || info->count < 1) 
-        {
-            fprintf(stderr, "No visuals support Xdbe\n");
-            return;
-        }
+        handmade_assert("could not initialize glfw" && false);
+    }
 
-        // Choosing the first one, seems that they have all perflevel of 0,
-        // and the depth varies.
-        XVisualInfo xvisinfo_templ;
-        xvisinfo_templ.visualid = info->visinfo[0].visual; // We know there's at least one
-        // As far as I know, screens are densely packed, so we can assume that if at least 1 exists, it's screen 0.
-        xvisinfo_templ.screen = 0;
-        xvisinfo_templ.depth = info->visinfo[0].depth;
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        int matches;
-        XVisualInfo *xvisinfo_match =
-            XGetVisualInfo(display, VisualIDMask|VisualScreenMask|VisualDepthMask, &xvisinfo_templ, &matches);
+    glWindow = glfwCreateWindow(width, height, "Handmade Hero", nullptr, nullptr);
+    glfwMakeContextCurrent(glWindow);
+    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        handmade_assert("could not initialize glad" && false);
+    }
 
-        if (!xvisinfo_match || matches < 1) {
-            fprintf(stderr, "Couldn't match a Visual with double buffering\n");
-            return;
-        }
-
-        visual = xvisinfo_match->visual;
-    } 
-
-    window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, width, height, 5, None, None);
-    backBuffer = XdbeAllocateBackBufferName(display, window, XdbeBackground);
-
-    XSetStandardProperties(display, window, "Handmade","Handmade",None,NULL,0,NULL);
-
-    XSelectInput(display, window, ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask);
-
-    gc = XCreateGC(display, window, 0,0);
-
-    XMapRaised(display, window);
-
-    image = XCreateImage(display, DefaultVisual(display, screen), DefaultDepth(display, screen), ZPixmap, 0, pixmap, width, height, 8, 0);
 }
 
 void init_audio()
@@ -249,65 +185,3 @@ void init_audio()
     alGenBuffers(numAudioBuffers, audioBuffers);
     alGenSources(1, &audioSource);
 }
-
-void renderWeirdGradient(int offset)
-{
-    const auto stride = width / 10;
-
-    const auto xLimit = width + stride + offset;
-    const auto yLimit = height + stride;
-
-
-
-    for(int startPointY = 0; startPointY < yLimit; startPointY += stride)
-    {
-        auto prevStartX = 0;
-        auto carriageReturned = false;
-
-        for(int startPointX = offset + stride; startPointX < offset || !carriageReturned; startPointX += stride)
-        {
-            auto horizontalWalker = startPointX;
-            auto verticalWalker = startPointY;
-
-            auto color = 0x00AFFF;
-            while(horizontalWalker > prevStartX && verticalWalker < startPointY + stride)
-            {
-                XSetForeground(display, gc, color);
-                XDrawLine(display, backBuffer, gc, horizontalWalker, startPointY, startPointX, verticalWalker);
-                --horizontalWalker;
-                ++verticalWalker;
-                --color;
-            }
-
-            XSetForeground(display, gc, WHITENESS);
-
-            auto cornerX = horizontalWalker;
-            auto cornerY = verticalWalker;
-
-            auto hWalker2 = startPointX;
-            auto vWalker2 = startPointY;
-
-            while(hWalker2 > prevStartX && vWalker2 < startPointY + stride)
-            {
-                XSetForeground(display, gc, color);
-                XDrawLine(display, backBuffer, gc, hWalker2, cornerY, cornerX, vWalker2);
-                --hWalker2;
-                ++vWalker2;
-                color -= 2;
-            }
-
-            prevStartX = startPointX;
-
-            if(startPointX >= width)
-            {
-                startPointX = 0;
-                carriageReturned = true;
-            }
-        }
-    }
-
-    std::cout << "Before" << std::endl;
-    XPutImage(display, backBuffer, gc, image, 0, 0, 0, 0, width, height);
-    std::cout << "After" << std::endl;
-}
-

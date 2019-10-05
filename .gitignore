@@ -1,5 +1,17 @@
 .gitignore
+
 **/*.o
+
 src/CMakeFiles/**
+CMakeFiles
+CMakeFiles/**
+
 handmade
 
+CMakeDoxy**
+
+bin
+bin/**
+
+build
+build/**
