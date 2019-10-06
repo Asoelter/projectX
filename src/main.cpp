@@ -1,165 +1,105 @@
-#include <AL/al.h>
-#include <AL/alc.h>
-
 #include <iostream>
+#include <iomanip>
 #include <cmath>
+#include <time.h>
 
 #include "util/handmade_util.h"
-#include "util/handmade_defs.h"
-#include "util/handmade_gl.h"
 
-#include "core/shader.h"
-#include "core/window.h"
+#include "core/graphics/shader.h"
+#include "core/graphics/window.h"
+#include "core/graphics/mesh.h"
+#include "core/graphics/square.h"
 
-//opengl globals
-GLFWwindow* glWindow;
-GLuint vao[2];
-GLuint vbo[2];
+#include "core/audio/speaker.h"
 
-//window globals
-global constexpr int width  = 720;
-global constexpr int height = 480;
-global bool running         = true;
+#include "core/math/vec2.h"
 
-//audio globals
-ALCdevice* audioDevice;
-ALCcontext* audioContext;
-global constexpr int numAudioBuffers = 2;
-global constexpr int audioBufferSize = 24000;
-global short audioBuffer[audioBufferSize]; //actual audio buffer
-ALuint audioBuffers[numAudioBuffers]; //think openGL vbo 
-ALuint audioSource;
-
-enum key
-{
-    ESCAPE = 9
-};
-
-void init_audio();
+double getTime();
 
 int main(int argc, char** argv)
 {
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
 
-    core::graphics::Window customWindow(width, height, "Custom window");
-    init_audio();
+    GLuint vao[2];
+    GLuint vbo[2];
+
+    constexpr int width  = 720;
+    constexpr int height = 480;
+    bool running         = true;
+
+    core::graphics::Window window(width, height, "Custom window");
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
+    core::audio::Speaker speaker;
 
-    float topLeft[] = {
-         1.0f,  1.0f,
-        -1.0f,  1.0f,
-        -1.0f, -1.0f
-    };
-
-    float bottomRight[] = {
-        -1.0f, -1.0f,
-         1.0f,  -1.0f,
-         1.0f, 1.0f,
-    };
-
-    glGenVertexArrays(2, vao);
-    glBindVertexArray(vao[0]);
-
-    glGenBuffers(2, vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), topLeft, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(0);
-
-    glBindVertexArray(vao[1]);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), bottomRight, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(0);
-
-    while(running && customWindow.open())
+    std::vector<float> vSquare = 
     {
-        //graphics stuff
-        if(customWindow.isPressed(core::graphics::Key::Escape))
+        -1.0f, -1.0f, //bottom left
+         1.0f, -1.0f, //bottom right
+         1.0f,  1.0f, //top right
+        -1.0f,  1.0f  //top left
+    };
+
+    std::vector<unsigned> vIndices = 
+    {
+        0, 1, 2, //bottom left triangle
+        2, 3, 0  //bottom right triangle
+    };
+
+    core::graphics::MeshDescriptor descriptor;
+    descriptor.valuesPerIndex = 2;
+    descriptor.offsets = {0};
+    descriptor.elementBuffer = vIndices;
+    core::graphics::Mesh<float> mesh(vSquare, descriptor);
+    core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f));
+
+    while(running && window.open())
+    {
+        if(window.isPressed(core::graphics::Key::Escape))
         {
             running = false;
         }
 
-        customWindow.setBackgroundColor(0.0f, 0.6f, 0.8f);
-        customWindow.update();
+        if(window.isPressed(core::graphics::Key::Up))
+        {
+            square.move({0.00f, 0.01f});
+        }
+        if(window.isPressed(core::graphics::Key::Right))
+        {
+            square.move({0.01f, 0.00f});
+        }
+        if(window.isPressed(core::graphics::Key::Down))
+        {
+            square.move({0.00f, -0.01f});
+        }
+        if(window.isPressed(core::graphics::Key::Left))
+        {
+            square.move({-0.01f, 0.00f});
+        }
 
-        glBindVertexArray(vao[0]);
+        window.setBackgroundColor(0.0f, 0.6f, 0.8f);
+        window.update();
         shader.bind();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glBindVertexArray(vao[1]);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        mesh.draw();
+        square.draw();
+        window.swap();
 
-        customWindow.swap();
+        const auto audioBuffer = speaker.tone(256);
 
-        //audio stuff
-        //NOTE(adam): openAL does not need data inputted in a two channel format
-        constexpr int numChannels = 1;
-        constexpr int samplesPerSecond = 48000;
-        constexpr auto audioBufferSize = numChannels * samplesPerSecond;
-        short audioBuffer[audioBufferSize];
-
-        constexpr int toneHz = 256;
-        constexpr short toneVolume = 6000;
-        int sampleIndex = 0;
-        constexpr int wavePeriod = samplesPerSecond / toneHz;
-        constexpr int halfWavePeriod = wavePeriod / 2;
-        constexpr int bytesPerSample = sizeof(short) * 2;
-
-        static auto count = 0;
-
-        if(count++ == 0)
+        if(!speaker.playing())
         {
-            for(int i = 0; i < audioBufferSize; ++i)
-            {
-                const short sampleValue = ((sampleIndex++ / halfWavePeriod) % 2) ? toneVolume : -toneVolume;
-                audioBuffer[i] = sampleValue;
-            }
-
-            int discards = 0;
-            int lastValue = audioBuffer[audioBufferSize - 1];
-
-            for(int i = audioBufferSize - 1; audioBuffer[i] == lastValue; --i)
-            {
-                ++discards;
-            }
-
-            alBufferData(audioBuffers[0], AL_FORMAT_MONO16, audioBuffer, audioBufferSize - discards, 44000);
-            alSourcei(audioSource, AL_BUFFER, audioBuffers[0]);
+            speaker.play(audioBuffer);
         }
+    } 
 
-        ALint sourceState;
-        alGetSourcei(audioSource, AL_SOURCE_STATE, &sourceState);
-
-        if (sourceState != AL_PLAYING)
-        {
-            alSourcePlay(audioSource);
-        }
-
-    } //while(running)
-
-    alcCloseDevice(audioDevice);
 
     return 0;
-} //main
+} 
 
-void init_audio()
+double getTime()
 {
-    audioDevice = alcOpenDevice(NULL);
-
-    handmade_assert(audioDevice)
-
-    audioContext = alcCreateContext(audioDevice, NULL);
-
-    alcMakeContextCurrent(audioContext);
-
-    handmade_assert(audioContext);
-
-    alGenBuffers(numAudioBuffers, audioBuffers);
-    alGenSources(1, &audioSource);
+    timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    return now.tv_sec + now.tv_nsec / 100000000.0;
 }

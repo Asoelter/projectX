@@ -13,7 +13,11 @@ namespace core::graphics
 
 enum Key
 {
-    Escape = GLFW_KEY_ESCAPE
+    Escape  = GLFW_KEY_ESCAPE,
+    Up      = GLFW_KEY_UP,
+    Right   = GLFW_KEY_RIGHT,
+    Down    = GLFW_KEY_DOWN,
+    Left    = GLFW_KEY_LEFT
 };
 
 class Window

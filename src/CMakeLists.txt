@@ -14,24 +14,8 @@ add_subdirectory(core)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 
-find_package(X11 REQUIRED)
-include_directories(${X11_INCLUDE_DIR})
-link_directories(${X11_LIBRARIES})
-
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 add_executable (handmade "main.cpp")
-
-find_package(OpenAL REQUIRED)
-if(OPENAL_FOUND)
-    message("OPENAL FOUND")
-    include_directories(${OPENAL_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY})
-    message(${OPENAL_LIBRARY})
-else()
-    message("OPENAL NOT FOUND")
-endif(OPENAL_FOUND)
-
-target_link_libraries(handmade ${X11_LIBRARIES})
 
 include_directories(glad)
 include_directories(glad/include)

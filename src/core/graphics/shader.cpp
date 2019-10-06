@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../util/handmade_util.h"
+#include "../../util/handmade_util.h"
 
 #include <fstream>
 #include <string>
@@ -37,10 +37,11 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 
     glDeleteShader(vertexID);
     glDeleteShader(fragmentID); 
-    if(isError())
-    {
-        //handmade_assert(false);
-    }
+}
+
+Shader::~Shader()
+{
+    glDeleteProgram(programID_);
 }
 
 unsigned Shader::id() const
@@ -58,13 +59,27 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
+void Shader::setUniformVec4f(const char* name, const math::vec4<float>& value)
+{
+    auto location = glGetUniformLocation(programID_, name);
+
+    glUniform4fv(location, 1, value.data);
+}
+
+void Shader::setUniformVec2f(const char* name, const math::vec2<float>& value)
+{
+    auto location = glGetUniformLocation(programID_, name);
+
+    glUniform2fv(location, 1, value.data);
+}
+
 bool Shader::isError()
 {
     int success = 0;
     //TODO(asoelter): find out why this causes errors
     glGetShaderiv(programID_, GL_COMPILE_STATUS, &success);
 
-    //Hack to pop the error that this causes out of the stack
+    //Hack to pop the error that this causes out of the queue
     while(glGetError() != 0);
 
     return success == GL_FALSE;
@@ -92,11 +107,6 @@ unsigned Shader::compileShader(GLenum type, std::string source)
 
     glShaderSource(id, 1, &cSource, &size);
     glCompileShader(id);
-
-    if(isError())
-    {
-        //handmade_assert(false);
-    }
 
     return id;
 }

@@ -1,6 +1,6 @@
 #include "window.h"
 
-#include "../util/handmade_util.h"
+#include "../../util/handmade_util.h"
 
 namespace core::graphics
 {
