@@ -3,13 +3,13 @@
 
 cmake_minimum_required (VERSION 3.8)
 
-project ("handmade")
+project ("projectX")
 
 add_definitions(-DHANDMADE_INTERNAL)
 
 # Include sub-projects.
 add_subdirectory ("src")
-set_property(TARGET "handmade" PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 add_compile_options("-Wall; -Wextra; -pedantic")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on) #To generate compilation database for ycm

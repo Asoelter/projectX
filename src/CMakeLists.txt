@@ -15,19 +15,19 @@ add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
-add_executable (handmade "main.cpp")
+add_executable (${PROJECT_NAME} "main.cpp")
 
 include_directories(glad)
 include_directories(glad/include)
 include_directories(glfw)
 include_directories(glfw/include)
 
-target_link_libraries(handmade glad)
-target_link_libraries(handmade glfw)
+target_link_libraries(${PROJECT_NAME} glad)
+target_link_libraries(${PROJECCT_NAME} glfw)
 
-target_include_directories(handmade PUBLIC glad)
-target_include_directories(handmade PUBLIC glfw)
+target_include_directories(${PROJECT_NAME} PUBLIC glad)
+target_include_directories(${PROJECT_NAME} PUBLIC glfw)
 
 include_directories(core)
-target_link_libraries(handmade core)
-target_include_directories(handmade PUBLIC core)
+target_link_libraries(${PROJECT_NAME} core)
+target_include_directories(${PROJECT_NAME} PUBLIC core)
