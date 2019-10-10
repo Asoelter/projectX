@@ -8,7 +8,7 @@ namespace core::graphics
 
 std::unique_ptr<Shader> Square::shader_ = nullptr; 
 
-Square::Square(float dimension, const math::Point<float>& pos)
+Square::Square(float dimension, const math::Point<float>& pos, const Color& color)
     : offset_(0.0f, 0.0f)
 {
     std::vector<float> vertices = {
@@ -32,7 +32,7 @@ Square::Square(float dimension, const math::Point<float>& pos)
     }
 
     shader_->bind();
-    shader_->setUniformVec4f("inColor", math::vec4<float>(1.0f, 0.3f, 0.2f, 1.0f));
+    shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color.data));
 }
 
 void Square::draw() const

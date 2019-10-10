@@ -37,6 +37,11 @@ public:
 
     static constexpr size_t size = 4;
 
+    static vec4 fromArray(const T data[size])
+    {
+        return vec4(data[0], data[1], data[2], data[3]);
+    }
+
     union
     {
         T data[size];

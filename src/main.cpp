@@ -1,16 +1,19 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include <time.h>
+
+#ifdef __linux__
+#   include <time.h>
+#endif 
 
 #include "util/handmade_util.h"
+
+#include "core/audio/speaker.h"
 
 #include "core/graphics/shader.h"
 #include "core/graphics/window.h"
 #include "core/graphics/mesh.h"
 #include "core/graphics/square.h"
-
-#include "core/audio/speaker.h"
 
 #include "core/math/vec2.h"
 
@@ -28,7 +31,7 @@ int main(int argc, char** argv)
     constexpr int height = 480;
     bool running         = true;
 
-    core::graphics::Window window(width, height, "Custom window");
+    core::graphics::Window window(width, height, "projectX");
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
     core::audio::Speaker speaker;
 
@@ -51,7 +54,7 @@ int main(int argc, char** argv)
     descriptor.offsets = {0};
     descriptor.elementBuffer = vIndices;
     core::graphics::Mesh<float> mesh(vSquare, descriptor);
-    core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f));
+    core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f), core::graphics::blue());
 
     while(running && window.open())
     {
@@ -77,11 +80,11 @@ int main(int argc, char** argv)
             square.move({-0.01f, 0.00f});
         }
 
-        window.setBackgroundColor(0.0f, 0.6f, 0.8f);
+        window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
         shader.bind();
 
-        mesh.draw();
+        //mesh.draw();
         square.draw();
         window.swap();
 
@@ -91,6 +94,7 @@ int main(int argc, char** argv)
         {
             speaker.play(audioBuffer);
         }
+
     } 
 
 
@@ -99,7 +103,11 @@ int main(int argc, char** argv)
 
 double getTime()
 {
+#ifdef __linux__
     timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
     return now.tv_sec + now.tv_nsec / 100000000.0;
+#else
+    return 0.0;
+#endif 
 }

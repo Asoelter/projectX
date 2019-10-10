@@ -6,6 +6,9 @@ namespace core::graphics
 {
 
 Window::Window(int width, int height, const std::string& title)
+    : width_(width)
+    , height_(height)
+    , isVsync_(true)
 {
     if(!glfwInit())
     {
@@ -16,8 +19,11 @@ Window::Window(int width, int height, const std::string& title)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window_ = glfwCreateWindow(width, height, "Handmade Hero", nullptr, nullptr);
+    window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(window_);
+
+    setVsync(true);
+
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         handmade_assert("could not initialize glad" && false);
@@ -53,6 +59,22 @@ void Window::setBackgroundColor(float r, float g, float b)
 bool Window::isPressed(Key key)
 {
     return glfwGetKey(window_, key);
+}
+
+void Window::setVsync(bool enabled)
+{
+    if(enabled)
+    {
+        glfwSwapInterval(1);
+        return;
+    }
+
+    glfwSwapInterval(0);
+}
+
+bool Window::isVsync() const
+{
+    return isVsync_;
 }
 
 }

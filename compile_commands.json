@@ -21,6 +21,11 @@
 },
 {
   "directory": "/home/adam/workspace/projectX/src/core",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/usr/include/AL -I/home/adam/workspace/projectX/src/core/.. -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/core/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/core.dir/graphics/color.cpp.o -c /home/adam/workspace/projectX/src/core/graphics/color.cpp",
+  "file": "/home/adam/workspace/projectX/src/core/graphics/color.cpp"
+},
+{
+  "directory": "/home/adam/workspace/projectX/src/core",
   "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/usr/include/AL -I/home/adam/workspace/projectX/src/core/.. -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/core/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/core.dir/audio/speaker.cpp.o -c /home/adam/workspace/projectX/src/core/audio/speaker.cpp",
   "file": "/home/adam/workspace/projectX/src/core/audio/speaker.cpp"
 },

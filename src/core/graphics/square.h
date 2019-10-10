@@ -8,13 +8,16 @@
 
 #include "../graphics/mesh.h"
 #include "../graphics/shader.h"
+#include "../graphics/color.h"
 
 namespace core::graphics
 {
 class Square
 {
 public:
-    Square(float dimension, const math::Point<float>& pos);
+    Square(float dimension, 
+           const math::Point<float>& pos, 
+           const Color& color /*= Color::red()*/);
 
     void draw() const;
     void move(const math::vec2<float>& direction);
