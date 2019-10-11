@@ -51,8 +51,9 @@ int main(int argc, char** argv)
 
     core::graphics::MeshDescriptor descriptor;
     descriptor.valuesPerIndex = 2;
-    descriptor.offsets = {0};
+    descriptor.offsets.push_back(0);
     descriptor.elementBuffer = vIndices;
+
     core::graphics::Mesh<float> mesh(vSquare, descriptor);
     core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f), core::graphics::blue());
 
@@ -84,11 +85,11 @@ int main(int argc, char** argv)
         window.update();
         shader.bind();
 
-        //mesh.draw();
+        mesh.draw();
         square.draw();
         window.swap();
 
-        const auto audioBuffer = speaker.tone(256);
+        auto const audioBuffer = speaker.tone(256);
 
         if(!speaker.playing())
         {

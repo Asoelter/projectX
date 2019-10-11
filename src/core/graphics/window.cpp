@@ -12,11 +12,12 @@ Window::Window(int width, int height, const std::string& title)
 {
     if(!glfwInit())
     {
-        handmade_assert("could not initialize glfw" && false);
+        exit(-1);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -26,7 +27,7 @@ Window::Window(int width, int height, const std::string& title)
 
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        handmade_assert("could not initialize glad" && false);
+        exit(-1);
     }
 }
 

@@ -3,8 +3,6 @@
 #include <cmath>
 
 #include "../../util/handmade_util.h"
-#include <AL/al.h>
-#include <AL/alc.h>
 
 namespace core::audio
 {

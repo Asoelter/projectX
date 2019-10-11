@@ -1,8 +1,13 @@
 #ifndef SPEAKER_H
 #define SPEAKER_H
 
+#ifdef __APPLE_CC__
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#else
 #include <AL/al.h>
 #include <AL/alc.h>
+#endif
 
 #include <vector>
 
