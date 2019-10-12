@@ -16,7 +16,7 @@ public:
 
 private:
     using RowType = std::array<std::unique_ptr<core::graphics::Rectangle>, 16>;
-    using MapType = std::array<RowType ,9>;
+    using MapType = std::array<RowType, 9>;
 
     unsigned mapInfo_[9][16];
     MapType map_;
