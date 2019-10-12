@@ -38,7 +38,6 @@ public:
         : elementSize(descriptor.elementBuffer.size())
     {
         //TODO(asoelter): bullet proof this
-        std::cout << glGetString(GL_VERSION) << "\n";
         if (glGenVertexArrays == NULL) {
             std::cout << "Do not have an glGenVertexArrays pointer\n";
             exit(-1);
@@ -62,7 +61,6 @@ public:
             type = GL_DOUBLE;
         }
 
-        std::cout << "before for loop\n";
         for(int i = 0; i < descriptor.offsets.size(); ++i)
         {
             auto stride = 0;
@@ -73,7 +71,6 @@ public:
             glVertexAttribPointer(i, descriptor.valuesPerIndex, type, GL_FALSE, stride, (void*)( descriptor.offsets[i] * sizeof(T) ));
             glEnableVertexAttribArray(i);
         }
-        std::cout << "bottom of constructor\n";
     }
 
     Mesh(std::vector<T>         data, 
