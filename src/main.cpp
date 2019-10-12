@@ -77,7 +77,7 @@ int main(int argc, char** argv)
         player.draw();
         window.swap();
 
-        const auto audioBuffer = speaker.tone(256);
+        auto const audioBuffer = speaker.tone(256);
 
         if(!speaker.playing())
         {
