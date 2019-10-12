@@ -1,1 +1,9 @@
 compile_commands.json
+projectX
+*.cmake
+**/Makefile
+*.a
+glfw3.pc
+glfw_config.h
+**/CMakeFiles
+**/CMakeCache.txt
