@@ -1,5 +1,5 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
 
 #include <memory>
 
@@ -12,23 +12,28 @@
 
 namespace core::graphics
 {
-class Square
+class Rectangle
 {
 public:
-    Square(float dimension, 
-           const math::Point<float>& pos, 
-           const Color& color);
+    Rectangle(float width, float height,
+              const math::Point<float>& pos, 
+              const Color& color);
+
+    ~Rectangle();
 
     void draw() const;
     void move(const math::vec2<float>& direction);
+
 private:
     static std::unique_ptr<Shader> shader_;
+
 private:
     float dimension_;
     math::vec2<float> offset_;
     std::unique_ptr<Mesh<float>> mesh_;
     Color color_;
+
 };
 }
 
-#endif //SQUARE_H
+#endif //RECTANGLE_H

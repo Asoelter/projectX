@@ -31,6 +31,16 @@ struct Color
     constexpr static Color greyScale(float value);
 };
 
+constexpr Color white()
+{
+    return {1.0f, 1.0f, 1.0f, 1.0f};
+}
+
+constexpr Color black()
+{
+    return {0.0f, 0.0f, 0.0f, 1.0f};
+}
+
 constexpr Color red()
 {
     return {1.0f, 0.0f, 0.0f, 1.0f};
@@ -49,6 +59,11 @@ constexpr Color blue()
 constexpr Color greyScale(float value)
 {
     return {value, value, value, 1.0f};
+}
+
+constexpr Color grey()
+{
+    return greyScale(0.5);
 }
 
 }

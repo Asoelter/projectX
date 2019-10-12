@@ -11,6 +11,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 #add_subdirectory(util)
 add_subdirectory(core)
+add_subdirectory(game)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 
@@ -31,3 +32,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC glfw)
 include_directories(core)
 target_link_libraries(${PROJECT_NAME} core)
 target_include_directories(${PROJECT_NAME} PUBLIC core)
+
+include_directories(game)
+target_link_libraries(${PROJECT_NAME} game)
+target_include_directories(${PROJECT_NAME} PUBLIC game)

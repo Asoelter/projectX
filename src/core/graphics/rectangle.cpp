@@ -1,4 +1,4 @@
-#include "square.h"
+#include "rectangle.h"
 
 #include <vector>
 #include "../graphics/shader.h"
@@ -6,17 +6,19 @@
 namespace core::graphics
 {
 
-std::unique_ptr<Shader> Square::shader_ = nullptr; 
+std::unique_ptr<Shader> Rectangle::shader_ = nullptr; 
 
-Square::Square(float dimension, const math::Point<float>& pos, const Color& color)
+Rectangle::Rectangle(float width, float height,
+                     const math::Point<float>& pos, 
+                     const Color& color)
     : offset_(0.0f, 0.0f)
     , color_(color)
 {
     std::vector<float> vertices = {
-        pos.x - (dimension / 2.0f), pos.y - (dimension / 2.0f), //bottom left
-        pos.x + (dimension / 2.0f), pos.y - (dimension / 2.0f), //bottom right
-        pos.x + (dimension / 2.0f), pos.y + (dimension / 2.0f), //top right
-        pos.x - (dimension / 2.0f), pos.y + (dimension / 2.0f), //top left
+        pos.x - (width/ 2.0f), pos.y - (height/ 2.0f), //bottom left
+        pos.x + (width/ 2.0f), pos.y - (height / 2.0f), //bottom right
+        pos.x + (width/ 2.0f), pos.y + (height / 2.0f), //top right
+        pos.x - (width/ 2.0f), pos.y + (height / 2.0f), //top left
     };
 
     std::vector<unsigned> indices = {
@@ -36,7 +38,9 @@ Square::Square(float dimension, const math::Point<float>& pos, const Color& colo
     shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color.data));
 }
 
-void Square::draw() const
+Rectangle::~Rectangle() = default;
+
+void Rectangle::draw() const
 {
     shader_->bind();
     shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color_.data));
@@ -44,10 +48,9 @@ void Square::draw() const
     mesh_->draw();
 }
 
-void Square::move(const math::vec2<float>& direction)
+void Rectangle::move(const math::vec2<float>& direction)
 {
     offset_.x += direction.x;
     offset_.y += direction.y;
 }
-
 }

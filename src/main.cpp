@@ -17,6 +17,8 @@
 
 #include "core/math/vec2.h"
 
+#include "game/tile_map.h"
+
 double getTime();
 
 int main(int argc, char** argv)
@@ -56,6 +58,20 @@ int main(int argc, char** argv)
     core::graphics::Mesh<float> mesh(vSquare, descriptor);
     core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f), core::graphics::blue());
 
+    unsigned mapInfo[9][16] = {
+        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
+        1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1
+    };
+
+    TileMap tilemap(mapInfo);
+
     while(running && window.open())
     {
         if(window.isPressed(core::graphics::Key::Escape))
@@ -85,6 +101,7 @@ int main(int argc, char** argv)
         shader.bind();
 
         //mesh.draw();
+        tilemap.draw();
         square.draw();
         window.swap();
 
