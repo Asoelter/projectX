@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include <time.h>
+//#include <time.h>
 
 #include "util/handmade_util.h"
 
@@ -14,15 +14,12 @@
 
 #include "core/math/vec2.h"
 
-double getTime();
+//double getTime();
 
 int main(int argc, char** argv)
 {
     HANDMADE_UNUSED(argc); 
     HANDMADE_UNUSED(argv);
-
-    GLuint vao[2];
-    GLuint vbo[2];
 
     constexpr int width  = 720;
     constexpr int height = 480;
@@ -30,7 +27,7 @@ int main(int argc, char** argv)
 
     core::graphics::Window window(width, height, "Custom window");
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
-    core::audio::Speaker speaker;
+    core::audio::Speaker   speaker;
 
     std::vector<float> vSquare = 
     {
@@ -55,7 +52,7 @@ int main(int argc, char** argv)
 
     while(running && window.open())
     {
-        if(window.isPressed(core::graphics::Key::Escape))
+		if(window.isPressed(core::graphics::Key::Escape))
         {
             running = false;
         }
@@ -85,21 +82,22 @@ int main(int argc, char** argv)
         square.draw();
         window.swap();
 
+#ifndef WIN32
         const auto audioBuffer = speaker.tone(256);
 
         if(!speaker.playing())
         {
             speaker.play(audioBuffer);
         }
+#endif 
     } 
-
 
     return 0;
 } 
 
-double getTime()
-{
-    timespec now;
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    return now.tv_sec + now.tv_nsec / 100000000.0;
-}
+//double getTime()
+//{
+    //timespec now;
+    //clock_gettime(CLOCK_MONOTONIC, &now);
+    //return now.tv_sec + now.tv_nsec / 100000000.0;
+//}

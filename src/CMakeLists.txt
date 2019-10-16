@@ -14,7 +14,12 @@ add_subdirectory(core)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 
+if(WIN32)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../../../)
+else()
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
+endif(WIN32)
+
 add_executable (${PROJECT_NAME} "main.cpp")
 
 include_directories(glad)

@@ -1,0 +1,6 @@
+.vs
+projectX.*
+CMakeFiles
+out
+.gitignore.swp
+
