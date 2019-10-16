@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/adam/workspace/projectX/src",
-  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/home/adam/workspace/projectX/src/glad -I/home/adam/workspace/projectX/src/glad/include -I/home/adam/workspace/projectX/src/glfw -I/home/adam/workspace/projectX/src/glfw/include -I/home/adam/workspace/projectX/src/core -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/projectX.dir/main.cpp.o -c /home/adam/workspace/projectX/src/main.cpp",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/home/adam/workspace/projectX/src/glad -I/home/adam/workspace/projectX/src/glad/include -I/home/adam/workspace/projectX/src/glfw -I/home/adam/workspace/projectX/src/glfw/include -I/home/adam/workspace/projectX/src/core -I/home/adam/workspace/projectX/src/game -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/projectX.dir/main.cpp.o -c /home/adam/workspace/projectX/src/main.cpp",
   "file": "/home/adam/workspace/projectX/src/main.cpp"
 },
 {
@@ -21,8 +21,23 @@
 },
 {
   "directory": "/home/adam/workspace/projectX/src/core",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/usr/include/AL -I/home/adam/workspace/projectX/src/core/.. -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/core/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/core.dir/graphics/rectangle.cpp.o -c /home/adam/workspace/projectX/src/core/graphics/rectangle.cpp",
+  "file": "/home/adam/workspace/projectX/src/core/graphics/rectangle.cpp"
+},
+{
+  "directory": "/home/adam/workspace/projectX/src/core",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/usr/include/AL -I/home/adam/workspace/projectX/src/core/.. -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/core/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/core.dir/graphics/color.cpp.o -c /home/adam/workspace/projectX/src/core/graphics/color.cpp",
+  "file": "/home/adam/workspace/projectX/src/core/graphics/color.cpp"
+},
+{
+  "directory": "/home/adam/workspace/projectX/src/core",
   "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/usr/include/AL -I/home/adam/workspace/projectX/src/core/.. -I/home/adam/workspace/projectX/src/core/../vendor/glad -I/home/adam/workspace/projectX/src/core/../vendor/glad/include -I/home/adam/workspace/projectX/src/core/../vendor/glfw -I/home/adam/workspace/projectX/src/core/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/core.dir/audio/speaker.cpp.o -c /home/adam/workspace/projectX/src/core/audio/speaker.cpp",
   "file": "/home/adam/workspace/projectX/src/core/audio/speaker.cpp"
+},
+{
+  "directory": "/home/adam/workspace/projectX/src/game",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/home/adam/workspace/projectX/src/game/../core -I/home/adam/workspace/projectX/src/game/.. -I/home/adam/workspace/projectX/src/game/../vendor/glad -I/home/adam/workspace/projectX/src/game/../vendor/glad/include -I/home/adam/workspace/projectX/src/game/../vendor/glfw -I/home/adam/workspace/projectX/src/game/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/game.dir/tile_map.cpp.o -c /home/adam/workspace/projectX/src/game/tile_map.cpp",
+  "file": "/home/adam/workspace/projectX/src/game/tile_map.cpp"
 },
 {
   "directory": "/home/adam/workspace/projectX/src/vendor/glad",

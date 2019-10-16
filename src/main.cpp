@@ -1,20 +1,20 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-//#include <time.h>
+#include <chrono>
 
 #include "util/handmade_util.h"
+
+#include "core/audio/speaker.h"
 
 #include "core/graphics/shader.h"
 #include "core/graphics/window.h"
 #include "core/graphics/mesh.h"
 #include "core/graphics/square.h"
 
-#include "core/audio/speaker.h"
-
 #include "core/math/vec2.h"
 
-//double getTime();
+#include "game/tile_map.h"
 
 int main(int argc, char** argv)
 {
@@ -25,65 +25,64 @@ int main(int argc, char** argv)
     constexpr int height = 480;
     bool running         = true;
 
-    core::graphics::Window window(width, height, "Custom window");
+    core::graphics::Window window(width, height, "projectX");
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
     core::audio::Speaker   speaker;
 
-    std::vector<float> vSquare = 
-    {
-        -1.0f, -1.0f, //bottom left
-         1.0f, -1.0f, //bottom right
-         1.0f,  1.0f, //top right
-        -1.0f,  1.0f  //top left
+    Tile player({0.0f, 0.0f}, core::graphics::blue());
+
+    unsigned mapInfo[9][16] = {
+        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
+        1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1
     };
 
-    std::vector<unsigned> vIndices = 
-    {
-        0, 1, 2, //bottom left triangle
-        2, 3, 0  //bottom right triangle
-    };
-
-    core::graphics::MeshDescriptor descriptor;
-    descriptor.valuesPerIndex = 2;
-    descriptor.offsets = {0};
-    descriptor.elementBuffer = vIndices;
-    core::graphics::Mesh<float> mesh(vSquare, descriptor);
-    core::graphics::Square square(0.5, core::math::Point<float>(0.0f, 0.0f));
+    TileMap tilemap(mapInfo);
+    auto frameTime = 0.0f;
+    const auto screenSpacePerSecond = 0.7f;
 
     while(running && window.open())
     {
-		if(window.isPressed(core::graphics::Key::Escape))
+        const auto begin = std::chrono::system_clock::now();
+
+        if(window.isPressed(core::graphics::Key::Escape))
         {
             running = false;
         }
 
         if(window.isPressed(core::graphics::Key::Up))
         {
-            square.move({0.00f, 0.01f});
+            player.move({0.00f, frameTime * screenSpacePerSecond});
         }
         if(window.isPressed(core::graphics::Key::Right))
         {
-            square.move({0.01f, 0.00f});
+            player.move({frameTime * screenSpacePerSecond, 0.00f});
         }
         if(window.isPressed(core::graphics::Key::Down))
         {
-            square.move({0.00f, -0.01f});
+            player.move({0.00f, frameTime * -screenSpacePerSecond});
         }
         if(window.isPressed(core::graphics::Key::Left))
         {
-            square.move({-0.01f, 0.00f});
+            player.move({frameTime * -screenSpacePerSecond, 0.00f});
         }
 
-        window.setBackgroundColor(0.0f, 0.6f, 0.8f);
+        window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
         shader.bind();
 
-        mesh.draw();
-        square.draw();
+        tilemap.draw();
+        player.draw();
         window.swap();
 
 #ifndef WIN32
-        const auto audioBuffer = speaker.tone(256);
+        auto const audioBuffer = speaker.tone(256);
 
         if(!speaker.playing())
         {
@@ -101,3 +100,13 @@ int main(int argc, char** argv)
     //clock_gettime(CLOCK_MONOTONIC, &now);
     //return now.tv_sec + now.tv_nsec / 100000000.0;
 //}
+=======
+
+        const auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> delta = end - begin;
+        frameTime = delta.count();
+    } 
+
+    return 0;
+} 
+>>>>>>> 32cae73290f278bdb301e685adae8c3a31c5f220

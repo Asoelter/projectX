@@ -3,6 +3,7 @@
 
 #include <type_traits>
 #include <vector>
+#include <iostream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +15,12 @@ namespace core::graphics
 
 struct MeshDescriptor
 {
+    MeshDescriptor()
+        : valuesPerIndex(0)
+        , offsets()
+        , elementBuffer()
+    {}
+
     int                   valuesPerIndex;
     std::vector<unsigned> offsets;
     std::vector<unsigned> elementBuffer;
@@ -27,10 +34,14 @@ template
 class Mesh
 {
 public:
-    Mesh(std::vector<T> data, const MeshDescriptor& descriptor)
+    Mesh(std::vector<T> const & data, const MeshDescriptor& descriptor)
         : elementSize(descriptor.elementBuffer.size())
     {
         //TODO(asoelter): bullet proof this
+        if (glGenVertexArrays == NULL) {
+            std::cout << "Do not have an glGenVertexArrays pointer\n";
+            exit(-1);
+        }
         glGenVertexArrays(1, &vao_);
         glGenBuffers(1, &vbo_);
         glGenBuffers(1, &ebo_);
@@ -106,10 +117,10 @@ public:
     }
 
 private:
-    GLuint vao_;
-    GLuint vbo_;
-    GLuint ebo_;
-    int elementSize;
+    GLuint vao_ = 0;
+    GLuint vbo_ = 0;
+    GLuint ebo_ = 0;
+    int elementSize = 0;
 };
 }
 

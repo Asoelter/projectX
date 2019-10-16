@@ -31,10 +31,14 @@ public:
     void swap() const;
     void setBackgroundColor(float r, float g, float b);
     bool isPressed(Key key);
+
+    void setVsync(bool enabled);
+    bool isVsync() const;
 private:
     GLFWwindow* window_;
     int width_;
     int height_;
+    bool isVsync_;
 };
 
 }
