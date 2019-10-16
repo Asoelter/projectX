@@ -89,18 +89,6 @@ int main(int argc, char** argv)
             speaker.play(audioBuffer);
         }
 #endif 
-    } 
-
-    return 0;
-} 
-
-//double getTime()
-//{
-    //timespec now;
-    //clock_gettime(CLOCK_MONOTONIC, &now);
-    //return now.tv_sec + now.tv_nsec / 100000000.0;
-//}
-=======
 
         const auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> delta = end - begin;
@@ -109,4 +97,4 @@ int main(int argc, char** argv)
 
     return 0;
 } 
->>>>>>> 32cae73290f278bdb301e685adae8c3a31c5f220
+
