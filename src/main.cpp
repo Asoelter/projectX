@@ -1,5 +1,8 @@
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 #include <chrono>
+
 #include "util/handmade_util.h"
 
 #include "core/audio/speaker.h"
@@ -24,7 +27,7 @@ int main(int argc, char** argv)
 
     core::graphics::Window window(width, height, "projectX");
     core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
-    core::audio::Speaker speaker;
+    core::audio::Speaker   speaker;
 
     Tile player({0.0f, 0.0f}, core::graphics::blue());
 
@@ -47,6 +50,7 @@ int main(int argc, char** argv)
     while(running && window.open())
     {
         const auto begin = std::chrono::system_clock::now();
+
         if(window.isPressed(core::graphics::Key::Escape))
         {
             running = false;
@@ -91,3 +95,4 @@ int main(int argc, char** argv)
 
     return 0;
 } 
+

@@ -8,6 +8,7 @@ add_library (core graphics/shader.h     graphics/shader.cpp
                   graphics/color.h      graphics/color.cpp
                   audio/speaker.h       audio/speaker.cpp)
 
+if(NOT WIN32)
 find_package(OpenAL REQUIRED)
 if(OPENAL_FOUND)
     message("OPENAL FOUND")
@@ -17,6 +18,7 @@ if(OPENAL_FOUND)
 else()
     message("OPENAL NOT FOUND")
 endif(OPENAL_FOUND)
+endif(NOT WIN32)
 
 include_directories(../)
 include_directories(../vendor/glad)

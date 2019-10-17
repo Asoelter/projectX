@@ -1,12 +1,15 @@
 #ifndef SPEAKER_H
 #define SPEAKER_H
 
+#ifdef __linux__
+#include <AL/al.h>
+#include <AL/alc.h>
+#endif 
 #ifdef __APPLE_CC__
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
 #else
-#include <AL/al.h>
-#include <AL/alc.h>
+//TODO(asoelter): find audio library for windows
 #endif
 
 #include <vector>
@@ -28,10 +31,12 @@ public:
 private:
     static constexpr int bufferCount_ = 2;
 
+#ifndef WIN32
     ALCdevice* device_;
     ALCcontext* context_;
     ALuint buffers_[bufferCount_]; //think openGL vbo 
     ALuint source_;
+#endif 
 };
 
 }
