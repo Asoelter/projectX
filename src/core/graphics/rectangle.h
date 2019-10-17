@@ -23,6 +23,8 @@ public:
 
     void draw() const;
     void move(const math::vec2<float>& direction);
+    void setColor(const Color& color);
+    math::Point<float> position() const;
 
 private:
     static std::unique_ptr<Shader> shader_;
@@ -30,6 +32,7 @@ private:
 private:
     float dimension_;
     math::vec2<float> offset_;
+    const math::Point<float> initialPosition_;
     std::unique_ptr<Mesh<float>> mesh_;
     Color color_;
 

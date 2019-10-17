@@ -29,15 +29,15 @@ int main(int argc, char** argv)
     Tile player({0.0f, 0.0f}, core::graphics::blue());
 
     unsigned mapInfo[9][16] = {
-        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-        1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
-        1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1
+        {1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
+        {1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1,},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,},
+        {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,},
+        {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1,},
+        {1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1,},
+        {1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
 
     TileMap tilemap(mapInfo);
@@ -52,21 +52,28 @@ int main(int argc, char** argv)
             running = false;
         }
 
+        auto direction = core::math::vec2<float>(0.0f, 0.0f);
+
         if(window.isPressed(core::graphics::Key::Up))
         {
-            player.move({0.00f, frameTime * screenSpacePerSecond});
+            direction.y += frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Right))
         {
-            player.move({frameTime * screenSpacePerSecond, 0.00f});
+            direction.x += frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Down))
         {
-            player.move({0.00f, frameTime * -screenSpacePerSecond});
+            direction.y -= frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Left))
         {
-            player.move({frameTime * -screenSpacePerSecond, 0.00f});
+            direction.x -= frameTime * screenSpacePerSecond;
+        }
+
+        if(tilemap.isValidPosition(player.position() + direction))
+        {
+            player.move(direction);
         }
 
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
@@ -76,13 +83,6 @@ int main(int argc, char** argv)
         tilemap.draw();
         player.draw();
         window.swap();
-
-        auto const audioBuffer = speaker.tone(256);
-
-        if(!speaker.playing())
-        {
-            speaker.play(audioBuffer);
-        }
 
         const auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> delta = end - begin;
