@@ -15,6 +15,7 @@
 #include "core/math/vec2.h"
 
 #include "game/tile_map.h"
+#include "game/world.h"
 
 int main(int argc, char** argv)
 {
@@ -31,19 +32,7 @@ int main(int argc, char** argv)
 
     Tile player({0.0f, 0.0f}, core::graphics::blue());
 
-    unsigned mapInfo[9][16] = {
-        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-        1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
-        1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1
-    };
-
-    TileMap tilemap(mapInfo);
+	World world;
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.7f;
 
@@ -66,18 +55,18 @@ int main(int argc, char** argv)
         }
         if(window.isPressed(core::graphics::Key::Down))
         {
-            player.move({0.00f, frameTime * -screenSpacePerSecond});
+            player.move({0.00f, frameTime * -1.0f * screenSpacePerSecond});
         }
         if(window.isPressed(core::graphics::Key::Left))
         {
-            player.move({frameTime * -screenSpacePerSecond, 0.00f});
+            player.move({frameTime * -1.0f * screenSpacePerSecond, 0.00f});
         }
 
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
         shader.bind();
 
-        tilemap.draw();
+		world.draw();
         player.draw();
         window.swap();
 

@@ -3,7 +3,8 @@ project(game)
 
 include_directories(../core)
 
-add_library (game tile_map.h tile_map.cpp)
+add_library (game tile_map.h tile_map.cpp
+				  world.h    world.cpp)
 
 include_directories(../)
 include_directories(../vendor/glad)
