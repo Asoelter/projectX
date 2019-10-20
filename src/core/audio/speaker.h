@@ -8,8 +8,6 @@
 #ifdef __APPLE_CC__
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
-#else
-//TODO(asoelter): find audio library for windows
 #endif
 
 #include <vector>
@@ -31,7 +29,7 @@ public:
 private:
     static constexpr int bufferCount_ = 2;
 
-#ifndef WIN32
+#ifndef _WIN32
     ALCdevice* device_;
     ALCcontext* context_;
     ALuint buffers_[bufferCount_]; //think openGL vbo 

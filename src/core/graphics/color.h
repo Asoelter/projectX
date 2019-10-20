@@ -15,6 +15,15 @@ struct Color
 
     }
 
+    constexpr Color(const Color& other)
+        : r(other.r)
+        , g(other.g)
+        , b(other.b)
+        , a(other.a)
+    {
+        
+    }
+
     union
     {
         struct

@@ -19,7 +19,7 @@
                                                     \
             if(response == 'n')                     \
             {                                       \
-                abort();                            \
+                exit(-1);                           \
             }                                       \
         }                                           \
         else{}

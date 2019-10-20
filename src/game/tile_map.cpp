@@ -4,6 +4,7 @@
 
 #include "graphics/color.h"
 
+//-----------------------------------------------------Tile----------------------------------------------------
 Tile::Tile(const core::math::Point<float>& pos, const core::graphics::Color& color)
     : tile_(width, height, pos, color)
 {
@@ -20,14 +21,26 @@ void Tile::move(const core::math::vec2<float>& direction)
     tile_.move(direction);
 }
 
+core::math::Point<float> Tile::position() const
+{
+    return tile_.position();
+}
+
+void Tile::setColor(const core::graphics::Color& color) 
+{
+    tile_.setColor(color);
+}
+
+//-----------------------------------------------------Tile Map------------------------------------------------
+
 TileMap::TileMap(unsigned mapInfo[9][16])
 {
     auto xPos = -1.0f + (Tile::width / 2.0f);
     auto yPos = -1.0f + (Tile::height / 2.0f);
 
-    for(int i = 0; i < 9; ++i)
+    for(int i = 0; i < height; ++i)
     {
-        for(int j = 0; j < 16; ++j)
+        for(int j = 0; j < width; ++j)
         {
             const auto position = core::math::Point<float>(xPos, yPos);
 
@@ -60,4 +73,17 @@ void TileMap::draw() const
             tile->draw();
         }
     }
+}
+
+bool TileMap::isValidPosition(const core::math::Point<float>& position)
+{
+    const auto xIndex = (int)((position.x + 1.0f)/ Tile::width);
+    const auto yIndex = (int)((position.y + 1.0f) / Tile::height);
+
+    if(xIndex < width && yIndex < height)
+    {
+        return mapInfo_[yIndex][xIndex] == 0;
+    }
+
+    return false;
 }

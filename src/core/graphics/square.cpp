@@ -21,4 +21,9 @@ void Square::move(const math::vec2<float>& direction)
     rectangle_.move(direction);
 }
 
+void Square::setColor(const Color& color)
+{
+    rectangle_.setColor(color);
+}
+
 }

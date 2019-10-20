@@ -12,6 +12,7 @@ Rectangle::Rectangle(float width, float height,
                      const math::Point<float>& pos, 
                      const Color& color)
     : offset_(0.0f, 0.0f)
+    , initialPosition_(pos)
     , color_(color)
 {
     std::vector<float> vertices = {
@@ -52,5 +53,15 @@ void Rectangle::move(const math::vec2<float>& direction)
 {
     offset_.x += direction.x;
     offset_.y += direction.y;
+}
+
+void Rectangle::setColor(const Color& color) 
+{
+    color_ = color;
+}
+
+math::Point<float> Rectangle::position() const
+{
+    return initialPosition_ + offset_;
 }
 }

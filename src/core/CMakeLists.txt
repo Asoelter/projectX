@@ -11,7 +11,6 @@ add_library (core graphics/shader.h     graphics/shader.cpp
 if(NOT WIN32)
 find_package(OpenAL REQUIRED)
 if(OPENAL_FOUND)
-    message("OPENAL FOUND")
     include_directories(${OPENAL_INCLUDE_DIR})
     target_link_libraries(core ${OPENAL_LIBRARY})
     message(${OPENAL_LIBRARY})

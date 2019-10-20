@@ -10,6 +10,7 @@ public:
 	World();
 
 	void draw() const;
+	TileMap* activeMap() const;
 private:
 	TileMap* activeMap_;
 	std::vector<std::vector<TileMap>> tileMaps_;

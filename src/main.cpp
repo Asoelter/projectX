@@ -33,6 +33,7 @@ int main(int argc, char** argv)
     Tile player({0.0f, 0.0f}, core::graphics::blue());
 
 	World world;
+	auto tilemap = world.activeMap();
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.7f;
 
@@ -45,21 +46,28 @@ int main(int argc, char** argv)
             running = false;
         }
 
+        auto direction = core::math::vec2<float>(0.0f, 0.0f);
+
         if(window.isPressed(core::graphics::Key::Up))
         {
-            player.move({0.00f, frameTime * screenSpacePerSecond});
+            direction.y += frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Right))
         {
-            player.move({frameTime * screenSpacePerSecond, 0.00f});
+            direction.x += frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Down))
         {
-            player.move({0.00f, frameTime * -1.0f * screenSpacePerSecond});
+            direction.y -= frameTime * screenSpacePerSecond;
         }
         if(window.isPressed(core::graphics::Key::Left))
         {
-            player.move({frameTime * -1.0f * screenSpacePerSecond, 0.00f});
+            direction.x -= frameTime * screenSpacePerSecond;
+        }
+
+        if(tilemap->isValidPosition(player.position() + direction))
+        {
+            player.move(direction);
         }
 
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
@@ -69,15 +77,6 @@ int main(int argc, char** argv)
 		world.draw();
         player.draw();
         window.swap();
-
-#ifndef WIN32
-        auto const audioBuffer = speaker.tone(256);
-
-        if(!speaker.playing())
-        {
-            speaker.play(audioBuffer);
-        }
-#endif 
 
         const auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> delta = end - begin;

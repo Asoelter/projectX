@@ -13,6 +13,8 @@ public:
 
     void draw() const;
     void move(const core::math::vec2<float>& direction);
+    core::math::Point<float> position() const;
+    void setColor(const core::graphics::Color& color);
 
     static constexpr auto width  = 2.0f / 16.0f;
     static constexpr auto height = 2.0f / 9.0f;
@@ -26,6 +28,8 @@ public:
     TileMap(unsigned mapInfo[9][16]);
 
     void draw() const;
+
+    bool isValidPosition(const core::math::Point<float>& position);
 
     static constexpr auto width = 16;
     static constexpr auto height = 9;

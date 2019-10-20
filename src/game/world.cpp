@@ -24,3 +24,9 @@ void World::draw() const
 {
 	activeMap_->draw();
 }
+
+TileMap* World::activeMap() const
+{
+	return activeMap_;
+}
+

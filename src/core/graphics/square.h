@@ -16,6 +16,7 @@ public:
 
     void draw() const;
     void move(const math::vec2<float>& direction);
+    void setColor(const Color& color);
 private:
     Rectangle rectangle_;
 };
