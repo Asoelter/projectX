@@ -4,6 +4,16 @@
 
 #include "graphics/color.h"
 
+std::string toString(TileState state)
+{
+    switch(state)
+    {
+        case TileState::UNOCCUPIED:          return "UNOCCUPIED";
+        case TileState::OCCUPIED:            return "OCCUPIED";
+        case TileState::OFFSCREEN_UNOCCUPIED: return "OFFSCREEN_UNOCCUPIED";
+    }
+}
+
 //-----------------------------------------------------Tile----------------------------------------------------
 Tile::Tile(const core::math::Point<float>& pos, const core::graphics::Color& color)
     : tile_(width, height, pos, color)
@@ -75,9 +85,9 @@ void TileMap::draw() const
     }
 }
 
-bool TileMap::isValidPosition(const core::math::Point<float>& position)
+bool TileMap::isValidPosition(const core::math::Point<float>& position) const
 {
-    const auto xIndex = (int)((position.x + 1.0f)/ Tile::width);
+    const auto xIndex = (int)((position.x + 1.0f) / Tile::width);
     const auto yIndex = (int)((position.y + 1.0f) / Tile::height);
 
     if(xIndex < width && yIndex < height)
@@ -87,3 +97,19 @@ bool TileMap::isValidPosition(const core::math::Point<float>& position)
 
     return false;
 }
+
+bool TileMap::isValidPosition(int x, int y) const
+{
+    if(x < width && y < height)
+    {
+        return mapInfo_[y][x] == 0;
+    }
+
+    return false;
+}
+
+int TileMap::tileValueAt(int x, int y) const
+{
+    return mapInfo_[y][x];
+}
+

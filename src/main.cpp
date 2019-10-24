@@ -27,7 +27,6 @@ int main(int argc, char** argv)
     bool running         = true;
 
     core::graphics::Window window(width, height, "projectX");
-    core::graphics::Shader shader("src/res/shaders/grad.vs", "src/res/shaders/grad.fs");
     core::audio::Speaker   speaker;
 
     Tile player({0.0f, 0.0f}, core::graphics::blue());
@@ -65,14 +64,15 @@ int main(int argc, char** argv)
             direction.x -= frameTime * screenSpacePerSecond;
         }
 
-        if(tilemap->isValidPosition(player.position() + direction))
+        if(world.tileStateAt(player.position() + direction) != TileState::OCCUPIED)
         {
             player.move(direction);
         }
 
+        std::cout << toString(world.tileStateAt(player.position() + direction)) << std::endl;
+
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
-        shader.bind();
 
 		world.draw();
         player.draw();

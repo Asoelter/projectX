@@ -40,6 +40,11 @@
   "file": "/home/adam/workspace/projectX/src/game/tile_map.cpp"
 },
 {
+  "directory": "/home/adam/workspace/projectX/src/game",
+  "command": "/usr/bin/c++  -DHANDMADE_INTERNAL -I/home/adam/workspace/projectX/src/game/../core -I/home/adam/workspace/projectX/src/game/.. -I/home/adam/workspace/projectX/src/game/../vendor/glad -I/home/adam/workspace/projectX/src/game/../vendor/glad/include -I/home/adam/workspace/projectX/src/game/../vendor/glfw -I/home/adam/workspace/projectX/src/game/../vendor/glfw/include -I/home/adam/workspace/projectX/src/vendor/glad/include -I/home/adam/workspace/projectX/src/vendor/glfw/include    -std=gnu++1z -o CMakeFiles/game.dir/world.cpp.o -c /home/adam/workspace/projectX/src/game/world.cpp",
+  "file": "/home/adam/workspace/projectX/src/game/world.cpp"
+},
+{
   "directory": "/home/adam/workspace/projectX/src/vendor/glad",
   "command": "/usr/bin/cc -DHANDMADE_INTERNAL -I/home/adam/workspace/projectX/src/vendor/glad/include    -o CMakeFiles/glad.dir/src/glad.c.o   -c /home/adam/workspace/projectX/src/vendor/glad/src/glad.c",
   "file": "/home/adam/workspace/projectX/src/vendor/glad/src/glad.c"

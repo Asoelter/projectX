@@ -6,6 +6,15 @@
 
 #include "graphics/rectangle.h"
 
+enum class TileState
+{
+    UNOCCUPIED,
+    OCCUPIED,
+    OFFSCREEN_UNOCCUPIED
+};
+
+std::string toString(TileState state);
+
 class Tile
 {
 public:
@@ -29,7 +38,9 @@ public:
 
     void draw() const;
 
-    bool isValidPosition(const core::math::Point<float>& position);
+    bool isValidPosition(const core::math::Point<float>& position) const;
+    bool isValidPosition(int x, int y) const;
+    int tileValueAt(int x, int y) const;
 
     static constexpr auto width = 16;
     static constexpr auto height = 9;
