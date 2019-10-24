@@ -8,8 +8,8 @@
 
 #include "../../util/handmade_util.h"
 #ifndef _WIN32
-#	include <AL/al.h>
-#	include <AL/alc.h>
+#	include <OpenAl/al.h>
+#	include <OpenAl/alc.h>
 #endif
 
 namespace core::audio
