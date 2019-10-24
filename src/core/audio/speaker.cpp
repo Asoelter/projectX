@@ -7,10 +7,6 @@
 #include <cmath>
 
 #include "../../util/handmade_util.h"
-#ifndef _WIN32
-#	include <AL/al.h>
-#	include <AL/alc.h>
-#endif
 
 namespace core::audio
 {
