@@ -51,8 +51,16 @@ void Rectangle::draw() const
 
 void Rectangle::move(const math::vec2<float>& direction)
 {
+    //TODO(asoelter): do moves by keeping track of positions instead of offsets
     offset_.x += direction.x;
     offset_.y += direction.y;
+}
+
+void Rectangle::moveTo(const math::Point<float>& position)
+{
+    //TODO(asoelter): do moves by keeping track of positions instead of offsets
+    offset_.x = position.x - initialPosition_.x;
+    offset_.y = position.y - initialPosition_.y;
 }
 
 void Rectangle::setColor(const Color& color) 

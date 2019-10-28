@@ -7,9 +7,10 @@
 
 #include "core/audio/speaker.h"
 
-#include "core/graphics/shader.h"
 #include "core/graphics/window.h"
 #include "core/graphics/mesh.h"
+#include "core/graphics/rectangle.h"
+#include "core/graphics/shader.h"
 #include "core/graphics/square.h"
 
 #include "core/math/vec2.h"
@@ -29,7 +30,7 @@ int main(int argc, char** argv)
     core::graphics::Window window(width, height, "projectX");
     core::audio::Speaker   speaker;
 
-    Tile player({0.0f, 0.0f}, core::graphics::blue());
+    core::graphics::Rectangle player(Tile::width, Tile::height, {0.0f, 0.0f}, core::graphics::blue());
 
 	World world;
 	auto tilemap = world.activeMap();
@@ -69,7 +70,26 @@ int main(int argc, char** argv)
             player.move(direction);
         }
 
-        std::cout << toString(world.tileStateAt(player.position() + direction)) << std::endl;
+        if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_UP)
+        {
+            world.scrollUp();
+            player.moveTo({player.position().x, -1});
+        }
+        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_RIGHT)
+        {
+            world.scrollRight();
+            player.moveTo({-1, player.position().y});
+        }
+        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_DOWN)
+        {
+            world.scrollDown();
+            player.moveTo({player.position().x, 1});
+        }
+        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_LEFT)
+        {
+            world.scrollLeft();
+            player.moveTo({1, player.position().y});
+        }
 
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();

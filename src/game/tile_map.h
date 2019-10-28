@@ -10,7 +10,10 @@ enum class TileState
 {
     UNOCCUPIED,
     OCCUPIED,
-    OFFSCREEN_UNOCCUPIED
+    OFFSCREEN_UP,
+    OFFSCREEN_RIGHT,
+    OFFSCREEN_DOWN,
+    OFFSCREEN_LEFT
 };
 
 std::string toString(TileState state);
@@ -18,17 +21,24 @@ std::string toString(TileState state);
 class Tile
 {
 public:
-    Tile(const core::math::Point<float>& pos, const core::graphics::Color& color);
+    Tile(const core::math::Point<float>& pos, TileState state);
 
     void draw() const;
     void move(const core::math::vec2<float>& direction);
+
+    [[nodiscard]] 
     core::math::Point<float> position() const;
+
+    [[nodiscard]]
+    TileState state() const;
+
     void setColor(const core::graphics::Color& color);
 
     static constexpr auto width  = 2.0f / 16.0f;
     static constexpr auto height = 2.0f / 9.0f;
 private:
     core::graphics::Rectangle tile_;
+    TileState state_;
 };
 
 class TileMap
@@ -38,9 +48,11 @@ public:
 
     void draw() const;
 
-    bool isValidPosition(const core::math::Point<float>& position) const;
-    bool isValidPosition(int x, int y) const;
-    int tileValueAt(int x, int y) const;
+    [[nodiscard]] 
+    TileState tileStateAt(const core::math::Point<float>& position) const;
+
+    [[nodiscard]] 
+    TileState tileStateAt(int x, int y) const;
 
     static constexpr auto width = 16;
     static constexpr auto height = 9;

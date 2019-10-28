@@ -23,6 +23,7 @@ public:
 
     void draw() const;
     void move(const math::vec2<float>& direction);
+    void moveTo(const math::Point<float>& position);
     void setColor(const Color& color);
     math::Point<float> position() const;
 
