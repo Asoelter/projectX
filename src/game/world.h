@@ -3,7 +3,10 @@
 
 #include <vector>
 #include "tile_map.h"
+#include "../core/math/point.h"
+#include "../core/math/vec2.h"
 
+//TODO(asoelter): get rid of world states
 enum class WorldState
 {
     ONSCREEN,
@@ -16,7 +19,11 @@ enum class WorldState
 
 [[nodiscard]]
 std::string toString(const WorldState& state);
+
+[[nodiscard]]
 WorldState translateTileState(const TileState& state);
+
+class WorldPosition;
 
 class World
 {
@@ -25,16 +32,13 @@ public:
 
 	void draw() const;
 
-    void scrollUp();
-    void scrollRight();
-    void scrollDown();
-    void scrollLeft();
+	void drawAt(const WorldPosition& position) const;
 
 	[[nodiscard]] 
     TileMap* activeMap() const;
 
     [[nodiscard]] 
-    TileState tileStateAt(const core::math::Point<float>& position);
+    TileState tileStateAt(const WorldPosition& position);
 
     [[nodiscard]] 
     WorldState worldStateAt(const core::math::Point<float>& position);
@@ -51,5 +55,6 @@ private:
     int activeMapX_;
     int activeMapY_;
 };
+
 
 #endif //WORLD_H

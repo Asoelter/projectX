@@ -1,5 +1,8 @@
 #include "world.h"
 
+#include "world_position.h"
+
+[[nodiscard]]
 std::string toString(const WorldState& state)
 {
     switch(state)
@@ -13,6 +16,7 @@ std::string toString(const WorldState& state)
     }
 }
 
+[[nodiscard]]
 WorldState translateTileState(const TileState& state)
 {
     switch(state)
@@ -25,6 +29,8 @@ WorldState translateTileState(const TileState& state)
         case TileState::OFFSCREEN_LEFT  : return WorldState::OFFSCREEN_LEFT;
     }
 }
+
+//-----------------------------------------------------World State----------------------------------------------
 
 World::World() 
 	: activeMap_(nullptr)
@@ -95,24 +101,13 @@ void World::draw() const
 	activeMap_->draw();
 }
 
-void World::scrollUp()
+void World::drawAt(const WorldPosition& position) const
 {
-    activeMap_ = &tileMaps_[--activeMapY_][activeMapX_];
-}
+    const auto worldPos = position.tileMapPos();
+    const auto xWorldIndex = worldPos.x;
+    const auto yWorldIndex = worldPos.y;
 
-void World::scrollRight()
-{
-    activeMap_ = &tileMaps_[activeMapY_][++activeMapX_];
-}
-
-void World::scrollDown()
-{
-    activeMap_ = &tileMaps_[++activeMapY_][activeMapX_];
-}
-
-void World::scrollLeft()
-{
-    activeMap_ = &tileMaps_[activeMapY_][--activeMapX_];
+    tileMaps_[yWorldIndex][xWorldIndex].draw();
 }
 
 TileMap* World::activeMap() const
@@ -132,9 +127,16 @@ bool World::isInWorld(int mapX, int mapY) const
     return mapX < tileMaps_[0].size() && mapY < tileMaps_.size() && mapX >= 0 && mapY >= 0;
 }
 
-TileState World::tileStateAt(const core::math::Point<float>& position)
+[[nodiscard]] 
+TileState World::tileStateAt(const WorldPosition& position)
 {
-    return activeMap_->tileStateAt(position);
+    const auto xMapPos  = position.tileMapPos().x;
+    const auto yMapPos  = position.tileMapPos().y;
+    const auto xPos     = position.tilePos().x;
+    const auto yPos     = position.tilePos().y;
+    const auto vPos     = core::math::Point<float>(xPos, yPos);
+
+    return tileMaps_[yMapPos][xMapPos].tileStateAt(vPos);
 }
 
 [[nodiscard]] 
@@ -142,3 +144,4 @@ WorldState World::worldStateAt(const core::math::Point<float>& position)
 {
     return translateTileState(activeMap_->tileStateAt(position));
 }
+

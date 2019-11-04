@@ -51,11 +51,14 @@ public:
     [[nodiscard]] 
     TileState tileStateAt(const core::math::Point<float>& position) const;
 
-    [[nodiscard]] 
-    TileState tileStateAt(int x, int y) const;
 
     static constexpr auto width = 16;
     static constexpr auto height = 9;
+
+
+private:
+    [[nodiscard]] 
+    TileState tileStateAt(int x, int y) const;
 
 private:
     using RowType = std::array<std::unique_ptr<Tile>, 16>;
@@ -66,3 +69,4 @@ private:
 };
 
 #endif //TILE_MAP_H
+

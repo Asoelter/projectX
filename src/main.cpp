@@ -16,7 +16,9 @@
 #include "core/math/vec2.h"
 
 #include "game/tile_map.h"
+#include "game/player.h"
 #include "game/world.h"
+#include "game/world_position.h"
 
 int main(int argc, char** argv)
 {
@@ -30,12 +32,11 @@ int main(int argc, char** argv)
     core::graphics::Window window(width, height, "projectX");
     core::audio::Speaker   speaker;
 
-    core::graphics::Rectangle player(Tile::width, Tile::height, {0.0f, 0.0f}, core::graphics::blue());
+    Player player(0.0f, 0.0f);
 
 	World world;
-	auto tilemap = world.activeMap();
     auto frameTime = 0.0f;
-    const auto screenSpacePerSecond = 0.7f;
+    const auto screenSpacePerSecond = 0.9f;
 
     while(running && window.open())
     {
@@ -70,31 +71,10 @@ int main(int argc, char** argv)
             player.move(direction);
         }
 
-        if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_UP)
-        {
-            world.scrollUp();
-            player.moveTo({player.position().x, -1});
-        }
-        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_RIGHT)
-        {
-            world.scrollRight();
-            player.moveTo({-1, player.position().y});
-        }
-        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_DOWN)
-        {
-            world.scrollDown();
-            player.moveTo({player.position().x, 1});
-        }
-        else if(world.worldStateAt(player.position() + direction) == WorldState::OFFSCREEN_LEFT)
-        {
-            world.scrollLeft();
-            player.moveTo({1, player.position().y});
-        }
-
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
 
-		world.draw();
+        world.drawAt(player.position());
         player.draw();
         window.swap();
 

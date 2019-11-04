@@ -12,4 +12,10 @@ add_subdirectory ("src")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 add_compile_options("-Wall; -Wextra; -pedantic")
 
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror)
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS on) #To generate compilation database for ycm

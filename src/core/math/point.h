@@ -13,28 +13,11 @@ template
 class Point
 {
 public:
-    Point(T _x, T _y) 
-        : x(_x)
-        , y(_y)
-        , z(T())
-        , a(T())
-        {
-
-        }
-
-    Point(T _x, T _y, T _z)
+    constexpr Point(T _x, T _y, T _z = T(), T _a = T()) noexcept
         : x(_x)
         , y(_y)
         , z(_z)
-        , a(T())
-        {
-
-        }
-
-    Point(T _x, T _y, T _z, T _a)
-        : x(_x)
-        , y(_y)
-        , z(_z)
+        , a(_a)
         {
 
         }
