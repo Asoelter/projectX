@@ -48,22 +48,23 @@ int main(int argc, char** argv)
         }
 
         auto direction = core::math::vec2<float>(0.0f, 0.0f);
+        const auto displacement = frameTime * screenSpacePerSecond;
 
         if(window.isPressed(core::graphics::Key::Up))
         {
-            direction.y += frameTime * screenSpacePerSecond;
+            direction.y += displacement;
         }
         if(window.isPressed(core::graphics::Key::Right))
         {
-            direction.x += frameTime * screenSpacePerSecond;
+            direction.x += displacement;
         }
         if(window.isPressed(core::graphics::Key::Down))
         {
-            direction.y -= frameTime * screenSpacePerSecond;
+            direction.y -= displacement;
         }
         if(window.isPressed(core::graphics::Key::Left))
         {
-            direction.x -= frameTime * screenSpacePerSecond;
+            direction.x -= displacement;
         }
 
         if(world.tileStateAt(player.position() + direction) != TileState::OCCUPIED)

@@ -2,40 +2,7 @@
 
 #include "world_position.h"
 
-[[nodiscard]]
-std::string toString(const WorldState& state)
-{
-    switch(state)
-    {
-        case WorldState::ONSCREEN        : return "ONSCREEN";
-        case WorldState::OFFSCREEN       : return "OFFSCREEN";
-        case WorldState::OFFSCREEN_UP    : return "OFFSCREEN_UP";
-        case WorldState::OFFSCREEN_RIGHT : return "OFFSCREEN_RIGHT";
-        case WorldState::OFFSCREEN_DOWN  : return "OFFSCREEN_DOWN";
-        case WorldState::OFFSCREEN_LEFT  : return "OFFSCREEN_LEFT";
-    }
-}
-
-[[nodiscard]]
-WorldState translateTileState(const TileState& state)
-{
-    switch(state)
-    {
-        case TileState::UNOCCUPIED      : return WorldState::ONSCREEN;
-        case TileState::OCCUPIED        : return WorldState::ONSCREEN;
-        case TileState::OFFSCREEN_UP    : return WorldState::OFFSCREEN_UP;
-        case TileState::OFFSCREEN_RIGHT : return WorldState::OFFSCREEN_RIGHT;
-        case TileState::OFFSCREEN_DOWN  : return WorldState::OFFSCREEN_DOWN;
-        case TileState::OFFSCREEN_LEFT  : return WorldState::OFFSCREEN_LEFT;
-    }
-}
-
-//-----------------------------------------------------World State----------------------------------------------
-
 World::World() 
-	: activeMap_(nullptr)
-    , activeMapX_(0)
-    , activeMapY_(0)
 {
     unsigned topLeft[9][16] = {
         1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -92,13 +59,6 @@ World::World()
 	tileMaps_.push_back(std::vector<TileMap>());
 	tileMaps_[1].emplace_back(bottomLeft);
 	tileMaps_[1].emplace_back(bottomRight);
-
-	activeMap_ = &tileMaps_[0][0];
-}
-
-void World::draw() const
-{
-	activeMap_->draw();
 }
 
 void World::drawAt(const WorldPosition& position) const
@@ -108,11 +68,6 @@ void World::drawAt(const WorldPosition& position) const
     const auto yWorldIndex = worldPos.y;
 
     tileMaps_[yWorldIndex][xWorldIndex].draw();
-}
-
-TileMap* World::activeMap() const
-{
-	return activeMap_;
 }
 
 [[nodiscard]]
@@ -137,11 +92,5 @@ TileState World::tileStateAt(const WorldPosition& position)
     const auto vPos     = core::math::Point<float>(xPos, yPos);
 
     return tileMaps_[yMapPos][xMapPos].tileStateAt(vPos);
-}
-
-[[nodiscard]] 
-WorldState World::worldStateAt(const core::math::Point<float>& position)
-{
-    return translateTileState(activeMap_->tileStateAt(position));
 }
 

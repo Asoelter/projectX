@@ -2,6 +2,7 @@
 #define VEC2_H
 
 #include <type_traits>
+
 #include "point.h"
 
 template<typename T>
