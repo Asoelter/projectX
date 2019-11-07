@@ -28,19 +28,19 @@ public:
 
     }
 
-    friend constexpr vec2 operator+(const vec2& self, const vec2& rhs)
+    constexpr vec2 operator+(const vec2& rhs)
     {
-        return {self.x + rhs.x, self.y + rhs.y};
+        return {x + rhs.x, y + rhs.y};
     }
 
-    friend constexpr vec2 operator-(const vec2& self, const vec2& rhs) 
+    constexpr vec2 operator-(const vec2& rhs) 
     {
-        return {self.x - rhs.x, self.y - rhs.y};
+        return {x - rhs.x, y - rhs.y};
     }
 
-    friend constexpr Point<T> operator+(const vec2& self, const Point<T>& other)
+    constexpr Point<T> operator+(const Point<T>& other)
     {
-        return {other.x + self.x, other.y + self.y};
+        return {other.x + x, other.y + y};
     }
 
     friend constexpr Point<T> operator+(const Point<T>& other, const vec2& self)
@@ -48,6 +48,11 @@ public:
         return {other.x + self.x, other.y + self.y};
     }
 
+    friend constexpr Point<T> operator+(const vec2& self, const Point<T>& other)
+    {
+        return {other.x + self.x, other.y + self.y};
+    }
+    
     static constexpr size_t size = 2;
 
     union
@@ -63,7 +68,5 @@ public:
 };
 
 }
-
-#include "vec2.hpp"
 
 #endif //VEC2_H

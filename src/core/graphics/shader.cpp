@@ -44,6 +44,7 @@ Shader::~Shader()
     glDeleteProgram(programID_);
 }
 
+[[nodiscard]]
 unsigned Shader::id() const
 {
     return programID_;

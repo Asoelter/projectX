@@ -16,15 +16,13 @@ public:
     Shader(const std::string& vertexPath, const std::string& fragmentPath);
     ~Shader();
 
+    [[nodiscard]] 
     unsigned id() const;
     void bind() const;
     void unbind() const;
 
-    void setUniformVec4f(const char* name, 
-                         const math::vec4<float>& value);
-
-    void setUniformVec2f(const char* name, 
-                         const math::vec2<float>& value);
+    void setUniformVec4f(const char* name, const math::vec4<float>& value);
+    void setUniformVec2f(const char* name, const math::vec2<float>& value);
 private:
     bool isError();
     std::string errorLog();

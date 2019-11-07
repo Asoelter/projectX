@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "drawable.h"
+
 #include "../math/point.h"
 #include "../math/vec2.h"
 
@@ -39,5 +41,7 @@ private:
 
 };
 }
+
+REGISTER_DRAWABLE(core::graphics::Rectangle);
 
 #endif //RECTANGLE_H

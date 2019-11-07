@@ -11,10 +11,6 @@ std::string toString(TileState state)
     {
         case TileState::UNOCCUPIED      :   return "UNOCCUPIED";
         case TileState::OCCUPIED        :   return "OCCUPIED";
-        case TileState::OFFSCREEN_UP    :   return "OFFSCREEN_UP";
-        case TileState::OFFSCREEN_RIGHT :   return "OFFSCREEN_RIGHT";
-        case TileState::OFFSCREEN_DOWN  :   return "OFFSCREEN_DOWN";
-        case TileState::OFFSCREEN_LEFT  :   return "OFFSCREEN_LEFT";
     }
 }
 
@@ -103,33 +99,12 @@ TileState TileMap::tileStateAt(const core::math::Point<float>& position) const
     const auto x = static_cast<int>((position.x + 1.0f) / Tile::width);
     const auto y = static_cast<int>((position.y + 1.0f) / Tile::height);
 
-    return tileStateAt(x, y);
-}
-
-[[nodiscard]] 
-TileState TileMap::tileStateAt(int x, int y) const
-{
     if(x < width && y < height && x > -1 && y > -1)
     {
         return map_[y][x]->state();
-    }
-    else if(x >= width)
-    {
-        return TileState::OFFSCREEN_RIGHT;
-    }
-    else if(x < 0)
-    {
-        return TileState::OFFSCREEN_LEFT;
-    }
-    else if(y >= height)
-    {
-        return TileState::OFFSCREEN_UP;
-    }
-    else if(y < 0)
-    {
-        return TileState::OFFSCREEN_DOWN;
     }
 
     handmade_assert(false);
     return TileState::OCCUPIED;
 }
+

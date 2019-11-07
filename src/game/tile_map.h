@@ -4,16 +4,13 @@
 #include <array>
 #include <memory>
 
+#include "graphics/drawable.h"
 #include "graphics/rectangle.h"
 
 enum class TileState
 {
     UNOCCUPIED,
     OCCUPIED,
-    OFFSCREEN_UP,
-    OFFSCREEN_RIGHT,
-    OFFSCREEN_DOWN,
-    OFFSCREEN_LEFT
 };
 
 std::string toString(TileState state);
@@ -51,14 +48,8 @@ public:
     [[nodiscard]] 
     TileState tileStateAt(const core::math::Point<float>& position) const;
 
-
     static constexpr auto width = 16;
     static constexpr auto height = 9;
-
-
-private:
-    [[nodiscard]] 
-    TileState tileStateAt(int x, int y) const;
 
 private:
     using RowType = std::array<std::unique_ptr<Tile>, 16>;
@@ -67,6 +58,9 @@ private:
     unsigned mapInfo_[9][16];
     MapType map_;
 };
+
+REGISTER_DRAWABLE(Tile);
+REGISTER_DRAWABLE(TileMap);
 
 #endif //TILE_MAP_H
 

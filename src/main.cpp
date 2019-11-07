@@ -1,17 +1,12 @@
 #include <iostream>
-#include <iomanip>
-#include <cmath>
 #include <chrono>
 
 #include "util/handmade_util.h"
 
-#include "core/audio/speaker.h"
-
-#include "core/graphics/window.h"
-#include "core/graphics/mesh.h"
+#include "core/graphics/drawable.h"
 #include "core/graphics/rectangle.h"
 #include "core/graphics/shader.h"
-#include "core/graphics/square.h"
+#include "core/graphics/window.h"
 
 #include "core/math/vec2.h"
 
@@ -30,7 +25,6 @@ int main(int argc, char** argv)
     bool running         = true;
 
     core::graphics::Window window(width, height, "projectX");
-    core::audio::Speaker   speaker;
 
     Player player(0.0f, 0.0f);
 

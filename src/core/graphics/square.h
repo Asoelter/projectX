@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "drawable.h"
+
 #include "../graphics/rectangle.h"
 
 namespace core::graphics
@@ -21,5 +23,7 @@ private:
     Rectangle rectangle_;
 };
 }
+
+REGISTER_DRAWABLE(core::graphics::Square);
 
 #endif //SQUARE_H
