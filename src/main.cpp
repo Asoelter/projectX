@@ -26,11 +26,11 @@ int main(int argc, char** argv)
 
     core::graphics::Window window(width, height, "projectX");
 
-    Player player(0.0f, 0.0f);
+    Player player(40.0f, 40.0f);
 
 	World world;
     auto frameTime = 0.0f;
-    const auto screenSpacePerSecond = 0.9f;
+    const auto screenSpacePerSecond = 0.9f * 50;
 
     while(running && window.open())
     {

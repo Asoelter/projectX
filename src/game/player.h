@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "../core/graphics/drawable.h"
 #include "tile_map.h"
 #include "world_position.h"
 
@@ -23,5 +24,6 @@ private:
     core::graphics::Rectangle rect_;
 };
 
+REGISTER_DRAWABLE(Player);
 
 #endif //PLAYER_H

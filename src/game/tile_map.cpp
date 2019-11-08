@@ -55,8 +55,8 @@ void Tile::setColor(const core::graphics::Color& color)
 
 TileMap::TileMap(unsigned mapInfo[9][16])
 {
-    auto xPos = -1.0f + (Tile::width  / 2.0f);
-    auto yPos = -1.0f + (Tile::height / 2.0f);
+    auto xPos = Tile::width  / 2.0f;
+    auto yPos = Tile::height / 2.0f;
 
     for(int i = 0; i < height; ++i)
     {
@@ -77,7 +77,7 @@ TileMap::TileMap(unsigned mapInfo[9][16])
             xPos += Tile::width;
         }
 
-        xPos = -1.0f + (Tile::width / 2.0f);
+        xPos = Tile::width / 2.0f;
         yPos += Tile::height;
     }
 }
@@ -96,10 +96,10 @@ void TileMap::draw() const
 [[nodiscard]] 
 TileState TileMap::tileStateAt(const core::math::Point<float>& position) const
 {
-    const auto x = static_cast<int>((position.x + 1.0f) / Tile::width);
-    const auto y = static_cast<int>((position.y + 1.0f) / Tile::height);
+    const auto x = static_cast<int>((position.x) / Tile::width);
+    const auto y = static_cast<int>((position.y) / Tile::height);
 
-    if(x < width && y < height && x > -1 && y > -1)
+    if(x < width && y < height && x >= 0 && y >= 0)
     {
         return map_[y][x]->state();
     }

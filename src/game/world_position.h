@@ -22,8 +22,8 @@ public:
 
     void move(const core::math::vec2<float>& direction);
 
-    friend WorldPosition operator+(const WorldPosition& rhs, 
-                                   const core::math::vec2<float>& lhs);
+    friend WorldPosition operator+(const WorldPosition& lhs, 
+                                   const core::math::vec2<float>& rhs);
 private:
     core::math::Point<unsigned> tileMapPos_;
     core::math::Point<float>    tilePos_;

@@ -36,31 +36,35 @@ void WorldPosition::move(const core::math::vec2<float>& direction)
     *this = *this + direction;
 }
 
-WorldPosition operator+(const WorldPosition& rhs, 
-                               const core::math::vec2<float>& lhs)
+WorldPosition operator+(const WorldPosition& lhs, 
+                               const core::math::vec2<float>& rhs)
 {
-    auto tilePos    = rhs.tilePos_ + lhs;
-    auto tileMapPos = rhs.tileMapPos_;
+    auto tilePos    = lhs.tilePos_ + rhs;
+    auto tileMapPos = lhs.tileMapPos_;
 
-    tileMapPos.x += static_cast<int>(tilePos.x);
-    tileMapPos.y -= static_cast<int>(tilePos.y);
+    const auto screenWidth  = 100.0;
+    const auto screenHeight = 100.0;
 
-    if(tilePos.x > 1)
+    if(tilePos.x > screenWidth)
     {
-        tilePos.x -= 2;
+        tilePos.x    -= screenWidth;
+        tileMapPos.x += 1;
     }
-    else if(tilePos.x < -1)
+    else if(tilePos.x < 0)
     {
-        tilePos.x += 2;
+        tilePos.x    += screenWidth;
+        tileMapPos.x -= 1;
     }
 
-    if(tilePos.y > 1)
+    if(tilePos.y > screenHeight)
     {
-        tilePos.y -= 2;
+        tileMapPos.y -= 1;
+        tilePos.y    -= screenHeight;
     }
-    else if(tilePos.y < -1)
+    else if(tilePos.y < 0)
     {
-        tilePos.y += 2;
+        tilePos.y += screenHeight;
+        tileMapPos.y += 1;
     }
 
     return {tileMapPos, tilePos};

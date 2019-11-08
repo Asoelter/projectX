@@ -31,8 +31,8 @@ public:
 
     void setColor(const core::graphics::Color& color);
 
-    static constexpr auto width  = 2.0f / 16.0f;
-    static constexpr auto height = 2.0f / 9.0f;
+    static constexpr auto width  = 2.0f / 16.0f * 50.0f;
+    static constexpr auto height = 2.0f / 9.0f * 50.0f;
 private:
     core::graphics::Rectangle tile_;
     TileState state_;

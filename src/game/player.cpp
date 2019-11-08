@@ -21,11 +21,12 @@ void Player::draw() const
 void Player::printPosition() const
 {
     const auto worldPos = position_.tileMapPos();
-    const auto tilePos = position_.tilePos();
-    const auto worldX = worldPos.x;
-    const auto worldY = worldPos.y;
-    const auto tileX = tilePos.x;
-    const auto tileY = tilePos.y;
+    const auto tilePos  = position_.tilePos();
+    const auto worldX   = worldPos.x;
+    const auto worldY   = worldPos.y;
+    const auto tileX    = tilePos.x;
+    const auto tileY    = tilePos.y;
+
     std::cout << "World x: " << worldX << " World y: " << worldY 
               << " tile x: " << tileX << " tile y: " << tileY << std::endl;
 }
