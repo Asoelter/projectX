@@ -5,7 +5,6 @@
 
 #include "core/graphics/drawable.h"
 #include "core/graphics/rectangle.h"
-#include "core/graphics/shader.h"
 #include "core/graphics/window.h"
 
 #include "core/math/vec2.h"
@@ -14,6 +13,7 @@
 #include "game/player.h"
 #include "game/world.h"
 #include "game/world_position.h"
+#include "game/settings.h"
 
 int main(int argc, char** argv)
 {
@@ -26,11 +26,12 @@ int main(int argc, char** argv)
 
     core::graphics::Window window(width, height, "projectX");
 
-    Player player(40.0f, 40.0f);
-
+    core::graphics::Rectangle::setScreenLimits(global::screenXLimit, global::screenYLimit);
+    Player player(25.0f, 25.0f);
+    
 	World world;
     auto frameTime = 0.0f;
-    const auto screenSpacePerSecond = 0.9f * 50;
+    const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
     while(running && window.open())
     {

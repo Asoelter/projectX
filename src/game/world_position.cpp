@@ -1,5 +1,6 @@
 #include "world_position.h"
 
+#include "settings.h"
 
 WorldPosition::WorldPosition(unsigned tileMapX, 
                              unsigned tileMapY, 
@@ -42,8 +43,8 @@ WorldPosition operator+(const WorldPosition& lhs,
     auto tilePos    = lhs.tilePos_ + rhs;
     auto tileMapPos = lhs.tileMapPos_;
 
-    const auto screenWidth  = 100.0;
-    const auto screenHeight = 100.0;
+    const auto screenWidth  = global::screenXLimit;
+    const auto screenHeight = global::screenYLimit;
 
     if(tilePos.x > screenWidth)
     {

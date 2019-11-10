@@ -2,13 +2,13 @@
 #define DRAWABLE_H
 
 template<typename T>
-struct isDrawable
+struct IsDrawable
 {
     static bool value() {return false;}
 };
 
 template<typename T>
-constexpr inline bool isDrawableV = false;
+constexpr inline bool IsDrawableV = false;
 
 //TODO(asoelter): check for required overloaded
 //template functions (eg., draw) once the required 
@@ -16,12 +16,12 @@ constexpr inline bool isDrawableV = false;
 
 #define REGISTER_DRAWABLE(type)                     \
     template<>                                      \
-    struct isDrawable<type>                         \
+    struct IsDrawable<type>                         \
     {                                               \
         static bool value() {return true;}          \
     };                                              \
                                                     \
     template<>                                      \
-    constexpr inline bool isDrawableV<type> = true; \
+    constexpr inline bool IsDrawableV<type> = true; \
 
 #endif //DRAWABLE_H

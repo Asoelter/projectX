@@ -19,3 +19,4 @@ bin/**
 build
 build/**
 src/vendor/glfw/.gitignore
+notes.txt

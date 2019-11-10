@@ -3,6 +3,8 @@
 #include <vector>
 #include "../graphics/shader.h"
 
+#include "../../util/handmade_util.h"
+
 namespace core::graphics
 {
 
@@ -51,14 +53,12 @@ void Rectangle::draw() const
 
 void Rectangle::move(const math::vec2<float>& direction)
 {
-    //TODO(asoelter): do moves by keeping track of positions instead of offsets
     offset_.x += direction.x;
     offset_.y += direction.y;
 }
 
 void Rectangle::moveTo(const math::Point<float>& position)
 {
-    //TODO(asoelter): do moves by keeping track of positions instead of offsets
     offset_.x = position.x - initialPosition_.x;
     offset_.y = position.y - initialPosition_.y;
 }
@@ -68,8 +68,23 @@ void Rectangle::setColor(const Color& color)
     color_ = color;
 }
 
+[[nodiscard]]
 math::Point<float> Rectangle::position() const
 {
     return initialPosition_ + offset_;
 }
+
+void Rectangle::setScreenLimits(float xlim, float ylim)
+{
+    if(!shader_)
+    {
+        shader_ = std::make_unique<Shader>("src/res/shaders/solid.vs", 
+                                           "src/res/shaders/solid.fs");
+    }
+
+    shader_->bind();
+    shader_->setUniform1f("xLimit", xlim);
+    shader_->setUniform1f("yLimit", ylim);
+}
+
 }

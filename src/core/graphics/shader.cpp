@@ -60,6 +60,13 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
+void Shader::setUniform1f(const char* name, float value)
+{
+    auto location = glGetUniformLocation(programID_, name);
+
+    glUniform1f(location, value);
+}
+
 void Shader::setUniformVec4f(const char* name, const math::vec4<float>& value)
 {
     auto location = glGetUniformLocation(programID_, name);
@@ -69,7 +76,7 @@ void Shader::setUniformVec4f(const char* name, const math::vec4<float>& value)
 
 void Shader::setUniformVec2f(const char* name, const math::vec2<float>& value)
 {
-    auto location = glGetUniformLocation(programID_, name);
+    const auto location = glGetUniformLocation(programID_, name);
 
     glUniform2fv(location, 1, value.data);
 }

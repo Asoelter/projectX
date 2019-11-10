@@ -2,16 +2,17 @@
 
 layout(location = 0) in vec2 pos;
 
-uniform vec2 translation;
+uniform vec2  translation;
+uniform float xLimit = 200;
+uniform float yLimit = 200;
 
 void main()
 {
     float xPos = pos.x + translation.x;
     float yPos = pos.y + translation.y;
 
-    float transX = (1.0 / 50.0 * xPos) - 1;
-    float transY = (1.0 / 50.0 * yPos) - 1;
+    float transX = ((2.0 / xLimit) * xPos) - 1;
+    float transY = ((2.0 / yLimit) * yPos) - 1;
 
-    //gl_Position = vec4(xPos, yPos, 0, 1);
     gl_Position = vec4(transX, transY, 0, 1);
 }

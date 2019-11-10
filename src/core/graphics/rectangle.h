@@ -27,8 +27,15 @@ public:
     void move(const math::vec2<float>& direction);
     void moveTo(const math::Point<float>& position);
     void setColor(const Color& color);
+
+    [[nodiscard]]
     math::Point<float> position() const;
 
+public:
+    //NOTE(asoelter): this isn't really a good place for this
+    //and should be moved once a good place becomes aparent 
+    //(renderer? drawable attribute?)
+    static void setScreenLimits(float xlim, float ylim);
 private:
     static std::unique_ptr<Shader> shader_;
 
