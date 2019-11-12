@@ -46,12 +46,15 @@ public:
     TileMap(unsigned mapInfo[9][16]);
 
     void draw() const;
+    void move(const core::math::vec2<float>& direction);
 
     [[nodiscard]] 
     TileState tileStateAt(const core::math::Point<float>& position) const;
 
-    static constexpr auto width = 16;
-    static constexpr auto height = 9;
+    static constexpr auto columns = 16;
+    static constexpr auto rows = 9;
+    static constexpr auto width = columns * Tile::width;
+    static constexpr auto height = columns * Tile::height;
 
 private:
     using RowType = std::array<std::unique_ptr<Tile>, 16>;

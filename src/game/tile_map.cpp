@@ -58,9 +58,9 @@ TileMap::TileMap(unsigned mapInfo[9][16])
     auto xPos = Tile::width  / 2.0f;
     auto yPos = Tile::height / 2.0f;
 
-    for(int i = 0; i < height; ++i)
+    for(int i = 0; i < rows ; ++i)
     {
-        for(int j = 0; j < width; ++j)
+        for(int j = 0; j < columns; ++j)
         {
             const auto position = core::math::Point<float>(xPos, yPos);
 
@@ -93,13 +93,24 @@ void TileMap::draw() const
     }
 }
 
+void TileMap::move(const core::math::vec2<float>& direction)
+{
+    for(const auto& row : map_)
+    {
+        for(const auto& tile : row)
+        {
+            tile->move(direction);
+        }
+    }
+}
+
 [[nodiscard]] 
 TileState TileMap::tileStateAt(const core::math::Point<float>& position) const
 {
     const auto x = static_cast<int>((position.x) / Tile::width);
     const auto y = static_cast<int>((position.y) / Tile::height);
 
-    if(x < width && y < height && x >= 0 && y >= 0)
+    if(x < columns && y < rows && x >= 0 && y >= 0)
     {
         return map_[y][x]->state();
     }

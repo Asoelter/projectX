@@ -22,6 +22,15 @@ public:
 
         }
 
+    constexpr Point& operator=(const Point& other)
+    {
+        x = other.x;
+        y = other.y;
+        z = other.z;
+        a = other.a;
+
+        return *this;
+    }
 
 public:
     static constexpr auto size = 4;

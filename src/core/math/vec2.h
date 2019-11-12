@@ -67,6 +67,13 @@ public:
     };
 };
 
+template<typename T>
+constexpr vec2<T> difference2D(const Point<T>& lhs, const Point<T>& rhs)
+{
+    return {lhs.x - rhs.x, lhs.y - rhs.y};
+}
+
+
 }
 
 #endif //VEC2_H

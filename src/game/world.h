@@ -13,7 +13,7 @@ class World
 public:
 	World();
 
-	void drawAt(const WorldPosition& position) const;
+	void drawAt(const WorldPosition& position);
 
     [[nodiscard]] 
     TileState tileStateAt(const WorldPosition& position);
