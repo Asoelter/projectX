@@ -28,6 +28,16 @@ public:
 
     }
 
+    bool operator==(const vec2& rhs)
+    {
+        return x == rhs.x && y == rhs.y;
+    }
+
+    bool operator!=(const vec2& rhs)
+    {
+        return !(this == rhs);
+    }
+
     constexpr vec2 operator+(const vec2& rhs)
     {
         return {x + rhs.x, y + rhs.y};

@@ -31,6 +31,9 @@ public:
     [[nodiscard]]
     math::Point<float> position() const;
 
+    float width() const { return width_; }
+    float height() const { return height_; }
+
 public:
     //NOTE(asoelter): this isn't really a good place for this
     //and should be moved once a good place becomes aparent 
@@ -41,6 +44,8 @@ private:
 
 private:
     float dimension_;
+    float width_;
+    float height_;
     math::vec2<float> offset_;
     const math::Point<float> initialPosition_;
     std::unique_ptr<Mesh<float>> mesh_;

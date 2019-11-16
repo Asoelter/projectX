@@ -24,6 +24,10 @@ public:
     [[nodiscard]]
     WorldPosition position() const;
 
+    core::graphics::Rectangle const & shape() const{
+        return rect_;
+    }
+
 private:
     WorldPosition position_;
     core::graphics::Rectangle rect_;
