@@ -15,6 +15,7 @@ class Roamer
 {
 public:
     Roamer(float x, float y);
+    Roamer(Roamer&& r);
 
     void move(World const & world, float const displacement);
     void draw() const;

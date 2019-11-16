@@ -9,6 +9,13 @@ Roamer::Roamer(float x, float y)
 
 }
 
+Roamer::Roamer(Roamer&& r)
+    : position_(r.position_)
+    , rect_(Tile::width, Tile::height, r.rect_.position(), core::graphics::red())
+{
+
+}
+
 void Roamer::move(World const & world, float const displacement)
 {
     srand( time(NULL) );
