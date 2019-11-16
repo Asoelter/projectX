@@ -15,6 +15,8 @@ public:
 
     void render(const vec2f& direction, float displacement);
 private:
+    void checkForCollisions();
+
     World world_;
     Player player_;
     std::vector<Roamer> roamers_;

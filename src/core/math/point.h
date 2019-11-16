@@ -32,6 +32,19 @@ public:
         return *this;
     }
 
+    bool operator==(const Point& rhs)
+    {
+        return x == rhs.x
+            && y == rhs.y
+            && z == rhs.z
+            && a == rhs.a;
+    }
+
+    bool operator!=(const Point& rhs)
+    {
+        return !(this == rhs);
+    }
+
 public:
     static constexpr auto size = 4;
 

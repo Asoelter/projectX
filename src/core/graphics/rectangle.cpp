@@ -13,15 +13,17 @@ std::unique_ptr<Shader> Rectangle::shader_ = nullptr;
 Rectangle::Rectangle(float width, float height,
                      const math::Point<float>& pos, 
                      const Color& color)
-    : offset_(0.0f, 0.0f)
+    : width_(width)
+    , height_(height)
+    , offset_(0.0f, 0.0f)
     , initialPosition_(pos)
     , color_(color)
 {
     std::vector<float> vertices = {
-        pos.x - (width/ 2.0f), pos.y - (height/ 2.0f), //bottom left
-        pos.x + (width/ 2.0f), pos.y - (height / 2.0f), //bottom right
-        pos.x + (width/ 2.0f), pos.y + (height / 2.0f), //top right
-        pos.x - (width/ 2.0f), pos.y + (height / 2.0f), //top left
+        pos.x - (width_/ 2.0f), pos.y - (height_ / 2.0f), //bottom left
+        pos.x + (width_/ 2.0f), pos.y - (height_ / 2.0f), //bottom right
+        pos.x + (width_/ 2.0f), pos.y + (height_ / 2.0f), //top right
+        pos.x - (width_/ 2.0f), pos.y + (height_ / 2.0f), //top left
     };
 
     std::vector<unsigned> indices = {
