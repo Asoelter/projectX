@@ -78,6 +78,7 @@ public:
          std::vector<unsigned>  offsets = {})
         : elementSize(elementBuffer.size())
     {
+        (void)offsets;
         glGenVertexArrays(1, &vao_);
         glGenBuffers(1, &vbo_);
         glGenBuffers(1, &ebo_);

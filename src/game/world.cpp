@@ -130,7 +130,7 @@ World::World()
 
 void World::drawAt(const WorldPosition& position)
 {
-    const auto worldPos    = position.tileMapPos();
+    const auto & worldPos  = position.tileMapPos();
     const auto xWorldIndex = worldPos.x;
     const auto yWorldIndex = worldPos.y;
 
@@ -142,10 +142,6 @@ TileState World::tileStateAt(const WorldPosition& position)
 {
     const auto xMapPos  = position.tileMapPos().x;
     const auto yMapPos  = position.tileMapPos().y;
-    const auto xPos     = position.tilePos().x;
-    const auto yPos     = position.tilePos().y;
-    const auto vPos     = core::math::Point<float>(xPos, yPos);
 
-    return tileMaps_[yMapPos][xMapPos].tileStateAt(vPos);
+    return tileMaps_[yMapPos][xMapPos].tileStateAt(position.tilePos());
 }
-
