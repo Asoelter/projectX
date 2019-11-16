@@ -11,11 +11,11 @@ public:
                   float    tileX, 
                   float    tileY) noexcept;
 
-    WorldPosition(const core::math::Point<unsigned>& tileMapPos,
+    WorldPosition(const core::math::Point<unsigned>& quad,
                   const core::math::Point<float>& tilePos) noexcept;
 
     [[nodiscard]] 
-    core::math::Point<unsigned> tileMapPos() const;
+    core::math::Point<unsigned> quadrant() const;
 
     [[nodiscard]]
     core::math::Point<float> tilePos() const;
@@ -25,7 +25,7 @@ public:
     friend WorldPosition operator+(const WorldPosition& lhs, 
                                    const core::math::vec2<float>& rhs);
 private:
-    core::math::Point<unsigned> tileMapPos_;
+    core::math::Point<unsigned> quad_;
     core::math::Point<float>    tilePos_;
 };
 

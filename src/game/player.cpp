@@ -21,7 +21,7 @@ void Player::draw() const
 
 void Player::printPosition() const
 {
-    const auto worldPos = position_.tileMapPos();
+    const auto worldPos = position_.quadrant();
     const auto tilePos  = position_.tilePos();
     const auto worldX   = worldPos.x;
     const auto worldY   = worldPos.y;

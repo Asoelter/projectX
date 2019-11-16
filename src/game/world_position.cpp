@@ -6,24 +6,24 @@ WorldPosition::WorldPosition(unsigned tileMapX,
                              unsigned tileMapY, 
                              float    tileX, 
                              float    tileY) noexcept
-    : tileMapPos_(tileMapX, tileMapY)
+    : quad_(tileMapX, tileMapY)
     , tilePos_(tileX, tileY)
 {
 
 }
 
-WorldPosition::WorldPosition(const core::math::Point<unsigned>& tileMapPos,
+WorldPosition::WorldPosition(const core::math::Point<unsigned>& quad,
                              const core::math::Point<float>& tilePos) noexcept
-    : tileMapPos_(tileMapPos)
+    : quad_(quad)
     , tilePos_(tilePos)
 {
 
 }
 
 [[nodiscard]] 
-core::math::Point<unsigned> WorldPosition::tileMapPos() const
+core::math::Point<unsigned> WorldPosition::quadrant() const
 {
-    return tileMapPos_;
+    return quad_;
 }
 
 [[nodiscard]]
@@ -41,7 +41,7 @@ WorldPosition operator+(const WorldPosition& lhs,
                                const core::math::vec2<float>& rhs)
 {
     auto tilePos    = lhs.tilePos_ + rhs;
-    auto tileMapPos = lhs.tileMapPos_;
+    auto quad       = lhs.quad_;
 
     const auto screenWidth  = global::screenXLimit;
     const auto screenHeight = global::screenYLimit;
@@ -49,24 +49,24 @@ WorldPosition operator+(const WorldPosition& lhs,
     if(tilePos.x > screenWidth)
     {
         tilePos.x    -= screenWidth;
-        tileMapPos.x += 1;
+        quad.x += 1;
     }
     else if(tilePos.x < 0)
     {
         tilePos.x    += screenWidth;
-        tileMapPos.x -= 1;
+        quad.x -= 1;
     }
 
     if(tilePos.y > screenHeight)
     {
-        tileMapPos.y -= 1;
+        quad.y -= 1;
         tilePos.y    -= screenHeight;
     }
     else if(tilePos.y < 0)
     {
         tilePos.y += screenHeight;
-        tileMapPos.y += 1;
+        quad.y += 1;
     }
 
-    return {tileMapPos, tilePos};
+    return {quad, tilePos};
 }
