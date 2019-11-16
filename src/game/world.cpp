@@ -138,10 +138,19 @@ void World::drawAt(const WorldPosition& position)
 }
 
 [[nodiscard]] 
-TileState World::tileStateAt(const WorldPosition& position)
+TileState World::tileStateAt(const WorldPosition& position) const
 {
     const auto xMapPos  = position.tileMapPos().x;
     const auto yMapPos  = position.tileMapPos().y;
 
     return tileMaps_[yMapPos][xMapPos].tileStateAt(position.tilePos());
+}
+
+[[nodiscard]]
+bool World::positionOpen(const WorldPosition& position) const
+{
+    const auto xMapPos  = position.tileMapPos().x;
+    const auto yMapPos  = position.tileMapPos().y;
+
+    return tileMaps_[yMapPos][xMapPos].tileStateAt(position.tilePos()) != TileState::OCCUPIED;
 }

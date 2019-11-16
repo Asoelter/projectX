@@ -6,7 +6,8 @@ include_directories(../core)
 add_library (game tile_map.h        tile_map.cpp
 				  world.h           world.cpp
                   world_position.h  world_position.cpp
-                  player.h          player.cpp)
+                  player.h          player.cpp
+                  roamer.h          roamer.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../core)
 

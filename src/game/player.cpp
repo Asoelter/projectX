@@ -1,4 +1,5 @@
 #include "player.h"
+#include "game/world.h"
 
 Player::Player(float x, float y)
     : position_(0, 0, x, y)

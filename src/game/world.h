@@ -16,7 +16,10 @@ public:
 	void drawAt(const WorldPosition& position);
 
     [[nodiscard]] 
-    TileState tileStateAt(const WorldPosition& position);
+    TileState tileStateAt(const WorldPosition& position) const;
+
+    [[nodiscard]]
+    bool positionOpen(const WorldPosition& position) const;
 
 private:
 	std::vector<std::vector<TileMap>> tileMaps_;

@@ -11,6 +11,7 @@
 
 #include "game/tile_map.h"
 #include "game/player.h"
+#include "game/roamer.h"
 #include "game/world.h"
 #include "game/world_position.h"
 #include "game/settings.h"
@@ -28,6 +29,7 @@ int main(int argc, char** argv)
 
     core::graphics::Rectangle::setScreenLimits(global::screenXLimit, global::screenYLimit);
     Player player(25.0f, 25.0f);
+    Roamer roamer(34.0f, 34.0f);
     
 	World world;
     auto frameTime = 0.0f;
@@ -62,16 +64,26 @@ int main(int argc, char** argv)
             direction.x -= displacement;
         }
 
-        if(world.tileStateAt(player.position() + direction) != TileState::OCCUPIED)
+        if(world.positionOpen(player.position() + direction))
         {
             player.move(direction);
         }
+
+        // will internally decide to move or not
+        roamer.move(world, displacement);
 
         window.setBackgroundColor(1.0f, 0.0f, 1.0f);
         window.update();
 
         world.drawAt(player.position());
+
+        // I don't really like the idea of having to call 'draw'
+        // for each new character we create, it would be cool if we could add
+        // each character to a vector, loop over it, and call draw on each
+        // character.
         player.draw();
+        roamer.draw();
+
         window.swap();
 
         const auto end = std::chrono::system_clock::now();
