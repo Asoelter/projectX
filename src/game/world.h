@@ -21,8 +21,13 @@ public:
     [[nodiscard]]
     bool positionOpen(const WorldPosition& position) const;
 
+    [[nodiscard]]
+    bool contains(const WorldPosition& position) const;
+
 private:
 	std::vector<std::vector<TileMap>> tileMaps_;
+    unsigned activeY_ = 0;
+    unsigned activeX_ = 0;
 };
 
 

@@ -135,6 +135,8 @@ void World::drawAt(const WorldPosition& position)
     const auto yWorldIndex = worldPos.y;
 
     tileMaps_[yWorldIndex][xWorldIndex].draw();
+    activeY_ = yWorldIndex;
+    activeX_ = xWorldIndex;
 }
 
 [[nodiscard]] 
@@ -149,8 +151,13 @@ TileState World::tileStateAt(const WorldPosition& position) const
 [[nodiscard]]
 bool World::positionOpen(const WorldPosition& position) const
 {
-    const auto xMapPos  = position.tileMapPos().x;
-    const auto yMapPos  = position.tileMapPos().y;
+    return tileStateAt(position) != TileState::OCCUPIED;
+}
 
-    return tileMaps_[yMapPos][xMapPos].tileStateAt(position.tilePos()) != TileState::OCCUPIED;
+[[nodiscard]]
+bool World::contains(const WorldPosition& position) const
+{
+    auto const & tileMapPos = position.tileMapPos();
+    return tileMapPos.x == activeX_
+        && tileMapPos.y == activeY_;
 }

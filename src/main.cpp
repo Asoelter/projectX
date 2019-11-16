@@ -82,7 +82,11 @@ int main(int argc, char** argv)
         // each character to a vector, loop over it, and call draw on each
         // character.
         player.draw();
-        roamer.draw();
+
+        // only draw the roamer if he is active on this tile
+        if (world.contains(roamer.position())) {
+            roamer.draw();
+        }
 
         window.swap();
 
