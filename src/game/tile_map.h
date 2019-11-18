@@ -31,6 +31,8 @@ public:
     [[nodiscard]]
     TileState state() const;
 
+    core::graphics::Rectangle const & shape() { return tile_; }
+
     void setColor(const core::graphics::Color& color);
 
     static constexpr auto width  = (2.0f / 16.0f) * (global::screenXLimit / 2.0f);
@@ -43,6 +45,9 @@ private:
 class TileMap
 {
 public:
+    using RowType = std::array<std::unique_ptr<Tile>, 16>;
+    using MapType = std::array<RowType, 9>;
+
     TileMap(unsigned mapInfo[9][16]);
 
     void draw() const;
@@ -51,14 +56,14 @@ public:
     [[nodiscard]] 
     TileState tileStateAt(const core::math::Point<float>& position) const;
 
+    MapType const & map() const { return map_; }
+
     static constexpr auto columns = 16;
     static constexpr auto rows = 9;
     static constexpr auto width = columns * Tile::width;
     static constexpr auto height = columns * Tile::height;
 
 private:
-    using RowType = std::array<std::unique_ptr<Tile>, 16>;
-    using MapType = std::array<RowType, 9>;
 
     unsigned mapInfo_[9][16];
     MapType map_;

@@ -17,6 +17,12 @@ public:
 private:
     void checkForCollisions();
 
+    void checkForCollisionsWithRoamers();
+    void checkForCollisionsWithWalls();
+
+    bool playerRightOfObject(WorldPosition r);
+    bool playerAboveObject(WorldPosition r);
+
     World world_;
     Player player_;
     std::vector<Roamer> roamers_;

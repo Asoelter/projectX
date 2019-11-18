@@ -24,6 +24,8 @@ public:
     [[nodiscard]]
     bool contains(const WorldPosition& position) const;
 
+    TileMap const & quadrant(const WorldPosition& position) const;
+
 private:
 	std::vector<std::vector<TileMap>> tileMaps_;
     unsigned activeY_ = 0;
