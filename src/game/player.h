@@ -12,7 +12,7 @@ class Player
 public:
     Player(float x, float y);
 
-    void move(const core::math::vec2<float> direction);
+    void move(World const & world, const core::math::vec2<float> direction);
     void draw() const;
     void printPosition() const;
 
@@ -23,9 +23,14 @@ public:
         return rect_;
     }
 
+    void updateHealth(int delta);
+
 private:
+    bool collisionWithWall(World const & world, core::math::vec2<float> direction);
+
     WorldPosition position_;
     core::graphics::Rectangle rect_;
+    int health_;
 };
 
 REGISTER_DRAWABLE(Player);

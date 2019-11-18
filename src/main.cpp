@@ -33,6 +33,7 @@ int main(int argc, char** argv)
     Renderer renderer;
     FileReader reader("src/res/textures/loz.png");
 
+    srand( time(NULL) );
     while(running && window.open())
     {
         const auto begin = std::chrono::system_clock::now();

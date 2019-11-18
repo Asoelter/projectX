@@ -161,3 +161,11 @@ bool World::contains(const WorldPosition& position) const
     return quad.x == activeX_
         && quad.y == activeY_;
 }
+
+TileMap const & World::quadrant(const WorldPosition& position) const
+{
+    const auto xMapPos  = position.quadrant().x;
+    const auto yMapPos  = position.quadrant().y;
+
+    return tileMaps_[yMapPos][xMapPos];
+}

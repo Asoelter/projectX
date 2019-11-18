@@ -29,6 +29,8 @@ public:
     }
 
 private:
+    bool collisionWithWall(World const & world, core::math::vec2<float> direction);
+
     WorldPosition position_;
     core::graphics::Rectangle rect_;
 };
