@@ -60,6 +60,16 @@ constexpr Color green()
     return {0.0f, 1.0f, 0.0f, 1.0f};
 }
 
+constexpr Color yellow()
+{
+    return {1.0f, 1.0f, 0.0f, 1.0f};
+}
+
+constexpr Color orange()
+{
+    return {1.0f, 0.5f, 0.0f, 1.0f};
+}
+
 constexpr Color blue()
 {
     return {0.0f, 0.0f, 1.0f, 1.0f};

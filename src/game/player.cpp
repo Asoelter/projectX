@@ -4,6 +4,7 @@
 Player::Player(float x, float y)
     : position_(0, 0, x, y)
     , rect_(Tile::width, Tile::height, {x, y}, core::graphics::blue())
+    , health_(100)
 {
 
 }
@@ -36,4 +37,29 @@ void Player::printPosition() const
 WorldPosition Player::position() const
 {
     return position_;
+}
+
+void Player::updateHealth(int delta)
+{
+    health_ += delta;
+    if (health_ <= 0) {
+        health_ = 0;
+    }
+    // should this return something if health is <= 0?
+    if (health_ <= 75) {
+        if (health_ <= 50) {
+            if (health_ <= 25) {
+                rect_.setColor(core::graphics::red());
+            }
+            else {
+                rect_.setColor(core::graphics::orange());
+            }
+        }
+        else {
+            rect_.setColor(core::graphics::yellow());
+        }
+    }
+    else {
+        rect_.setColor(core::graphics::blue());
+    }
 }

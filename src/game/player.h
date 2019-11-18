@@ -23,9 +23,12 @@ public:
         return rect_;
     }
 
+    void updateHealth(int delta);
+
 private:
     WorldPosition position_;
     core::graphics::Rectangle rect_;
+    int health_;
 };
 
 REGISTER_DRAWABLE(Player);

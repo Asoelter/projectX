@@ -83,7 +83,7 @@ void Renderer::checkForCollisions()
             }
 
             if (sameX && sameY) {
-                std::cout << "HIT!\n";
+                player_.updateHealth(-1);
             }
         }
     }

@@ -4,14 +4,14 @@
 
 Roamer::Roamer(float x, float y)
     : position_(0, 0, x, y)
-    , rect_(Tile::width, Tile::height, {x, y}, core::graphics::red())
+    , rect_(Tile::width / 2.0, Tile::height / 2.0, {x, y}, core::graphics::black())
 {
 
 }
 
 Roamer::Roamer(Roamer&& r)
     : position_(r.position_)
-    , rect_(Tile::width, Tile::height, r.rect_.position(), core::graphics::red())
+    , rect_(Tile::width / 2.0, Tile::height / 2.0, r.rect_.position(), core::graphics::black())
 {
 
 }
