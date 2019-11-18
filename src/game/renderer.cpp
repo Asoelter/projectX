@@ -5,7 +5,6 @@ Renderer::Renderer()
     , player_(25.0f, 25.0f)
     , roamers_()
 {
-
     roamers_.emplace_back(Roamer(34.0f, 34.0f));
 }
 

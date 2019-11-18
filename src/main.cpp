@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 
     Renderer renderer;
 
+    srand( time(NULL) );
     while(running && window.open())
     {
         const auto begin = std::chrono::system_clock::now();

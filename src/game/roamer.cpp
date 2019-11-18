@@ -18,7 +18,6 @@ Roamer::Roamer(Roamer&& r)
 
 void Roamer::move(World const & world, float const displacement)
 {
-    srand( time(NULL) );
     auto randomMove = [displacement] (float & input) {
         int randNum = rand() % 3;
         if (randNum == 0) {
