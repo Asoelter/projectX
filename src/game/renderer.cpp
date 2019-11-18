@@ -9,9 +9,8 @@ Renderer::Renderer()
     roamers_.emplace_back(Roamer(34.0f, 34.0f));
 }
 
-void Renderer::render(const vec2f& direction, int displacement)
+void Renderer::render(const vec2f& direction, float displacement)
 {
-    std::cout << displacement << std::endl;
     world_.drawAt(player_.position());
 
     if(world_.positionOpen(player_.position() + direction))

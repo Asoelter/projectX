@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 
+#include "util/file_reader.h"
 #include "util/handmade_util.h"
 
 #include "core/graphics/drawable.h"
@@ -30,6 +31,7 @@ int main(int argc, char** argv)
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
     Renderer renderer;
+    FileReader reader("src/res/textures/loz.png");
 
     while(running && window.open())
     {
