@@ -29,8 +29,11 @@ bool FileReader::verify(std::fstream& file)
     headerContents.push(0x50);
     headerContents.push(0xFFFFFF89);
 
-    /*static int count = 0;
-    while(file >> reader && ++count < 2)
+#define SHOW_ALL
+#ifdef SHOW_ALL
+
+    static int count = 0;
+    while(file >> reader && ++count < 3)
     {
         for(const auto& byte : reader)
         {
@@ -38,8 +41,12 @@ bool FileReader::verify(std::fstream& file)
         }
 
         std::cout << '\n';
-    }*/
+    }
 
+#else
+
+    while(!headerContents.empty())
+    {
         file >> reader;
 
         for(const auto& byte : reader)
@@ -48,15 +55,19 @@ bool FileReader::verify(std::fstream& file)
 
             if(next == static_cast<unsigned>(byte))
             {
-                std::cout << "WE HAVE A MATCH" << std::endl;
+                std::cout << "WE HAVE A MATCH" << std::hex << next 
+                          << " : " << static_cast<unsigned>(byte) << std::endl;
             }
             else
             {
-                std::cout << "MISMATCH: " << std::hex << next << " : " << static_cast<unsigned>(byte) << std::endl;
+                std::cout << "MISMATCH: " << std::hex << next 
+                          << " : " << static_cast<unsigned>(byte) << std::endl;
             }
 
             headerContents.pop();
         }
+    }
 
+#endif //SHOW_ALL
     return true;
 }
