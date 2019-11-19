@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    //Renderer renderer;
+    Renderer renderer;
     //FileReader reader("src/res/textures/loz2.png");
 
     srand( time(NULL) );
