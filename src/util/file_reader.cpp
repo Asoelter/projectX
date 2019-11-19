@@ -21,7 +21,7 @@ bool FileReader::verify(std::fstream& file)
     std::string reader;
 
     headerContents.push(0x0a);
-    headerContents.push(0x01a);
+    headerContents.push(0x1a);
     headerContents.push(0x0a);
     headerContents.push(0x0d);
     headerContents.push(0x47);
@@ -29,7 +29,8 @@ bool FileReader::verify(std::fstream& file)
     headerContents.push(0x50);
     headerContents.push(0xFFFFFF89);
 
-    while(file >> reader)
+    /*static int count = 0;
+    while(file >> reader && ++count < 2)
     {
         for(const auto& byte : reader)
         {
@@ -37,27 +38,25 @@ bool FileReader::verify(std::fstream& file)
         }
 
         std::cout << '\n';
-    }
+    }*/
 
-    /*while(!headerContents.empty())
-    {
         file >> reader;
 
         for(const auto& byte : reader)
         {
-            const auto next = headerContents.top();
-            headerContents.pop();
+            const auto& next = headerContents.top();
 
-            if(next == static_cast<int>(byte))
+            if(next == static_cast<unsigned>(byte))
             {
                 std::cout << "WE HAVE A MATCH" << std::endl;
             }
             else
             {
-                std::cout << "MISMATCH: " << std::hex << next << " : " << static_cast<int>(byte) << std::endl;
+                std::cout << "MISMATCH: " << std::hex << next << " : " << static_cast<unsigned>(byte) << std::endl;
             }
+
+            headerContents.pop();
         }
-    }*/
 
     return true;
 }
