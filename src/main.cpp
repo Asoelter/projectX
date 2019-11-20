@@ -31,7 +31,15 @@ int main(int argc, char** argv)
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
     Renderer renderer;
-    //FileReader reader("src/res/textures/loz2.png");
+    
+    try
+    {
+        FileReader reader("src/res/textures/loz2.png");
+    }
+    catch(std::invalid_argument e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 
     srand( time(NULL) );
     while(running && window.open())
