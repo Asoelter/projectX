@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     
     try
     {
-        FileReader reader("src/res/textures/loz2.png");
+        FileReader reader("src/res/textures/loz3.png");
     }
     catch(std::invalid_argument e)
     {

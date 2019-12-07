@@ -61,23 +61,73 @@ char FileReader::readChar()
     return nextChar;
 }
 
+[[nodiscard]] 
+char FileReader::peakChar()
+{
+    auto nextChar = data_[readCursor_];
+    int distancetoNextChar = 1;
+
+    while(isBlank(nextChar)) //ignore white space
+    {
+        nextChar = data_[readCursor_ + distancetoNextChar++];
+    }
+
+    return nextChar;
+}
+
 [[nodiscard]]
 uint8_t FileReader::readByte() 
 {
-    const auto nextSymbol = readChar();
+    const auto nextChar = data_[readCursor_++];
 
-    addToChunkLookout(static_cast<char>(nextSymbol));
+    addToChunkLookout(nextChar);
 
-    return toByte(nextSymbol);
+    const auto nextByte = static_cast<uint8_t>(nextChar);
+
+    return toByte(nextByte);
 }
 
 [[nodiscard]] 
-unsigned FileReader::readHalfWord()
+uint8_t FileReader::peakByte()
+{
+    const auto nextChar = data_[readCursor_];
+    const auto nextByte = static_cast<uint8_t>(nextChar);
+
+    return toByte(nextByte);
+}
+
+[[nodiscard]] 
+uint16_t FileReader::readHalfWord()
 {
     const auto firstByte  = readByte();
     const auto secondByte = readByte();
 
-    const auto word = firstByte << 8 | secondByte << 0; 
+    const auto halfWord = firstByte << 8 | secondByte << 0; 
+
+    return halfWord;
+}
+
+[[nodiscard]] 
+uint16_t FileReader::peakHalfWord()
+{
+    const auto firstByte  = data_[readCursor_];
+    const auto secondByte = data_[readCursor_ + 1];
+    const auto word = firstByte << 8 | secondByte << 0;
+    return word;
+}
+
+[[nodiscard]] 
+uint32_t FileReader::readWord()
+{
+    const auto firstByte  = readByte();
+    const auto secondByte = readByte();
+    const auto thirdByte  = readByte();
+    const auto fourthByte = readByte();
+
+    const auto word = firstByte  << 24
+                    | secondByte << 16
+                    | thirdByte  << 8
+                    | fourthByte << 0;
 
     return word;
 }
@@ -104,7 +154,7 @@ bool FileReader::verify()
 
     while(!headerContents.empty())
     {
-        const auto& fileByte       = readByte();
+        const auto& fileByte       = toByte(readChar());
         const auto& nextHeaderByte = headerContents.top();
 
         if(nextHeaderByte != fileByte)
@@ -125,12 +175,22 @@ void FileReader::readIHDR()
     const auto d = readChar();
     const auto r = readChar();
 
-    //TODO(asoelter): switch this to an exception? 
     if(i != 'I' && h != 'H' && d != 'D' && r != 'R')
     {
         throw std::invalid_argument("Not a png file");
     }
 
-    const auto width  = readHalfWord();
-    const auto height = readHalfWord();
+    // TODO(asoelter): how much of this is usefule 
+    // info that needs to be saved?
+    const auto width             = readWord(); //< Should these be reading a word? the spec says 
+    const auto height            = readWord(); //< four bytes but the data looks like its in 8
+    const auto bitDepth          = readByte(); 
+    const auto colorType         = readByte();
+    const auto compressionMethod = readByte();
+    const auto filterMethod      = readByte();
+    const auto interlaceMethod   = readByte();
+
+    std::cout << "file width: " << width << std::endl;
+    std::cout << "file height: " << height << std::endl;
+    std::cout << "color type " << colorType << std::endl;
 }

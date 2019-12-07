@@ -66,7 +66,7 @@ public:
             auto stride = 0;
             if(i > 0)
             {
-                stride = (descriptor.offsets[i] - descriptor.offsets[i - 1]) * sizeof(T);
+                stride = descriptor.offsets.size() * descriptor.valuesPerIndex * sizeof(T);
             }
             glVertexAttribPointer(i, descriptor.valuesPerIndex, type, GL_FALSE, stride, (void*)( descriptor.offsets[i] * sizeof(T) ));
             glEnableVertexAttribArray(i);

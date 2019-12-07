@@ -24,9 +24,16 @@ private:
     };
 
     void readFile(const std::string& filePath);
-    [[nodiscard]] char readChar();
-    [[nodiscard]] uint8_t readByte();
-    [[nodiscard]] unsigned readHalfWord();
+
+    //TODO(asoelter): get rid of peak methods??
+    [[nodiscard]] char      readChar();
+    [[nodiscard]] char      peakChar();
+    [[nodiscard]] uint8_t   readByte();
+    [[nodiscard]] uint8_t   peakByte();
+    [[nodiscard]] uint16_t  readHalfWord();
+    [[nodiscard]] uint16_t  peakHalfWord();
+    [[nodiscard]] uint32_t  readWord();
+
     void addToChunkLookout(char c);
     [[nodiscard]] bool verify();
     void readIHDR();
