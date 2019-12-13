@@ -5,6 +5,13 @@ namespace core::containers
 {
 
 template<typename Key, typename Value>
+LittleMap<Key, Value>::LittleMap(const std::initializer_list<std::pair<Key, Value>>& l)
+    : data_(l.begin(), l.end())
+{
+    
+}
+
+template<typename Key, typename Value>
 Value& LittleMap<Key, Value>::operator[](const Key& key)
 {
     using pairT = std::pair<Key, Value>;
@@ -16,13 +23,12 @@ Value& LittleMap<Key, Value>::operator[](const Key& key)
 
     if(valueItr != data_.end())
     {
-        return *valueItr->second;
+        return valueItr->second;
     }
     else
     {
-        //TODO(asoelter): SFINAE out non-default-constructable classes 
-        //and throw an exception if we get to this point
-        const auto newValue = data_.emplace_back({key, Value()});
+        auto& newValue = data_.emplace_back(std::pair(key, Value()));
+
         return newValue.second;
     }
 }
@@ -42,7 +48,7 @@ Value LittleMap<Key, Value>::operator[](const Key& key) const
         throw std::invalid_argument("Key not found");
     }
 
-    return *valueItr->second;
+    return valueItr->second;
 }
 
 }

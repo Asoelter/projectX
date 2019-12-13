@@ -16,6 +16,7 @@ namespace core::graphics
 {
 
 int Texture::textureCount_ = 0;
+//core::containers::LittleMap<std::string, GLenum> Texture::fileEnums_ = {{"bmp", GL_RGBA}};
 
 Texture::Texture(const std::string& filePath)
 	: id_(0)
@@ -35,7 +36,10 @@ Texture::Texture(const std::string& filePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    //const auto fileT = fileType(filePath);
+    const auto alphaSetting = GL_RGBA;
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, alphaSetting, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 

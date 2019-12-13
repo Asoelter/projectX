@@ -1,6 +1,7 @@
 #ifndef LITTLE_MAP_H
 #define LITTLE_MAP_H
 
+#include <initializer_list>
 #include <utility>
 #include <vector>
 
@@ -12,6 +13,8 @@ class LittleMap
 {
 public:
     LittleMap() = default;
+    LittleMap(const std::initializer_list<std::pair<Key, Value>>& l);
+
     Value& operator[](const Key& key);
     Value operator[](const Key& key) const;
 
