@@ -11,9 +11,12 @@ template<typename Key, typename Value>
 class LittleMap
 {
 public:
-    LittleMap();
+    LittleMap() = default;
     Value& operator[](const Key& key);
     Value operator[](const Key& key) const;
+
+    auto begin(){return data_.begin();}
+    auto end(){return data_.end();}
 private:
     std::vector<std::pair<Key, Value>> data_;
 };
