@@ -1,35 +1,45 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <iostream>
+#include <numeric>
 #include <type_traits>
 #include <vector>
-#include <iostream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "../../util/handmade_util.h"
 
 typedef unsigned GLuint;
 
 namespace core::graphics
 {
 
+//TODO(asoelter): change valuesPerIndex to a vector
+//because the number of values per index can change
+//based on the index
+
 struct MeshDescriptor
 {
     MeshDescriptor()
-        : valuesPerIndex(0)
+        : valuesPerIndex()
         , offsets()
         , elementBuffer()
     {}
 
-    int                   valuesPerIndex;
+    std::vector<int>      valuesPerIndex;
     std::vector<unsigned> offsets;
     std::vector<unsigned> elementBuffer;
 };
 
+template<typename T>
+using EnableIfFloat = std::enable_if_t<std::is_floating_point_v<T>>;
+
 template
     <
     typename T, 
-    typename = std::enable_if_t<std::is_floating_point_v<T>>
+    typename = EnableIfFloat<T>
     >
 class Mesh
 {
@@ -37,11 +47,6 @@ public:
     Mesh(std::vector<T> const & data, const MeshDescriptor& descriptor)
         : elementSize(descriptor.elementBuffer.size())
     {
-        //TODO(asoelter): bullet proof this
-        if (glGenVertexArrays == NULL) {
-            std::cout << "Do not have an glGenVertexArrays pointer\n";
-            exit(-1);
-        }
         glGenVertexArrays(1, &vao_);
         glGenBuffers(1, &vbo_);
         glGenBuffers(1, &ebo_);
@@ -61,14 +66,13 @@ public:
             type = GL_DOUBLE;
         }
 
+        const auto& valsPerIndex = descriptor.valuesPerIndex;
+        const auto totalValuesPerIndex = std::accumulate(valsPerIndex.begin(), valsPerIndex.end(), 0);
+        const auto stride = totalValuesPerIndex * sizeof(float); 
+
         for(int i = 0; i < descriptor.offsets.size(); ++i)
         {
-            auto stride = 0;
-            if(i > 0)
-            {
-                stride = descriptor.offsets.size() * descriptor.valuesPerIndex * sizeof(T);
-            }
-            glVertexAttribPointer(i, descriptor.valuesPerIndex, type, GL_FALSE, stride, (void*)( descriptor.offsets[i] * sizeof(T) ));
+            glVertexAttribPointer(i, descriptor.valuesPerIndex[i], type, GL_FALSE, stride, (void*)( descriptor.offsets[i] * sizeof(T) ));
             glEnableVertexAttribArray(i);
         }
     }
@@ -78,7 +82,7 @@ public:
          std::vector<unsigned>  offsets = {})
         : elementSize(elementBuffer.size())
     {
-        (void)offsets;
+        HANDMADE_UNUSED(offsets);
         glGenVertexArrays(1, &vao_);
         glGenBuffers(1, &vbo_);
         glGenBuffers(1, &ebo_);
@@ -116,6 +120,46 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
         glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, 0);
     }
+
+    static std::vector<float> merge(const std::vector<T>& index1,
+                                    const std::vector<T>& index2,
+                                    unsigned valueCount1,
+                                    unsigned valueCount2)
+    {
+        auto result        = std::vector<float>();
+        auto pos1          = 0;
+        auto pos2          = 0;
+        auto pushingIndex1 = true;
+
+        for(auto i = 0u; i < index1.size() + index2.size(); ++i)
+        {
+            if(pushingIndex1)
+            {
+                handmade_assert(pos1 < index1.size());
+
+                result.push_back(index1[pos1++]);
+
+                if(pos1 % valueCount1 == 0) 
+                {
+                    pushingIndex1 = false;
+                }
+            }
+            else
+            {
+                handmade_assert(pos2 < index2.size());
+                
+                result.push_back(index2[pos2++]);
+
+                if(pos2 % valueCount2 == 0) 
+                {
+                    pushingIndex1 = true;
+                }
+            }
+        }
+
+        return result;
+    }
+
 
 private:
     GLuint vao_ = 0;

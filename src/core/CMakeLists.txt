@@ -1,12 +1,14 @@
 set(CMAKE_EXPORT_COMPILE_COMMANDS on) #To generate compilation database for ycm
 project(core)
 
-add_library (core graphics/shader.h     graphics/shader.cpp
-                  graphics/window.h     graphics/window.cpp
-                  graphics/square.h     graphics/square.cpp
-                  graphics/rectangle.h  graphics/rectangle.cpp
-                  graphics/color.h      graphics/color.cpp
-                  audio/speaker.h       audio/speaker.cpp)
+add_library (core graphics/shader.h         graphics/shader.cpp
+                  graphics/window.h         graphics/window.cpp
+                  graphics/square.h         graphics/square.cpp
+                  graphics/rectangle.h      graphics/rectangle.cpp
+                  graphics/color.h          graphics/color.cpp
+                  graphics/texture.h        graphics/texture.cpp
+                  audio/speaker.h           audio/speaker.cpp
+                  containers/little_map.h   containers/little_map.hpp)
 
 if(NOT WIN32)
 find_package(OpenAL REQUIRED)

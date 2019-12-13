@@ -1,11 +1,13 @@
 #include <iostream>
 #include <chrono>
+#include <unordered_map>
 
-#include "util/file_reader.h"
+#include "util/image_reader.h"
 #include "util/handmade_util.h"
 
 #include "core/graphics/drawable.h"
 #include "core/graphics/rectangle.h"
+#include "core/graphics/texture.h"
 #include "core/graphics/window.h"
 
 #include "core/math/vec2.h"
@@ -30,18 +32,11 @@ int main(int argc, char** argv)
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    Renderer renderer;
-    
-    try
-    {
-        FileReader reader("src/res/textures/loz3.png");
-    }
-    catch(std::invalid_argument e)
-    {
-        std::cout << e.what() << std::endl;
-    }
+    auto link = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
+    core::graphics::Rectangle textRect(30.0f, 36.0f, {50.0f,50.0f}, std::move(link));
 
-    srand( time(NULL) );
+    Renderer renderer;
+
     while(running && window.open())
     {
         const auto begin = std::chrono::system_clock::now();
@@ -74,6 +69,7 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
+        textRect.draw();
 
         window.swap();
 
