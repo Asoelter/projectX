@@ -3,41 +3,57 @@
 
 #include <string>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "key.h"
+#include "shader.h"
 
 struct GLFWwindow;
 
 namespace core::graphics
 {
 
-enum Key
+struct WindowDescriptor
 {
-    Escape  = GLFW_KEY_ESCAPE,
-    Up      = GLFW_KEY_UP,
-    Right   = GLFW_KEY_RIGHT,
-    Down    = GLFW_KEY_DOWN,
-    Left    = GLFW_KEY_LEFT
+    int widthInPixels;
+    int heightInPixels;
+    int widthInScreenCoords;
+    int heightInScreenCoords;
+    std::string title;
 };
 
 class Window
 {
 public:
     Window(int width, int height, const std::string& title);
+    Window(const WindowDescriptor& descriptor);
     ~Window();
 
-    bool open() const;
+    [[nodiscard]] bool open() const;
     void update() const;
     void swap() const;
     void setBackgroundColor(float r, float g, float b);
-    bool isPressed(Key key);
+    [[nodiscard]] bool isPressed(Key key);
 
     void setVsync(bool enabled);
-    bool isVsync() const;
+    [[nodiscard]] bool isVsync() const;
+
+    void zoom(float factor);
+    void zoomInAt(const core::math::vec2<float>& position);
+    void zoomOutAt(const core::math::vec2<float>& position);
+
+    static void setScreenLimits(float xlim, float ylim);
+
+private:
+    friend class Shader;
+
+    static void setActiveShader(Shader* shader);
+    static Shader* activeShader_;
+
 private:
     GLFWwindow* window_;
     int width_;
     int height_;
+    int screenCoordWidth_;
+    int screenCoordHeight_;
     bool isVsync_;
 };
 

@@ -18,13 +18,14 @@ public:
 
     [[nodiscard]] 
     unsigned id() const;
-    void bind() const;
-    void unbind() const;
+    void bind();
+    void unbind();
 
     void setUniform1i(const char* name, float value);
     void setUniform1f(const char* name, float value);
     void setUniformVec4f(const char* name, const math::vec4<float>& value);
     void setUniformVec2f(const char* name, const math::vec2<float>& value);
+
 private:
     bool isError();
     std::string errorLog();

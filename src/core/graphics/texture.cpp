@@ -16,7 +16,7 @@ namespace core::graphics
 {
 
 int Texture::textureCount_ = 0;
-//core::containers::LittleMap<std::string, GLenum> Texture::fileEnums_ = {{"bmp", GL_RGBA}};
+Texture::MapType Texture::fileEnums_ = {{"bmp", GL_RGBA}, {"jpeg", GL_RGB}};
 
 Texture::Texture(const std::string& filePath)
 	: id_(0)
@@ -36,10 +36,16 @@ Texture::Texture(const std::string& filePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    //const auto fileT = fileType(filePath);
-    const auto alphaSetting = GL_RGBA;
+    const auto fileT = fileType(filePath);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, alphaSetting, GL_UNSIGNED_BYTE, data);
+    if(!fileEnums_.contains(fileT))
+    {
+        throw std::invalid_argument("Unsupported file type: " + fileT);
+    }
+
+    const auto alphaSetting = fileEnums_[fileT];
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, alphaSetting, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 

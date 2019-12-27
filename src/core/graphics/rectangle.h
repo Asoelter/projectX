@@ -40,10 +40,7 @@ public:
     float height() const { return height_; }
 
 public:
-    //NOTE(asoelter): this isn't really a good place for this
-    //and should be moved once a good place becomes aparent 
-    //(probably window?)
-    static void setScreenLimits(float xlim, float ylim);
+    static void createShaders();
 private:
     static std::unique_ptr<Shader> shader_;
 
@@ -62,6 +59,10 @@ private:
     MeshT        mesh_;
     ColorT       color_;
     TextureT     texture_;
+
+private:
+    static const char * vertexPath;
+    static const char * fragmentPath;
 };
 }
 

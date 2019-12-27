@@ -1,6 +1,9 @@
 #include "shader.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "window.h"
 
 #include "../../util/handmade_util.h"
 
@@ -24,6 +27,7 @@ std::string readFile(const std::string& filepath)
 
 namespace core::graphics
 {
+
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     : programID_(glCreateProgram())
 {
@@ -37,6 +41,8 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 
     glDeleteShader(vertexID);
     glDeleteShader(fragmentID); 
+
+    Window::setActiveShader(this);
 }
 
 Shader::~Shader()
@@ -50,14 +56,21 @@ unsigned Shader::id() const
     return programID_;
 }
 
-void Shader::bind() const
+void Shader::bind() 
 {
     glUseProgram(programID_);
+
+    Window::setActiveShader(this);
 }
 
-void Shader::unbind() const
+void Shader::unbind() 
 {
     glUseProgram(0);
+
+    if(Window::activeShader_ == this)
+    {
+        Window::setActiveShader(nullptr);
+    }
 }
 
 void Shader::setUniform1i(const char* name, float value)

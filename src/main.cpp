@@ -28,12 +28,12 @@ int main(int argc, char** argv)
     core::graphics::Window window(width, height, "projectX");
     window.setBackgroundColor(1.0f, 0.0f, 1.0f);
 
-    core::graphics::Rectangle::setScreenLimits(global::screenXLimit, global::screenYLimit);
+    core::graphics::Window::setScreenLimits(global::screenXLimit, global::screenYLimit);
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    auto link = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
-    core::graphics::Rectangle textRect(30.0f, 36.0f, {50.0f,50.0f}, std::move(link));
+    auto tex = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
+    core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
 
     Renderer renderer;
 
@@ -65,11 +65,24 @@ int main(int argc, char** argv)
         {
             direction.x -= displacement;
         }
+        if(window.isPressed(core::graphics::Key::K))
+        {
+            static float zoomInLevel = 1.0f;
+            window.zoom(zoomInLevel);
+            zoomInLevel *= 0.985f;
+        }
+        if(window.isPressed(core::graphics::Key::J))
+        {
+            static float zoomInLevel = 1.0f;
+            window.zoom(zoomInLevel);
+            zoomInLevel += 0.01f;
+        }
 
         window.update();
 
         renderer.render(direction, displacement);
-        textRect.draw();
+        hero.move(direction);
+        hero.draw();
 
         window.swap();
 

@@ -18,8 +18,11 @@ public:
     Value& operator[](const Key& key);
     Value operator[](const Key& key) const;
 
-    auto begin(){return data_.begin();}
-    auto end(){return data_.end();}
+    auto begin() {return data_.begin();}
+    auto end()   {return data_.end();}
+
+    [[nodiscard]]
+    bool contains(const Key& key);
 private:
     std::vector<std::pair<Key, Value>> data_;
 };

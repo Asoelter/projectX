@@ -17,6 +17,11 @@ void main(void)
     if(hasTexture)
     {
         color = texture(textureMap, inUniforms.tCoords);
+
+        if(color.a == 0)
+        {
+            discard;
+        }
     }
     else
     {

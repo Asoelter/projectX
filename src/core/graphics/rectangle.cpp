@@ -9,7 +9,9 @@
 namespace core::graphics
 {
 
-std::unique_ptr<Shader> Rectangle::shader_ = nullptr; 
+std::unique_ptr<Shader> Rectangle::shader_  = nullptr; 
+const char * Rectangle::vertexPath          = "src/res/shaders/solid.vs";
+const char * Rectangle::fragmentPath        = "src/res/shaders/solid.fs";
 
 Rectangle::Rectangle(float width, float height,
                      const math::Point<float>& pos, 
@@ -37,8 +39,7 @@ Rectangle::Rectangle(float width, float height,
 
     if(!shader_)
     {
-        shader_ = std::make_unique<Shader>("src/res/shaders/solid.vs", 
-                                           "src/res/shaders/solid.fs");
+        shader_ = std::make_unique<Shader>(vertexPath, fragmentPath);
     }
 
     shader_->bind();
@@ -89,8 +90,7 @@ Rectangle::Rectangle(float width, float height,
 
     if(!shader_)
     {
-        shader_ = std::make_unique<Shader>("src/res/shaders/solid.vs", 
-                                           "src/res/shaders/solid.fs");
+        shader_ = std::make_unique<Shader>(vertexPath, fragmentPath);
     }
 
     shader_->bind();
@@ -145,17 +145,13 @@ math::Point<float> Rectangle::position() const
     return initialPosition_ + offset_;
 }
 
-void Rectangle::setScreenLimits(float xlim, float ylim)
+void Rectangle::createShaders()
 {
     if(!shader_)
     {
-        shader_ = std::make_unique<Shader>("src/res/shaders/solid.vs", 
-                                           "src/res/shaders/solid.fs");
+        shader_ = std::make_unique<Shader>(vertexPath, fragmentPath);
+        shader_->bind();
     }
-
-    shader_->bind();
-    shader_->setUniform1f("xLimit", xlim);
-    shader_->setUniform1f("yLimit", ylim);
 }
 
 }

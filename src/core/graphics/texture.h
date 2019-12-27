@@ -18,12 +18,12 @@ public:
     void unbind() const;
 
 private:
-    using mapT = core::containers::LittleMap<std::string, GLenum>;
+    using MapType = core::containers::LittleMap<std::string, GLenum>;
 
     unsigned int id_;
     unsigned int textureNumber_;
     static int textureCount_;
-    //static mapT fileEnums_;
+    static MapType fileEnums_;
 };
 }
 
