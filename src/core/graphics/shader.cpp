@@ -60,7 +60,10 @@ void Shader::bind()
 {
     glUseProgram(programID_);
 
-    Window::setActiveShader(this);
+	if (Window::activeShader_ != this)
+	{
+		Window::setActiveShader(this);
+	}
 }
 
 void Shader::unbind() 

@@ -25,15 +25,22 @@ int main(int argc, char** argv)
     constexpr int height = 480;
     bool running         = true;
 
-    core::graphics::Window window(width, height, "projectX");
+	core::graphics::WindowDescriptor descriptor = {};
+	descriptor.widthInPixels = width;
+	descriptor.heightInPixels = height;
+	descriptor.widthInScreenCoords = 100;
+	descriptor.heightInScreenCoords = 100;
+	descriptor.title = "projectX";
+
+    core::graphics::Window window(descriptor);
     window.setBackgroundColor(1.0f, 0.0f, 1.0f);
 
     core::graphics::Window::setScreenLimits(global::screenXLimit, global::screenYLimit);
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    auto tex = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
-    core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
+    //auto tex = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
+    //core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
 
     Renderer renderer;
 
@@ -81,8 +88,8 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
-        hero.move(direction);
-        hero.draw();
+        //hero.move(direction);
+        //hero.draw();
 
         window.swap();
 

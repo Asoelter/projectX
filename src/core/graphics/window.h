@@ -23,7 +23,6 @@ struct WindowDescriptor
 class Window
 {
 public:
-    Window(int width, int height, const std::string& title);
     Window(const WindowDescriptor& descriptor);
     ~Window();
 
@@ -37,8 +36,8 @@ public:
     [[nodiscard]] bool isVsync() const;
 
     void zoom(float factor);
-    void zoomInAt(const core::math::vec2<float>& position);
-    void zoomOutAt(const core::math::vec2<float>& position);
+    //void zoomInAt(const core::math::vec2<float>& position);
+    //void zoomOutAt(const core::math::vec2<float>& position);
 
     static void setScreenLimits(float xlim, float ylim);
 
@@ -47,6 +46,10 @@ private:
 
     static void setActiveShader(Shader* shader);
     static Shader* activeShader_;
+	static Window* activeWindow_;
+
+private:
+	void onShaderChange();
 
 private:
     GLFWwindow* window_;

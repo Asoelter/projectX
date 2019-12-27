@@ -13,32 +13,7 @@ namespace core::graphics
 {
 
 core::graphics::Shader* Window::activeShader_ = nullptr;
-
-Window::Window(int width, int height, const std::string& title)
-    : width_(width)
-    , height_(height)
-    , isVsync_(true)
-{
-    if(!glfwInit())
-    {
-        exit(-1);
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(window_);
-
-    setVsync(true);
-
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        exit(-1);
-    }
-}
+core::graphics::Window* Window::activeWindow_ = nullptr;
 
 Window::Window(const WindowDescriptor& descriptor)
     : width_(descriptor.widthInPixels)
@@ -67,6 +42,8 @@ Window::Window(const WindowDescriptor& descriptor)
     {
         exit(-1);
     }
+
+	activeWindow_ = this;
 }
 
 Window::~Window()
@@ -137,6 +114,11 @@ void Window::setActiveShader(Shader* shader)
 {
     activeShader_ = shader;
 
+	activeWindow_->onShaderChange();
+}
+
+void Window::onShaderChange()
+{
     setScreenLimits(screenCoordWidth_, screenCoordHeight_);
 }
 
