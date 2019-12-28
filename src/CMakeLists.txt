@@ -30,7 +30,7 @@ include_directories(glfw)
 include_directories(glfw/include)
 
 target_link_libraries(${PROJECT_NAME} glad)
-target_link_libraries(${PROJECCT_NAME} glfw)
+target_link_libraries(${PROJECT_NAME} glfw)
 
 target_include_directories(${PROJECT_NAME} PUBLIC glad)
 target_include_directories(${PROJECT_NAME} PUBLIC glfw)

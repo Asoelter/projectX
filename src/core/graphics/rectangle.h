@@ -24,7 +24,7 @@ public:
 
     Rectangle(float width, float height,
               const math::Point<float>& pos,
-              std::unique_ptr<Texture>&& texture);
+              Texture&& texture);
 
     ~Rectangle();
 
@@ -44,14 +44,16 @@ public:
 private:
     static std::unique_ptr<Shader> shader_;
 
+    static const char * vertexPath;
+    static const char * fragmentPath;
+
 private:
     using vec2f     = math::vec2<float>;
     using Pointf    = math::Point<float>;
     using MeshT     = std::unique_ptr<Mesh<float>>;
     using ColorT    = std::optional<Color>;
-    using TextureT  = std::optional<std::unique_ptr<Texture>>;
+    using TextureT  = std::optional<Texture>;
 
-    float        dimension_;
     float        width_;
     float        height_;
     vec2f        offset_;
@@ -59,10 +61,6 @@ private:
     MeshT        mesh_;
     ColorT       color_;
     TextureT     texture_;
-
-private:
-    static const char * vertexPath;
-    static const char * fragmentPath;
 };
 }
 

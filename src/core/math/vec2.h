@@ -35,7 +35,7 @@ public:
 
     bool operator!=(const vec2& rhs)
     {
-        return !(this == rhs);
+        return !(*this == rhs);
     }
 
     constexpr vec2 operator+(const vec2& rhs)

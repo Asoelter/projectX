@@ -7,6 +7,8 @@
 //code. Should eventually be removed
 #include "rectangle.h"
 
+#include "../math/mat4.h"
+
 #include "../../util/handmade_util.h"
 
 namespace core::graphics
@@ -17,6 +19,8 @@ core::graphics::Window* Window::activeWindow_ = nullptr;
 
 Window::Window(const WindowDescriptor& descriptor)
     : width_(descriptor.widthInPixels)
+    , zoom_(core::math::mat4<float>::identity())
+    , zoomScale_(1.0f)
     , height_(descriptor.heightInPixels)
     , screenCoordWidth_(descriptor.widthInScreenCoords)
     , screenCoordHeight_(descriptor.heightInScreenCoords)
@@ -60,6 +64,8 @@ void Window::update() const
 {
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    activeShader_->setUniformMat4f("scale", zoom_);
 }
 
 void Window::swap() const
@@ -87,14 +93,22 @@ bool Window::isVsync() const
     return isVsync_;
 }
 
-void Window::zoom(float factor)
+void Window::zoomIn()
 {
-    if(!activeShader_)
-    {
-        throw std::logic_error("No active shader");
-    }
+    zoomScale_ -= 0.01f;
 
-    activeShader_->setUniform1f("zoom", factor);
+    zoom_[0][0] = zoomScale_;
+    zoom_[1][1] = zoomScale_;
+    zoom_[2][2] = zoomScale_;
+}
+
+void Window::zoomOut()
+{
+    zoomScale_ += 0.01f;
+
+    zoom_[0][0] = zoomScale_;
+    zoom_[1][1] = zoomScale_;
+    zoom_[2][2] = zoomScale_;
 }
 
 void Window::setScreenLimits(float xlim, float ylim)

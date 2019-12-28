@@ -52,13 +52,13 @@ Rectangle::Rectangle(float width, float height,
 
 Rectangle::Rectangle(float width, float height,
           const math::Point<float>& pos,
-          std::unique_ptr<Texture>&& texture)
+          Texture&& texture)
     : width_(width)
     , height_(height)
     , offset_(0.0f, 0.0f)
     , initialPosition_(pos)
     , color_(std::nullopt)
-    , texture_(std::move(texture))
+    , texture_(texture)
 {
     const std::vector<float> vertices = {
         pos.x - (width_ / 2.0f), pos.y - (height_ / 2.0f), //bottom left
@@ -109,7 +109,7 @@ void Rectangle::draw() const
     }
     else if(texture_)
     {
-        (*texture_)->bind();
+        texture_->bind();
         shader_->setUniform1i("hasTexture", 1);
     }
 
@@ -117,7 +117,7 @@ void Rectangle::draw() const
 
     if(texture_)
     {
-        (*texture_)->unbind();
+        texture_->unbind();
         shader_->setUniform1i("hasTexture", 0);
     }
 }

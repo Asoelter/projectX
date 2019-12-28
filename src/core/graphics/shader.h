@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "../math/mat4.h"
 #include "../math/vec4.h"
 #include "../math/vec2.h"
 
@@ -23,8 +24,9 @@ public:
 
     void setUniform1i(const char* name, float value);
     void setUniform1f(const char* name, float value);
-    void setUniformVec4f(const char* name, const math::vec4<float>& value);
     void setUniformVec2f(const char* name, const math::vec2<float>& value);
+    void setUniformVec4f(const char* name, const math::vec4<float>& value);
+    void setUniformMat4f(const char* name, const math::mat4<float>& value);
 
 private:
     bool isError();

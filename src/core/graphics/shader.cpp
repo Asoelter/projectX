@@ -85,16 +85,9 @@ void Shader::setUniform1i(const char* name, float value)
 
 void Shader::setUniform1f(const char* name, float value)
 {
-    auto location = glGetUniformLocation(programID_, name);
+    const auto location = glGetUniformLocation(programID_, name);
 
     glUniform1f(location, value);
-}
-
-void Shader::setUniformVec4f(const char* name, const math::vec4<float>& value)
-{
-    auto location = glGetUniformLocation(programID_, name);
-
-    glUniform4fv(location, 1, value.data);
 }
 
 void Shader::setUniformVec2f(const char* name, const math::vec2<float>& value)
@@ -102,6 +95,20 @@ void Shader::setUniformVec2f(const char* name, const math::vec2<float>& value)
     const auto location = glGetUniformLocation(programID_, name);
 
     glUniform2fv(location, 1, value.data);
+}
+
+void Shader::setUniformVec4f(const char* name, const math::vec4<float>& value)
+{
+    const auto location = glGetUniformLocation(programID_, name);
+
+    glUniform4fv(location, 1, value.data);
+}
+
+void Shader::setUniformMat4f(const char* name, const math::mat4<float>& value)
+{
+    const auto location = glGetUniformLocation(programID_, name);
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, value.data());
 }
 
 bool Shader::isError()

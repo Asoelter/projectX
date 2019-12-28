@@ -15,12 +15,11 @@ std::string fileType(const std::string& fileName)
 namespace core::graphics
 {
 
-int Texture::textureCount_ = 0;
 Texture::MapType Texture::fileEnums_ = {{"bmp", GL_RGBA}, {"jpeg", GL_RGB}};
 
-Texture::Texture(const std::string& filePath)
+Texture::Texture(const std::string& filePath, int texNumber)
 	: id_(0)
-	, textureNumber_(textureCount_++)
+	, textureNumber_(texNumber)
 {
     ImageReader reader(filePath);
     const auto data = reader.data();

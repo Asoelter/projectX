@@ -10,23 +10,7 @@ template<typename T, typename = EnableIfMath<T>>
 class vec4
 {
 public:
-    vec4(T _x, T _y)
-        : x(_x)
-        , y(_y)
-        , z(0)
-        , a(0)
-        {
-
-        }
-    vec4(T _x, T _y, T _z)
-        : x(_x)
-        , y(_y)
-        , z(_z)
-        , a(0)
-        {
-
-        }
-    vec4(T _x, T _y, T _z, T _a)
+    constexpr vec4(T _x, T _y, T _z = 0, T _a = 0)
         : x(_x)
         , y(_y)
         , z(_z)
@@ -34,6 +18,16 @@ public:
         {
 
         }
+
+    constexpr T operator[](unsigned index) const
+    {
+        return data[index];
+    }
+
+    constexpr T& operator[](unsigned index) 
+    {
+        return data[index];
+    }
 
     static constexpr size_t size = 4;
 

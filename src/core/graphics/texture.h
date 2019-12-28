@@ -13,7 +13,7 @@ namespace core::graphics
 class Texture
 {
 public:
-    Texture(const std::string& filePath);
+    Texture(const std::string& filePath, int texNumber = 0);
     void bind() const;
     void unbind() const;
 
@@ -22,7 +22,6 @@ private:
 
     unsigned int id_;
     unsigned int textureNumber_;
-    static int textureCount_;
     static MapType fileEnums_;
 };
 }

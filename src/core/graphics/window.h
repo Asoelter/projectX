@@ -6,6 +6,8 @@
 #include "key.h"
 #include "shader.h"
 
+#include "../math/mat4.h"
+
 struct GLFWwindow;
 
 namespace core::graphics
@@ -35,9 +37,8 @@ public:
     void setVsync(bool enabled);
     [[nodiscard]] bool isVsync() const;
 
-    void zoom(float factor);
-    //void zoomInAt(const core::math::vec2<float>& position);
-    //void zoomOutAt(const core::math::vec2<float>& position);
+    void zoomIn();
+    void zoomOut();
 
     static void setScreenLimits(float xlim, float ylim);
 
@@ -52,12 +53,14 @@ private:
 	void onShaderChange();
 
 private:
-    GLFWwindow* window_;
-    int width_;
-    int height_;
-    int screenCoordWidth_;
-    int screenCoordHeight_;
-    bool isVsync_;
+    GLFWwindow*         window_;
+    math::mat4<float>   zoom_;
+    float               zoomScale_;
+    int                 width_;
+    int                 height_;
+    int                 screenCoordWidth_;
+    int                 screenCoordHeight_;
+    bool                isVsync_;
 };
 
 }

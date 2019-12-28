@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../core/graphics/drawable.h"
+#include "core/graphics/drawable.h"
 #include "tile_map.h"
 #include "world_position.h"
 

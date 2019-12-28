@@ -11,7 +11,9 @@
 #include "core/graphics/window.h"
 
 #include "core/math/vec2.h"
+#include "core/math/mat4.h"
 
+#include "game/hero.h"
 #include "game/renderer.h"
 #include "game/world_position.h"
 #include "game/settings.h"
@@ -26,11 +28,11 @@ int main(int argc, char** argv)
     bool running         = true;
 
 	core::graphics::WindowDescriptor descriptor = {};
-	descriptor.widthInPixels = width;
-	descriptor.heightInPixels = height;
-	descriptor.widthInScreenCoords = 100;
+	descriptor.widthInPixels        = width;
+	descriptor.heightInPixels       = height;
+	descriptor.widthInScreenCoords  = 100;
 	descriptor.heightInScreenCoords = 100;
-	descriptor.title = "projectX";
+	descriptor.title                = "projectX";
 
     core::graphics::Window window(descriptor);
     window.setBackgroundColor(1.0f, 0.0f, 1.0f);
@@ -39,8 +41,10 @@ int main(int argc, char** argv)
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    //auto tex = std::make_unique<core::graphics::Texture>("src/res/textures/test_hero_front_head.bmp");
-    //core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
+    auto tex = core::graphics::Texture("src/res/textures/test_hero_front_head.bmp");
+    core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
+
+    Hero heroT(core::math::Point<float>(30.0f, 50.0f));
 
     Renderer renderer;
 
@@ -74,22 +78,19 @@ int main(int argc, char** argv)
         }
         if(window.isPressed(core::graphics::Key::K))
         {
-            static float zoomInLevel = 1.0f;
-            window.zoom(zoomInLevel);
-            zoomInLevel *= 0.985f;
+            window.zoomIn();
         }
         if(window.isPressed(core::graphics::Key::J))
         {
-            static float zoomInLevel = 1.0f;
-            window.zoom(zoomInLevel);
-            zoomInLevel += 0.01f;
+            window.zoomOut();
         }
 
         window.update();
 
         renderer.render(direction, displacement);
-        //hero.move(direction);
-        //hero.draw();
+        hero.move(direction);
+        hero.draw();
+        heroT.draw();
 
         window.swap();
 

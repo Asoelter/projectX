@@ -8,9 +8,8 @@ add_library (game tile_map.h        tile_map.cpp
                   world_position.h  world_position.cpp
                   player.h          player.cpp
                   roamer.h          roamer.cpp
-                  renderer.h        renderer.cpp)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ../core)
+                  renderer.h        renderer.cpp
+                  hero.h            hero.cpp)
 
 include_directories(../)
 include_directories(../vendor/glad)
@@ -20,5 +19,8 @@ include_directories(../vendor/glfw/include)
 
 target_link_libraries(game glad)
 target_link_libraries(game glfw)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ../)
+target_link_libraries(game projectX)
 
 set_property(TARGET game PROPERTY CXX_STANDARD 17)
