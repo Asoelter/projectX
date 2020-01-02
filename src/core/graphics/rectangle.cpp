@@ -21,7 +21,7 @@ Rectangle::Rectangle(float width, float height,
     , offset_(0.0f, 0.0f)
     , initialPosition_(pos)
     , color_(color)
-    , texture_(std::nullopt)
+    , textures_()
 {
     const std::vector<float> vertices = {
         pos.x - (width_/ 2.0f), pos.y - (height_ / 2.0f), //bottom left
@@ -52,13 +52,13 @@ Rectangle::Rectangle(float width, float height,
 
 Rectangle::Rectangle(float width, float height,
           const math::Point<float>& pos,
-          Texture&& texture)
+          const std::vector<Texture>& textures)
     : width_(width)
     , height_(height)
     , offset_(0.0f, 0.0f)
     , initialPosition_(pos)
     , color_(std::nullopt)
-    , texture_(texture)
+    , textures_(textures)
 {
     const std::vector<float> vertices = {
         pos.x - (width_ / 2.0f), pos.y - (height_ / 2.0f), //bottom left
@@ -102,24 +102,20 @@ void Rectangle::draw() const
 {
     shader_->bind();
     shader_->setUniformVec2f("translation", offset_);
+    shader_->setUniform1i("textureCount", textures_.size());
 
     if(color_)
     {
         shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color_->data));
     }
-    else if(texture_)
+
+    for(const auto& texture : textures_)
     {
-        texture_->bind();
-        shader_->setUniform1i("hasTexture", 1);
+        texture.bind();
     }
 
     mesh_->draw();
-
-    if(texture_)
-    {
-        texture_->unbind();
-        shader_->setUniform1i("hasTexture", 0);
-    }
+    shader_->setUniform1i("textureCount", 0); //clean up so non-textured items don't try to use textures
 }
 
 void Rectangle::move(const math::vec2<float>& direction)

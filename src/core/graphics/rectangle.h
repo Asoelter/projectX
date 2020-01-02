@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <optional>
+#include <vector>
 
 #include "color.h"
 #include "drawable.h"
@@ -24,7 +25,7 @@ public:
 
     Rectangle(float width, float height,
               const math::Point<float>& pos,
-              Texture&& texture);
+              const std::vector<Texture>& texture);
 
     ~Rectangle();
 
@@ -52,7 +53,7 @@ private:
     using Pointf    = math::Point<float>;
     using MeshT     = std::unique_ptr<Mesh<float>>;
     using ColorT    = std::optional<Color>;
-    using TextureT  = std::optional<Texture>;
+    using TextureT  = std::vector<Texture>;
 
     float        width_;
     float        height_;
@@ -60,7 +61,7 @@ private:
     const Pointf initialPosition_;
     MeshT        mesh_;
     ColorT       color_;
-    TextureT     texture_;
+    TextureT     textures_;
 };
 }
 

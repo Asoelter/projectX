@@ -41,10 +41,7 @@ int main(int argc, char** argv)
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
 
-    auto tex = core::graphics::Texture("src/res/textures/test_hero_front_head.bmp");
-    core::graphics::Rectangle hero(30.0f, 50.0f, {50.0f,50.0f}, std::move(tex));
-
-    Hero heroT(core::math::Point<float>(30.0f, 50.0f));
+    Hero hero(core::math::Point<float>(30.0f, 50.0f));
 
     Renderer renderer;
 
@@ -88,9 +85,9 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
+
         hero.move(direction);
         hero.draw();
-        heroT.draw();
 
         window.swap();
 

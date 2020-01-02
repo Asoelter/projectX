@@ -17,7 +17,6 @@ public:
     void draw() const;
 private:
     core::graphics::Rectangle head_;
-    core::graphics::Rectangle torso_;
     WorldPosition             position_;
 };
 

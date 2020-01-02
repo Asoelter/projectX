@@ -20,4 +20,3 @@ build
 build/**
 src/vendor/glfw/.gitignore
 notes.txt
-src/res/textures/**
