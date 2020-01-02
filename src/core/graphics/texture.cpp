@@ -60,5 +60,32 @@ void Texture::unbind() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+TextureBlock::TextureBlock(const std::initializer_list<std::string>& fileNames)
+    : textures_()
+{
+    auto textureNumber = 0;
+
+    for(const auto& name : fileNames)
+    {
+        textures_.emplace_back(Texture(name, textureNumber++));
+    }
+}
+
+void TextureBlock::bind() const
+{
+    std::for_each(textures_.begin(), textures_.end(), [](const Texture& t){t.bind();});
+}
+
+void TextureBlock::unbind() const
+{
+    std::for_each(textures_.begin(), textures_.end(), [](const Texture& t){t.unbind();});
+}
+
+[[nodiscard]] 
+bool TextureBlock::empty() const
+{
+    return textures_.empty();
+}
+
 }
 

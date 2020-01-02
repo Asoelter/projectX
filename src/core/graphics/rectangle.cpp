@@ -13,6 +13,39 @@ std::unique_ptr<Shader> Rectangle::shader_  = nullptr;
 const char * Rectangle::vertexPath          = "src/res/shaders/solid.vs";
 const char * Rectangle::fragmentPath        = "src/res/shaders/solid.fs";
 
+namespace 
+{
+
+std::vector<float> initVertices(const math::Point<float>& pos, float width, float height)
+{
+    return {
+        pos.x - (width / 2.0f), pos.y - (height / 2.0f), //bottom left
+        pos.x + (width / 2.0f), pos.y - (height / 2.0f), //bottom right
+        pos.x + (width / 2.0f), pos.y + (height / 2.0f), //top right
+        pos.x - (width / 2.0f), pos.y + (height / 2.0f), //top left
+    };
+}
+
+std::vector<float> initTexCoords()
+{
+    return {
+        0, 0, //bottom left
+        1, 0, //bottom right
+        1, 1, //top right
+        0, 1  //top left
+    };
+}
+
+std::vector<unsigned> initElementBuffer()
+{
+    return {
+        0, 1, 2, //bottom left triangle
+        2, 3, 0  //top right triangle
+    };
+}
+
+}
+
 Rectangle::Rectangle(float width, float height,
                      const math::Point<float>& pos, 
                      const Color& color)
@@ -23,25 +56,12 @@ Rectangle::Rectangle(float width, float height,
     , color_(color)
     , textures_()
 {
-    const std::vector<float> vertices = {
-        pos.x - (width_/ 2.0f), pos.y - (height_ / 2.0f), //bottom left
-        pos.x + (width_/ 2.0f), pos.y - (height_ / 2.0f), //bottom right
-        pos.x + (width_/ 2.0f), pos.y + (height_ / 2.0f), //top right
-        pos.x - (width_/ 2.0f), pos.y + (height_ / 2.0f), //top left
-    };
-
-    const std::vector<unsigned> indices = {
-        0, 1, 2, //bottom left triangle
-        2, 3, 0  //top right triangle
-    };
+    const std::vector<float> vertices = initVertices(pos, width_, height_);
+    const std::vector<unsigned> indices = initElementBuffer();
 
     mesh_ = std::make_unique<Mesh<float>>(vertices, indices);
 
-    if(!shader_)
-    {
-        shader_ = std::make_unique<Shader>(vertexPath, fragmentPath);
-    }
-
+    createShaders();
     shader_->bind();
 
     if(color_)
@@ -60,24 +80,9 @@ Rectangle::Rectangle(float width, float height,
     , color_(std::nullopt)
     , textures_(textures)
 {
-    const std::vector<float> vertices = {
-        pos.x - (width_ / 2.0f), pos.y - (height_ / 2.0f), //bottom left
-        pos.x + (width_ / 2.0f), pos.y - (height_ / 2.0f), //bottom right
-        pos.x + (width_ / 2.0f), pos.y + (height_ / 2.0f), //top right
-        pos.x - (width_ / 2.0f), pos.y + (height_ / 2.0f)  //top left
-    };
-
-    const std::vector<float> texCoords = {
-        0, 0, //bottom left
-        1, 0, //bottom right
-        1, 1, //top right
-        0, 1  //top left
-    };
-
-    const std::vector<unsigned> indices = {
-        0, 1, 2, //bottom left triangle
-        2, 3, 0  //top right triangle
-    };
+    const std::vector<float> vertices   = initVertices(pos, width_, height_);
+    const std::vector<float> texCoords  = initTexCoords();
+    const std::vector<unsigned> indices = initElementBuffer();
 
     const auto data = Mesh<float>::merge(vertices, texCoords, 2, 2);
 
@@ -88,11 +93,7 @@ Rectangle::Rectangle(float width, float height,
 
     mesh_ = std::make_unique<Mesh<float>>(data, descriptor);
 
-    if(!shader_)
-    {
-        shader_ = std::make_unique<Shader>(vertexPath, fragmentPath);
-    }
-
+    createShaders();
     shader_->bind();
 }
 

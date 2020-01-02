@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <initializer_list>
 #include <string>
 
 #include <glad/glad.h>
@@ -24,6 +25,22 @@ private:
     unsigned int textureNumber_;
     static MapType fileEnums_;
 };
+
+class TextureBlock
+{
+public:
+    TextureBlock(const std::initializer_list<std::string>& fileNames);
+
+    void bind() const;
+    void unbind() const;
+
+    [[nodiscard]] 
+    bool empty() const;
+
+private:
+    std::vector<Texture> textures_;
+};
+
 }
 
 #endif //TEXTURE_H
