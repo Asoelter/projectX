@@ -29,10 +29,14 @@ private:
 class TextureBlock
 {
 public:
+    TextureBlock();
     TextureBlock(const std::initializer_list<std::string>& fileNames);
 
     void bind() const;
     void unbind() const;
+
+    [[nodiscard]]
+    std::size_t size() const;
 
     [[nodiscard]] 
     bool empty() const;

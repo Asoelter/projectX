@@ -64,15 +64,12 @@ Rectangle::Rectangle(float width, float height,
     createShaders();
     shader_->bind();
 
-    if(color_)
-    {
-        shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color.data));
-    }
+    shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color.data));
 }
 
 Rectangle::Rectangle(float width, float height,
           const math::Point<float>& pos,
-          const std::vector<Texture>& textures)
+          const TextureBlock& textures)
     : width_(width)
     , height_(height)
     , offset_(0.0f, 0.0f)
@@ -88,8 +85,8 @@ Rectangle::Rectangle(float width, float height,
 
     MeshDescriptor descriptor;
     descriptor.valuesPerIndex = {2, 2};
-    descriptor.offsets = {0, 2};
-    descriptor.elementBuffer = indices;
+    descriptor.offsets        = {0, 2};
+    descriptor.elementBuffer  = indices;
 
     mesh_ = std::make_unique<Mesh<float>>(data, descriptor);
 
@@ -110,10 +107,7 @@ void Rectangle::draw() const
         shader_->setUniformVec4f("inColor", math::vec4<float>::fromArray(color_->data));
     }
 
-    for(const auto& texture : textures_)
-    {
-        texture.bind();
-    }
+    textures_.bind();
 
     mesh_->draw();
     shader_->setUniform1i("textureCount", 0); //clean up so non-textured items don't try to use textures

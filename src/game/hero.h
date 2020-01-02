@@ -8,6 +8,14 @@
 #include "core/math/point.h"
 #include "core/math/vec2.h"
 
+enum class Orientation
+{
+    Back,
+    Right,
+    Front,
+    Left
+};
+
 class Hero
 {
 public:
@@ -15,9 +23,14 @@ public:
 
     void move(const core::math::vec2<float>& direction);
     void draw() const;
+
 private:
-    core::graphics::Rectangle head_;
+    core::graphics::Rectangle back_;
+    core::graphics::Rectangle right_;
+    core::graphics::Rectangle front_;
+    core::graphics::Rectangle left_;
     WorldPosition             position_;
+    Orientation               orientation_;
 };
 
 #endif //HERO_H

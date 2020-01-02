@@ -60,6 +60,12 @@ void Texture::unbind() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+TextureBlock::TextureBlock()
+    : textures_()
+{
+
+}
+
 TextureBlock::TextureBlock(const std::initializer_list<std::string>& fileNames)
     : textures_()
 {
@@ -79,6 +85,12 @@ void TextureBlock::bind() const
 void TextureBlock::unbind() const
 {
     std::for_each(textures_.begin(), textures_.end(), [](const Texture& t){t.unbind();});
+}
+
+[[nodiscard]]
+std::size_t TextureBlock::size() const
+{
+    return textures_.size();
 }
 
 [[nodiscard]] 

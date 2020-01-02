@@ -25,7 +25,7 @@ public:
 
     Rectangle(float width, float height,
               const math::Point<float>& pos,
-              const std::vector<Texture>& texture);
+              const TextureBlock& texture);
 
     ~Rectangle();
 
@@ -53,7 +53,7 @@ private:
     using Pointf    = math::Point<float>;
     using MeshT     = std::unique_ptr<Mesh<float>>;
     using ColorT    = std::optional<Color>;
-    using TextureT  = std::vector<Texture>;
+    using TextureT  = TextureBlock;
 
     float        width_;
     float        height_;
