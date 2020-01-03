@@ -7,6 +7,7 @@ add_library (core graphics/shader.h         graphics/shader.cpp
                   graphics/rectangle.h      graphics/rectangle.cpp
                   graphics/color.h          graphics/color.cpp
                   graphics/texture.h        graphics/texture.cpp
+                  graphics/camera.h         graphics/camera.cpp
                   audio/speaker.h           audio/speaker.cpp
                   containers/little_map.h   containers/little_map.hpp)
 

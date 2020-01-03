@@ -3,8 +3,8 @@
 
 namespace global
 {
-constexpr auto screenXLimit = 100.0f;
-constexpr auto screenYLimit = 100.0f;
+constexpr auto screenXLimit = 100;
+constexpr auto screenYLimit = 100;
 }
 
 #endif //SETTINGS_H

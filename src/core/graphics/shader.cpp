@@ -28,6 +28,8 @@ std::string readFile(const std::string& filepath)
 namespace core::graphics
 {
 
+Shader* Shader::activeShader_ = nullptr;
+
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     : programID_(glCreateProgram())
 {
@@ -42,7 +44,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     glDeleteShader(vertexID);
     glDeleteShader(fragmentID); 
 
-    Window::setActiveShader(this);
+    activeShader_ = this;
 }
 
 Shader::~Shader()
@@ -60,19 +62,16 @@ void Shader::bind()
 {
     glUseProgram(programID_);
 
-	if (Window::activeShader_ != this)
-	{
-		Window::setActiveShader(this);
-	}
+    activeShader_ = this;
 }
 
 void Shader::unbind() 
 {
     glUseProgram(0);
 
-    if(Window::activeShader_ == this)
+    if(activeShader_ == this)
     {
-        Window::setActiveShader(nullptr);
+        activeShader_ = nullptr;
     }
 }
 
@@ -109,6 +108,12 @@ void Shader::setUniformMat4f(const char* name, const math::mat4<float>& value)
     const auto location = glGetUniformLocation(programID_, name);
 
     glUniformMatrix4fv(location, 1, GL_FALSE, value.data());
+}
+
+[[nodiscard]]
+Shader* Shader::activeShader()
+{
+    return activeShader_;
 }
 
 bool Shader::isError()

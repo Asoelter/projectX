@@ -28,12 +28,18 @@ public:
     void setUniformVec4f(const char* name, const math::vec4<float>& value);
     void setUniformMat4f(const char* name, const math::mat4<float>& value);
 
+    [[nodiscard]]
+    static Shader* activeShader();
+
 private:
     bool isError();
     std::string errorLog();
     unsigned compileShader(GLenum type, std::string source);
 
     const unsigned programID_;
+
+private:
+    static Shader* activeShader_;
 };
 }
 
