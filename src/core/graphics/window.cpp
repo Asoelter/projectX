@@ -25,6 +25,7 @@ Window::Window(int width, int height, const std::string& title)
 
     window_ = glfwCreateWindow(width_, height_, title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(window_);
+    //glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     setVsync(true);
 

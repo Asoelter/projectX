@@ -1,8 +1,7 @@
 #ifndef VEC4_H
 #define VEC4_H
 
-template<typename T>
-using EnableIfMath =  std::enable_if_t<std::is_arithmetic_v<T>>;
+#include "math_traits.h"
 
 namespace core::math
 {
@@ -50,4 +49,5 @@ public:
     };
 };
 }
-#endif //VEC3_H
+
+#endif //VEC4_H

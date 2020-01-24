@@ -1,12 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <memory>
 #include <string>
 
 #include "key.h"
 #include "shader.h"
-
-#include "../math/mat4.h"
 
 struct GLFWwindow;
 
@@ -29,10 +28,10 @@ public:
     [[nodiscard]] bool isVsync() const;
 
 private:
-    GLFWwindow*         window_;
-    int                 width_;
-    int                 height_;
-    bool                isVsync_;
+    GLFWwindow* window_;
+    int         width_;
+    int         height_;
+    bool        isVsync_;
 };
 
 }

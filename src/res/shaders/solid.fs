@@ -1,4 +1,4 @@
-#version 420 core
+#version 450 core
 
 in uniforms
 {
@@ -10,9 +10,16 @@ out vec4 color;
 uniform vec4 inColor =  vec4(0, 0, 1, 1);
 
 uniform int textureCount = 0;
+
+#if __VERSION__ == 450
 layout (binding = 0) uniform sampler2D texture1;
 layout (binding = 1) uniform sampler2D texture2;
 layout (binding = 2) uniform sampler2D texture3;
+#else
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform sampler2D texture3;
+#endif 
 
 void main(void)
 {

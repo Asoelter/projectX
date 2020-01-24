@@ -7,6 +7,7 @@
 #include "core/graphics/window.h"
 
 #include "core/math/vec2.h"
+#include "core/math/operations.h"
 
 #include "game/hero.h"
 #include "game/renderer.h"

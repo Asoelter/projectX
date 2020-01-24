@@ -18,11 +18,11 @@ public:
 
 private:
     math::mat4<float>   zoom_;
+    math::mat4<float>   view_;
+    math::mat4<float>   projection_;
     float               zoomScale_;
     int                 width_;
     int                 height_;
-    bool                needToSetLimits_;
-    bool                needToSetScale_;
 };
 
 }

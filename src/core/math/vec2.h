@@ -3,10 +3,8 @@
 
 #include <type_traits>
 
+#include "math_traits.h"
 #include "point.h"
-
-template<typename T>
-using EnableIfMath =  std::enable_if_t<std::is_arithmetic_v<T>>;
 
 namespace core::math
 {
@@ -28,41 +26,42 @@ public:
 
     }
 
+    [[nodiscard]]
     bool operator==(const vec2& rhs)
     {
         return x == rhs.x && y == rhs.y;
     }
 
+    [[nodiscard]]
     bool operator!=(const vec2& rhs)
     {
         return !(*this == rhs);
     }
 
+    [[nodiscard]]
     constexpr vec2 operator+(const vec2& rhs)
     {
         return {x + rhs.x, y + rhs.y};
     }
 
+    [[nodiscard]]
     constexpr vec2 operator-(const vec2& rhs) 
     {
         return {x - rhs.x, y - rhs.y};
     }
 
+    [[nodiscard]]
     constexpr Point<T> operator+(const Point<T>& other)
     {
         return {other.x + x, other.y + y};
     }
 
+    [[nodiscard]]
     friend constexpr Point<T> operator+(const Point<T>& other, const vec2& self)
     {
         return {other.x + self.x, other.y + self.y};
     }
 
-    friend constexpr Point<T> operator+(const vec2& self, const Point<T>& other)
-    {
-        return {other.x + self.x, other.y + self.y};
-    }
-    
     static constexpr size_t size = 2;
 
     union
@@ -76,12 +75,6 @@ public:
         };
     };
 };
-
-template<typename T>
-constexpr vec2<T> difference2D(const Point<T>& lhs, const Point<T>& rhs)
-{
-    return {lhs.x - rhs.x, lhs.y - rhs.y};
-}
 
 
 }

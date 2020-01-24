@@ -5,6 +5,8 @@
 
 #include "window.h"
 
+#include "../math/mat4.h"
+
 #include "../../util/handmade_util.h"
 
 #include <fstream>
