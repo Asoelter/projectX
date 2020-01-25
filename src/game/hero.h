@@ -22,6 +22,7 @@ public:
     Hero(const core::math::Point<float>& pos);
 
     void move(const core::math::vec2<float>& direction);
+    void moveTo(const core::math::Point<float>& pos, const core::math::vec2<float>& direction);
     void draw() const;
 
 private:

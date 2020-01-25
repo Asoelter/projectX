@@ -27,21 +27,23 @@ void main(void)
     {
         color = texture(texture1, inUniforms.tCoords);
 
-        if(textureCount > 1 && color.a < 0.1)
-        {
-            vec4 color2 = texture(texture2, inUniforms.tCoords);
-            color += color2;
-        }
+        if (color.a < 0.1) {
+            if(textureCount > 1)
+            {
+                vec4 color2 = texture(texture2, inUniforms.tCoords);
+                color += color2;
+            }
 
-        if(textureCount > 2 && color.a < 0.1)
-        {
-            vec4 color3 = texture(texture3, inUniforms.tCoords);
-            color += color3;
-        }
+            if(textureCount > 2)
+            {
+                vec4 color3 = texture(texture3, inUniforms.tCoords);
+                color += color3;
+            }
 
-        if(color.a <= 0.1 && color.a < 0.1)
-        {
-            discard;
+            if(color.a <= 0.1)
+            {
+                discard;
+            }
         }
     }
     else

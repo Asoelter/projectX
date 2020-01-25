@@ -92,6 +92,16 @@ void Hero::move(const core::math::vec2<float>& direction)
     orientation_ = calculateOrientation(direction);
 }
 
+void Hero::moveTo(const core::math::Point<float>& position, const core::math::vec2<float>& direction)
+{
+    back_.moveTo(position);
+    right_.moveTo(position);
+    front_.moveTo(position);
+    left_.moveTo(position);
+
+    orientation_ = calculateOrientation(direction);
+}
+
 void Hero::draw() const
 {
     switch(orientation_)

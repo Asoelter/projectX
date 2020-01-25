@@ -9,7 +9,6 @@
 #include "core/math/vec2.h"
 #include "core/math/operations.h"
 
-#include "game/hero.h"
 #include "game/renderer.h"
 #include "game/settings.h"
 
@@ -27,8 +26,6 @@ int main(int argc, char** argv)
 
     auto frameTime = 0.0f;
     const auto screenSpacePerSecond = 0.5f * global::screenXLimit;
-
-    Hero hero(core::math::Point<float>(30.0f, 50.0f));
 
     Renderer renderer;
 
@@ -74,9 +71,6 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
-
-        hero.move(direction);
-        hero.draw();
 
         window.swap();
 

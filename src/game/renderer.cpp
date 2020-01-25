@@ -3,6 +3,7 @@
 Renderer::Renderer()
     : world_()
     , player_(25.0f, 25.0f)
+    , hero_({25.0f, 25.0f})
     , roamers_()
 {
     roamers_.emplace_back(Roamer(34.0f, 34.0f));
@@ -13,8 +14,10 @@ void Renderer::render(const vec2f& direction, float displacement)
     world_.drawAt(player_.position());
 
     player_.move(world_, direction);
+    hero_.moveTo(player_.position().tilePos(), direction);
 
     player_.draw();
+    hero_.draw();
 
     for(auto& roamer : roamers_)
     {

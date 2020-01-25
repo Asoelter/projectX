@@ -45,6 +45,11 @@ public:
         return !(this == rhs);
     }
 
+    Point operator-(const Point&rhs)
+    {
+        return {x - rhs.x, y - rhs.y, z - rhs.z, a - rhs.a};
+    }
+
 public:
     static constexpr auto size = 4;
 

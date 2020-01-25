@@ -1,6 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "hero.h"
 #include "player.h"
 #include "roamer.h"
 #include "world.h"
@@ -25,6 +26,7 @@ private:
 
     World world_;
     Player player_;
+    Hero hero_;
     std::vector<Roamer> roamers_;
 };
 
