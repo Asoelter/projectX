@@ -44,6 +44,8 @@ public:
         {
             elements_[i] = rhs.elements_[i];
         }
+
+        return *this;
     }
 
 	constexpr mat4 operator*(const mat4& rhs) const
