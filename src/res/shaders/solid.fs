@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 
 in uniforms
 {
@@ -11,7 +11,7 @@ uniform vec4 inColor =  vec4(0, 0, 1, 1);
 
 uniform int textureCount = 0;
 
-#if __VERSION__ == 450
+#if __VERSION__ >= 420
 layout (binding = 0) uniform sampler2D texture1;
 layout (binding = 1) uniform sampler2D texture2;
 layout (binding = 2) uniform sampler2D texture3;
@@ -27,23 +27,21 @@ void main(void)
     {
         color = texture(texture1, inUniforms.tCoords);
 
-        if (color.a < 0.1) {
-            if(textureCount > 1)
-            {
-                vec4 color2 = texture(texture2, inUniforms.tCoords);
-                color += color2;
-            }
+        if(textureCount > 1 && color.a < 0.1)
+        {
+            vec4 color2 = texture(texture2, inUniforms.tCoords);
+            color += color2;
+        }
 
-            if(textureCount > 2)
-            {
-                vec4 color3 = texture(texture3, inUniforms.tCoords);
-                color += color3;
-            }
+        if(textureCount > 2 && color.a < 0.1)
+        {
+            vec4 color3 = texture(texture3, inUniforms.tCoords);
+            color += color3;
+        }
 
-            if(color.a <= 0.1)
-            {
-                discard;
-            }
+        if(color.a < 0.1)
+        {
+            discard;
         }
     }
     else

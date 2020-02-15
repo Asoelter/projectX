@@ -123,10 +123,10 @@ public:
 
     static constexpr mat4 translate(const vec3<T>& direction)
     {
-        return {one, zero, zero, direction.x,
-                zero, one, zero, direction.y,
-                zero, zero, one, direction.z,
-                zero, zero, zero, one};
+        return {one, zero, zero, one,
+                zero, one, zero, one,
+                zero, zero, one, one,
+                direction.x, direction.y, direction.z, one};
     }
 
     static constexpr auto lookAt(const vec3<T>& eye, const vec3<T>& center, const vec3<T>& up)
