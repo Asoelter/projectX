@@ -70,6 +70,12 @@ public:
         return rval;
 	}
 
+    constexpr auto operator*=(const mat4& other)
+    {
+        *this = *this * other;
+        return this;
+    }
+
     constexpr const T* data() const noexcept
     {
         return elements_.data();
@@ -123,9 +129,9 @@ public:
 
     static constexpr mat4 translate(const vec3<T>& direction)
     {
-        return {one, zero, zero, one,
-                zero, one, zero, one,
-                zero, zero, one, one,
+        return {one, zero, zero, zero,
+                zero, one, zero, zero,
+                zero, zero, one, zero,
                 direction.x, direction.y, direction.z, one};
     }
 

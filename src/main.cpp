@@ -71,6 +71,7 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
+        camera.pan(-1 * core::math::vec3<float>(direction, 0.0f));
 
         window.swap();
 

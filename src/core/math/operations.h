@@ -46,7 +46,7 @@ constexpr auto operator*(T lhs, const vec3<U>& rhs)
 template<typename T> [[nodiscard]]
 constexpr vec2<T> normalize(const vec2<T>& vec)
 {
-    const auto magnitude = sqrt(vec.x * vec.x + vec.y * vec.y);
+    const auto magnitude = static_cast<T>(sqrt(vec.x * vec.x + vec.y * vec.y));
 
     const auto x = vec.x / magnitude;
     const auto y = vec.y / magnitude;

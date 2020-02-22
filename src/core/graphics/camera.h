@@ -16,10 +16,15 @@ public:
     void zoomIn();
     void zoomOut();
 
+    void pan(const core::math::vec3<float>& direction);
+
 private:
     math::mat4<float>   zoom_;
     math::mat4<float>   view_;
     math::mat4<float>   projection_;
+    math::vec3<float>   eye_;
+    math::vec3<float>   center_;
+    math::vec3<float>   up_;
     float               zoomScale_;
     int                 width_;
     int                 height_;
