@@ -55,10 +55,22 @@ public:
         return {x + rhs.x, y + rhs.y, z + rhs.z};
     }
 
+    constexpr vec3 operator+=(const vec3& rhs) 
+    {
+        *this = *this + rhs;
+        return *this;
+    }
+
     [[nodiscard]]
     constexpr vec3 operator-(const vec3& rhs)  const
     {
         return {x - rhs.x, y - rhs.y, z - rhs.z};
+    }
+
+    constexpr vec3 operator-=(const vec3& rhs) 
+    {
+        *this = *this - rhs;
+        return *this;
     }
 
     [[nodiscard]]

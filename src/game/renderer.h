@@ -14,6 +14,8 @@ public:
     using vec2f = core::math::vec2<float>;
     Renderer();
 
+    core::math::Point<float> playerPos() const {return player_.position().tilePos();}
+
     void render(const vec2f& direction, float displacement);
 private:
     void checkForCollisions();

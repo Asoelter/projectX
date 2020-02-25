@@ -37,15 +37,4 @@ void main()
     outUniforms.tCoords = texCoords;
 
     gl_Position = vec4(transX, transY, 0.0, 1);
-
-    /*float xPos = pos.x + translation.x;
-    float yPos = pos.y + translation.y;
-
-    float transX = (((2.0 / (xLimit)) * xPos) - 1);
-    float transY = (((2.0 / (yLimit)) * yPos) - 1);
-
-    outUniforms.position = vec2(transX, transY);
-    outUniforms.tCoords = texCoords;
-
-    gl_Position = projection * view * scale * vec4(transX, transY, 0.0, 1);*/
 }

@@ -5,6 +5,8 @@
 
 #include "shader.h"
 
+#include "../../game/settings.h"
+
 namespace core::graphics
 {
 
@@ -26,7 +28,6 @@ Camera::Camera(int viewWidth, int viewHeight)
 void Camera::update()
 {
     auto activeShader = Shader::activeShader();
-    static auto count = 0.0f;
 
     if(activeShader)
     {
@@ -40,8 +41,6 @@ void Camera::update()
     {
         //TODO(asoelter): Log this
     }
-
-    count += 0.05f;
 }
 
 void Camera::zoomIn()
@@ -64,11 +63,22 @@ void Camera::zoomOut()
 
 void Camera::pan(const core::math::vec3<float>& direction)
 {
-    for(int i = 0; i < core::math::vec3<float>::size; ++i)
-    {
-        eye_.data[i] += direction.data[i];
-        center_.data[i] += direction.data[i];
-    }
+    eye_ += direction;
+    center_ += direction;
+
+    view_ = math::mat4<float>::lookAt(eye_, center_, up_);
+}
+
+void Camera::follow(const core::math::Point<float>& position)
+{
+
+    //const auto posVec = math::vec3<float>(position.x, position.y, position.z);
+    //const auto direction = normalize(posVec - center_);
+
+    eye_.x =  position.x - ( global::screenXLimit / 2.0f);
+    eye_.y =  position.y - ( global::screenYLimit / 2.0f);
+    center_.x = position.x - ( global::screenXLimit / 2.0f);
+    center_.y = position.y - ( global::screenYLimit / 2.0f);
 
     view_ = math::mat4<float>::lookAt(eye_, center_, up_);
 }

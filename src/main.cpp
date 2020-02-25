@@ -31,6 +31,8 @@ int main(int argc, char** argv)
 
     core::graphics::Camera camera(global::screenXLimit, global::screenYLimit);
 
+    auto prevPos = core::math::vec3<float>(global::screenXLimit, global::screenYLimit / 2.0f, 0);
+
     while(running && window.open())
     {
         const auto begin = std::chrono::system_clock::now();
@@ -71,7 +73,10 @@ int main(int argc, char** argv)
         window.update();
 
         renderer.render(direction, displacement);
-        camera.pan(-1 * core::math::vec3<float>(direction, 0.0f));
+        auto pos = renderer.playerPos();
+        camera.follow(pos);
+
+        prevPos = core::math::vec3<float>(pos.x, pos.y, pos.z);
 
         window.swap();
 
