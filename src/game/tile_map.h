@@ -35,8 +35,8 @@ public:
 
     void setColor(const core::graphics::Color& color);
 
-    static constexpr auto width  = (2.0f / 16.0f) * (global::screenXLimit / 2.0f);
-    static constexpr auto height = (2.0f / 9.0f)  * (global::screenYLimit / 2.0f);
+    static constexpr auto width  = global::screenXLimit / 16.0f;
+    static constexpr auto height = global::screenYLimit / 9.0f;
 private:
     core::graphics::Rectangle tile_;
     TileState state_;
