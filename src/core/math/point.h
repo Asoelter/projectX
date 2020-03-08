@@ -66,7 +66,4 @@ public:
     };
 };
 }
-
-#include "point.hpp"
-
 #endif //POINT_H
