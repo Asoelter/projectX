@@ -11,6 +11,8 @@ add_library (core graphics/shader.h         graphics/shader.cpp
                   audio/speaker.h           audio/speaker.cpp
                   containers/little_map.h   containers/little_map.hpp)
 
+set_property(TARGET core PROPERTY CXX_STANDARD 17)
+
 if(NOT WIN32)
 find_package(OpenAL REQUIRED)
 if(OPENAL_FOUND)
