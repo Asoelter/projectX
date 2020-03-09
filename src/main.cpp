@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 
         const auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> delta = end - begin;
-        frameTime = delta.count();
+        frameTime = static_cast<float>(delta.count());
     } 
 
     return 0;

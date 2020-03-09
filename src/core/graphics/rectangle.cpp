@@ -100,7 +100,7 @@ void Rectangle::draw() const
 {
     shader_->bind();
     shader_->setUniformVec2f("translation", offset_);
-    shader_->setUniform1i("textureCount", textures_.size());
+    shader_->setUniform1i("textureCount", static_cast<int>(textures_.size()));
 
     if(color_)
     {

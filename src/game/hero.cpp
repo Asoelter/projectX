@@ -1,32 +1,36 @@
 #include "hero.h"
 
-#ifdef WIN32
+#ifndef M_PI
 #	define M_PI 3.14159265359
 #endif 
 
 namespace
 {
 
-constexpr float pi             = (1.0f / 1.0f) * M_PI;
-constexpr float threeFourthsPi = (3.0f / 4.0f) * M_PI;
-constexpr float oneFourthsPi   = (1.0f / 4.0f) * M_PI;
+constexpr float pi             = (1.0f / 1.0f) * static_cast<float>(M_PI);
+constexpr float threeFourthsPi = (3.0f / 4.0f) * static_cast<float>(M_PI);
+constexpr float oneFourthsPi   = (1.0f / 4.0f) * static_cast<float>(M_PI);
 
-bool facesUp(float angle)
+[[nodiscard]]
+constexpr bool facesUp(float angle)
 {
     return threeFourthsPi >= angle && angle >= oneFourthsPi;
 }
 
-bool facesRight(float angle)
+[[nodiscard]]
+constexpr bool facesRight(float angle)
 {
     return oneFourthsPi >= angle && angle >= (-1.0f * oneFourthsPi);
 }
 
-bool facesDown(float angle)
+[[nodiscard]]
+constexpr bool facesDown(float angle)
 {
     return (-1.0f * oneFourthsPi) >= angle && angle >= (-1.0f * threeFourthsPi);
 }
 
-bool facesLeft(float angle)
+[[nodiscard]]
+constexpr bool facesLeft(float angle)
 {
     const auto isPositiveLeft = pi >= angle && angle >= threeFourthsPi;
     const auto isNegativeLeft = (-1.0f * threeFourthsPi) >= angle && angle >= (-1.0f * pi);

@@ -22,3 +22,5 @@ src/vendor/glfw/.gitignore
 notes.txt
 **/*.cbp
 .idea/
+CodeAnalysis
+CodeAnalysis/**

@@ -165,7 +165,7 @@ private:
     GLuint vao_ = 0;
     GLuint vbo_ = 0;
     GLuint ebo_ = 0;
-    int elementSize = 0;
+    size_t elementSize = 0;
 };
 }
 

@@ -32,8 +32,8 @@ void Camera::update()
     if(activeShader)
     {
         activeShader->setUniformMat4f("scale", zoom_);
-        activeShader->setUniform1f("xLimit", width_);
-        activeShader->setUniform1f("yLimit", height_);
+        activeShader->setUniform1f("xLimit", static_cast<float>(width_));
+        activeShader->setUniform1f("yLimit", static_cast<float>(height_));
         activeShader->setUniformMat4f("view", view_);
         activeShader->setUniformMat4f("projection", projection_);
     }

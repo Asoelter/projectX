@@ -23,7 +23,7 @@ public:
     void bind();
     void unbind();
 
-    void setUniform1i(const char* name, float value);
+    void setUniform1i(const char* name, int value);
     void setUniform1f(const char* name, float value);
     void setUniformVec2f(const char* name, const math::vec2<float>& value);
     void setUniformVec4f(const char* name, const math::vec4<float>& value);

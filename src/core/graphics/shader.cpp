@@ -77,7 +77,7 @@ void Shader::unbind()
     }
 }
 
-void Shader::setUniform1i(const char* name, float value)
+void Shader::setUniform1i(const char* name, int value)
 {
     auto location = glGetUniformLocation(programID_, name);
 
