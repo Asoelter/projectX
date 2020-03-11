@@ -1,6 +1,10 @@
 #include <iostream>
 #include <chrono>
 
+#ifdef WIN32
+#   include<Windows.h>
+#endif //WIN32
+
 #include "util/handmade_util.h"
 
 #include "core/graphics/camera.h"
@@ -30,8 +34,6 @@ int main(int argc, char** argv)
     Renderer renderer;
 
     core::graphics::Camera camera(global::screenXLimit, global::screenYLimit);
-
-    auto prevPos = core::math::vec3<float>(global::screenXLimit, global::screenYLimit / 2.0f, 0);
 
     while(running && window.open())
     {
@@ -76,8 +78,6 @@ int main(int argc, char** argv)
         auto pos = renderer.playerPos();
         camera.follow(pos);
 
-        prevPos = core::math::vec3<float>(pos.x, pos.y, pos.z);
-
         window.swap();
 
         camera.update();
@@ -90,3 +90,12 @@ int main(int argc, char** argv)
     return 0;
 } 
 
+#ifdef WIN32
+int WINAPI WinMain(_In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPSTR lpCmdLine,
+    _In_ int nShowCmd)
+{
+    main(0, nullptr);
+}
+#endif //WIN32

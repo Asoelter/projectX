@@ -16,7 +16,7 @@ void Renderer::render(const vec2f& direction, float displacement)
     player_.move(world_, direction);
     hero_.moveTo(player_.position().tilePos(), direction);
 
-    player_.draw();
+    //player_.draw();
     hero_.draw();
 
     for(auto& roamer : roamers_)
